@@ -7,66 +7,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% trans "Compare Stocks" %}</title>
-
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <!-- CSS -->
   <link rel="stylesheet" href="{% static 'core/style.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'core/analysis.css' %}?v=1">
   <link rel="stylesheet" href="{% static 'core/comparison.css' %}?v=1">
 </head>
 
 <body>
-<div class="container">
+  <div class="container">
+    <!-- Top Bar -->
+    <div class="top">
+      <div class="brand">
+        <div class="logo">T→T</div>
+        <div>
+          <h1 class="title">{% trans "From Tweets To Trades" %}</h1>
+          <div class="subtitle">
+            {% trans "Compare multiple NIFTY 50 companies" %}
+          </div>
+        </div>
+      </div>
 
-  <!-- Top Bar -->
-  <div class="top">
-    <div class="brand">
-      <div class="logo">T→T</div>
-      <div>
-        <h1 class="title">{% trans "Stock Comparison" %}</h1>
-        <div class="subtitle">{% trans "Compare multiple NIFTY 50 companies" %}</div>
+      <div class="top-actions">
+        <a href="{% url 'home' %}" class="btn btn-ghost">
+          {% trans "Back to Home Page" %}
+        </a>
+        <a href="{% url 'signout' %}" class="btn btn-ghost">
+          {% trans "Sign out" %}
+        </a>
       </div>
     </div>
-
-    <a href="{% url 'analysis' %}" class="btn btn-ghost">
-      ← {% trans "Back to Analysis" %}
-    </a>
-  </div>
-
-  <!-- Comparison Section -->
-  <div class="compare-section">
-    <div class="compare-card">
-      
-      <label>{% trans "Select Stocks" %}</label>
-
-      <select id="tickerSelect" multiple class="multi-select">
-        {% for ticker, name in companies.items %}
+    <!-- Comparison Section -->
+    <div class="card" style="margin-top:20px; margin-bottom:20px;">
+      <h3>Select Multiple Companies (NIFTY 50)</h3>
+      <div class="dropdown-wrapper" style="margin-top:12px;">
+        <select id="tickerSelect" multiple class="dropdown multi-select">
+          {% for ticker, name in companies.items %}
           <option value="{{ ticker }}.NS">
             {{ ticker }} - {{ name }}
           </option>
-        {% endfor %}
-      </select>
-
-      <button class="compare-btn" onclick="compareStocks()">
-        {% trans "Compare Selected Stocks" %}
-      </button>
-
-      <div class="compare-chart-wrap">
-        <canvas id="comparisonChart"></canvas>
+          {% endfor %}
+        </select>
       </div>
 
-      <div id="comparisonStats" class="compare-stats"></div>
+      <div class="tip" style="margin-top:10px;">
+        Hold Ctrl (Windows) or Cmd (Mac) to select multiple companies.
+      </div>
 
+      <div class="controls" style="margin-top:14px;">
+        <button class="btn btn-primary compare-btn">
+          Compare Selected Stocks
+        </button>
+      </div>
+
+      <div id="comparisonLoading" class="comparison-loading" style="display:none; margin-top:10px;">
+        <span>Comparing stocks</span>
+        <span class="loading-dots"></span>
+      </div>
+      <div id="selectedStocksLine" class="comparison-loading" style="display:none;"></div>
+    </div>
+    <!-- Full Width Section (Match Analysis Structure) -->
+    <div class="full-width-section">
+
+      <div class="charts-row">
+        <div class="card chart-card">
+          <h3>Stock Comparison Chart</h3>
+          <div class="chart-wrap">
+            <canvas id="comparisonChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h3>Key Metrics Comparison</h3>
+        <div id="comparisonStats"></div>
+      </div>
     </div>
   </div>
-
-</div>
-
-<script src="{% static 'core/comparison.js' %}?v=1"></script>
-
+  <script src="{% static 'core/comparison.js' %}?v=1"></script>
 </body>
 </html>
