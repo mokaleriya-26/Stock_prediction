@@ -1,0 +1,656 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-02 08:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/templates/analysis.html:8
+msgid "From Tweets To Trades — Dashboard (NIFTY 50)"
+msgstr "ಟ್ವೀಟ್‌ಗಳಿಂದ ವ್ಯಾಪಾರಗಳಿಗೆ — ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ (ನಿಫ್ಟಿ 50)"
+
+#: core/templates/analysis.html:28 core/templates/comparison.html:27
+#: core/templates/signin.html:19
+msgid "From Tweets To Trades"
+msgstr "ಟ್ವೀಟ್‌ಗಳಿಂದ ವ್ಯಾಪಾರಗಳವರೆಗೆ"
+
+#: core/templates/analysis.html:29
+msgid "Select one NIFTY 50 company to generate insights"
+msgstr "ಒಳನೋಟಗಳನ್ನು ರಚಿಸಲು ಒಂದು ನಿಫ್ಟಿ 50 ಕಂಪನಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ."
+
+#: core/templates/analysis.html:34 core/templates/comparison.html:36
+msgid "Back to Home Page"
+msgstr ""
+
+#: core/templates/analysis.html:37 core/templates/comparison.html:39
+msgid "Sign out"
+msgstr "ಸೈನ್ ಔಟ್ ಮಾಡಿ"
+
+#: core/templates/analysis.html:46
+msgid "Choose one company (NIFTY 50)"
+msgstr "ಒಂದು ಕಂಪನಿಯನ್ನು ಆರಿಸಿ (ನಿಫ್ಟಿ 50)"
+
+#: core/templates/analysis.html:49
+msgid "-- Select a company --"
+msgstr "-- ಕಂಪನಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ --"
+
+#: core/templates/analysis.html:52
+msgid ""
+"Tip: pick one ticker. Charts and news will update for the selected company."
+msgstr ""
+"ಸಲಹೆ: ಒಂದು ಟಿಕ್ಕರ್ ಆರಿಸಿ. ಆಯ್ಕೆ ಮಾಡಿದ ಕಂಪನಿಗೆ ಚಾರ್ಟ್‌ಗಳು ಮತ್ತು ಸುದ್ದಿಗಳು "
+"ನವೀಕರಿಸಲ್ಪಡುತ್ತವೆ."
+
+#: core/templates/analysis.html:54
+msgid "Generate Insights"
+msgstr "ಒಳನೋಟಗಳನ್ನು ರಚಿಸಿ"
+
+#: core/templates/analysis.html:62
+msgid "Welcome!"
+msgstr "ಸ್ವಾಗತ!"
+
+#: core/templates/analysis.html:64
+msgid "Select a NIFTY 50 company to view charts, news, and predictions."
+msgstr ""
+"ಚಾರ್ಟ್‌ಗಳು, ಸುದ್ದಿಗಳು ಮತ್ತು ಭವಿಷ್ಯವಾಣಿಗಳನ್ನು ವೀಕ್ಷಿಸಲು ನಿಫ್ಟಿ 50 ಕಂಪನಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ."
+
+#: core/templates/analysis.html:69
+msgid "Key Stats"
+msgstr "ಪ್ರಮುಖ ಅಂಕಿಅಂಶಗಳು"
+
+#: core/templates/analysis.html:80
+msgid "14-Day Price Prediction"
+msgstr "14-ದಿನಗಳ ಬೆಲೆ ಮುನ್ಸೂಚನೆ"
+
+#: core/templates/analysis.html:82
+msgid ""
+"\n"
+"          Model: Ensemble • Confidence:\n"
+"          "
+msgstr ""
+
+#: core/templates/analysis.html:91
+msgid "Historical Price (Past 30 days)"
+msgstr "ಐತಿಹಾಸಿಕ ಬೆಲೆ (ಕಳೆದ 30 ದಿನಗಳು)"
+
+#: core/templates/analysis.html:92
+msgid "Source: sample data"
+msgstr "ಮೂಲ: ಮಾದರಿ ಡೇಟಾ"
+
+#: core/templates/analysis.html:99
+msgid "Predicted Values (14 Days)"
+msgstr "ಊಹಿಸಲಾದ ಮೌಲ್ಯಗಳು (14 ದಿನಗಳು)"
+
+#: core/templates/analysis.html:100
+msgid "Click a tile to highlight"
+msgstr "ಹೈಲೈಟ್ ಮಾಡಲು ಟೈಲ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ"
+
+#: core/templates/analysis.html:107
+msgid "Latest News (—)"
+msgstr "ಇತ್ತೀಚಿನ ಸುದ್ದಿ (—)"
+
+#: core/templates/analysis.html:112
+msgid "Risk Score Meter"
+msgstr ""
+
+#: core/templates/analysis.html:122
+msgid "Buy / Sell / Hold Signal"
+msgstr ""
+
+#: core/templates/analysis.html:136
+msgid ""
+"Prototype — dropdown uses NIFTY 50 constituents (source: NIFTY / Wikipedia)."
+msgstr "ಮೂಲಮಾದರಿ — ಡ್ರಾಪ್‌ಡೌನ್ NIFTY 50 ಘಟಕಗಳನ್ನು ಬಳಸುತ್ತದೆ (ಮೂಲ: ನಿಫ್ಟಿ / ವಿಕಿಪೀಡಿಯಾ)"
+
+#: core/templates/comparison.html:9 core/templates/index.html:42
+msgid "Compare Stocks"
+msgstr ""
+
+#: core/templates/comparison.html:29
+msgid "Compare multiple NIFTY 50 companies"
+msgstr ""
+
+#: core/templates/comparison.html:45
+#, fuzzy
+#| msgid "Choose one company (NIFTY 50)"
+msgid "Select Multiple Companies (NIFTY 50)"
+msgstr "ಒಂದು ಕಂಪನಿಯನ್ನು ಆರಿಸಿ (ನಿಫ್ಟಿ 50)"
+
+#: core/templates/comparison.html:62
+msgid "Compare Selected Stocks"
+msgstr ""
+
+#: core/templates/comparison.html:67
+msgid "Comparing stocks"
+msgstr ""
+
+#: core/templates/comparison.html:77
+msgid "Stock Comparison Chart"
+msgstr ""
+
+#: core/templates/comparison.html:85
+msgid "Key Metrics Comparison"
+msgstr ""
+
+#: core/templates/index.html:9
+msgid "FTTT - Market Alerts"
+msgstr "FTTT - ಮಾರುಕಟ್ಟೆ ಎಚ್ಚರಿಕೆಗಳು"
+
+#: core/templates/index.html:31
+msgid "From Tweets"
+msgstr "ಟ್ವೀಟ್‌ಗಳಿಂದ"
+
+#: core/templates/index.html:32
+msgid "to Trades"
+msgstr "ವ್ಯಾಪಾರಗಳಿಗೆ"
+
+#: core/templates/index.html:38 core/templates/index.html:229
+msgid "Analysis"
+msgstr "ವಿಶ್ಲೇಷಣೆ"
+
+#: core/templates/index.html:45
+msgid "Top Companies"
+msgstr "ಮುಖ್ಯ ಕಂಪನಿಗಳು"
+
+#: core/templates/index.html:48
+msgid "How it Works"
+msgstr "ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ"
+
+#: core/templates/index.html:72
+msgid "Sign Out"
+msgstr "ಲಾಗ್ ಔಟ್"
+
+#: core/templates/index.html:74 core/templates/signin.html:55
+#: core/templates/signup.html:65
+msgid "Sign In"
+msgstr "ಲಾಗ್ ಇನ್"
+
+#: core/templates/index.html:75 core/templates/signup.html:60
+msgid "Sign Up"
+msgstr "ಸೈನ್ ಅಪ್"
+
+#: core/templates/index.html:84
+msgid "Real-time • AI • Sentiment"
+msgstr "ರಿಯಲ್-ಟೈಮ್ • AI • ಭಾವನೆ ವಿಶ್ಲೇಷಣೆ"
+
+#: core/templates/index.html:86
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| " Never Miss a <span class=\"accent-text\">Market-Moving</span><br>Moment "
+#| "Again\n"
+#| " "
+msgid ""
+"\n"
+"            Never Miss a <span class=\"accent-text\">Market-Moving</"
+"span><br>Moment Again\n"
+"            "
+msgstr ""
+"\n"
+" <span class=\"accent-text\">ಮಾರುಕಟ್ಟೆಯನ್ನು ಚಲಿಸುವ</span><br>ಕ್ಷಣವನ್ನು ಮತ್ತೆ "
+"ಎಂದಿಗೂ ತಪ್ಪಿಸಿಕೊಳ್ಳಬೇಡಿ\n"
+" "
+
+#: core/templates/index.html:90
+msgid ""
+"From Tweets to Trades — convert social chatter into real-time trading "
+"signals and market alerts. Trusted by thousands of active traders and "
+"analysts."
+msgstr ""
+"ಟ್ವೀಟ್‌ಗಳಿಂದ ವ್ಯಾಪಾರಗಳಿಗೆ — ಸಾಮಾಜಿಕ ಚರ್ಚೆಗಳನ್ನು ರಿಯಲ್-ಟೈಮ್ ಟ್ರೇಡಿಂಗ್ ಸಿಗ್ನಲ್‌ಗಳು ಮತ್ತು "
+"ಮಾರುಕಟ್ಟೆ ಅಲರ್ಟ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ. ಸಾವಿರಾರು ಸಕ್ರಿಯ ಟ್ರೇಡರ್‌ಗಳು ಮತ್ತು ವಿಶ್ಲೇಷಕರಿಂದ "
+"ನಂಬಿಕೆಯಾಗಿದೆ."
+
+#: core/templates/index.html:92
+msgid "User Friendly • 5-minute integration"
+msgstr "ಬಳಕೆದಾರ ಸ್ನೇಹಿ • 5 ನಿಮಿಷಗಳಲ್ಲಿ ಏಕೀಕರಣ"
+
+#: core/templates/index.html:100
+msgid "LIVE INSIGHT"
+msgstr "ಲೈವ್ ಒಳನೋಟ"
+
+#: core/templates/index.html:101
+msgid "Loading..."
+msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ..."
+
+#: core/templates/index.html:112
+msgid "Market Trend Analysis"
+msgstr "ಮಾರುಕಟ್ಟೆ ಪ್ರವೃತ್ತಿ ವಿಶ್ಲೇಷಣೆ"
+
+#: core/templates/index.html:113
+msgid ""
+"Continuously analyze market data to identify emerging trends and highlight "
+"sectors showing unusual momentum or investor attention."
+msgstr ""
+"ಹೊಸ ಪ್ರವೃತ್ತಿಗಳನ್ನು ಗುರುತಿಸಲು ಮತ್ತು ಅಸಾಮಾನ್ಯ ಚಲನೆ ಅಥವಾ ಹೂಡಿಕೆದಾರರ ಗಮನ ಸೆಳೆಯುವ "
+"ಕ್ಷೇತ್ರಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಲು ಮಾರುಕಟ್ಟೆ ಡೇಟಾವನ್ನು ನಿರಂತರವಾಗಿ ವಿಶ್ಲೇಷಿಸಿ."
+
+#: core/templates/index.html:117
+msgid "AI-driven Insights"
+msgstr "AI ಚಾಲಿತ ಒಳನೋಟಗಳು"
+
+#: core/templates/index.html:118
+msgid ""
+"Proprietary models filter noise and surface high-confidence trade ideas with "
+"sentiment and event scoring."
+msgstr ""
+"ಸ್ವಂತ ಮಾದರಿಗಳು ಅನಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ ಭಾವನೆ ಮತ್ತು ಘಟನೆ ಅಂಕಗಳೊಂದಿಗೆ ಹೆಚ್ಚಿನ "
+"ವಿಶ್ವಾಸದ ಟ್ರೇಡ್ ಐಡಿಯಾಗಳನ್ನು ಹೊರತರುತ್ತವೆ."
+
+#: core/templates/index.html:122
+msgid "Sentiment Tracking"
+msgstr "ಭಾವನೆ ಟ್ರ್ಯಾಕಿಂಗ್"
+
+#: core/templates/index.html:123
+msgid ""
+"Track sentiment trends across sectors and map social momentum to price "
+"movement with clear visualizations."
+msgstr ""
+"ವಿಭಿನ್ನ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ಭಾವನೆ ಪ್ರವೃತ್ತಿಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ ಮತ್ತು ಸಾಮಾಜಿಕ ಚಲನವಲನವನ್ನು ಬೆಲೆ "
+"ಚಲನೆಯೊಂದಿಗೆ ಸ್ಪಷ್ಟ ದೃಶ್ಯೀಕರಣಗಳ ಮೂಲಕ ನಕ್ಷೆಗೊಳಿಸಿ."
+
+#: core/templates/index.html:128
+msgid "Top Trending Companies"
+msgstr "ಟ್ರೆಂಡಿಂಗ್ ಮುಖ್ಯ ಕಂಪನಿಗಳು"
+
+#: core/templates/index.html:129
+msgid "Live social and market movement"
+msgstr "ಲೈವ್ ಸಾಮಾಜಿಕ ಮತ್ತು ಮಾರುಕಟ್ಟೆ ಚಲನೆ"
+
+#: core/templates/index.html:136
+msgid "HDFC Bank"
+msgstr "ಎಚ್‌ಡಿಎಫ್‌ಸಿ ಬ್ಯಾಂಕ್"
+
+#: core/templates/index.html:137
+msgid "HDFC . Finance"
+msgstr "ಎಚ್‌ಡಿಎಫ್‌ಸಿ . ಹಣಕಾಸು"
+
+#: core/templates/index.html:145 core/templates/index.html:161
+#: core/templates/index.html:177 core/templates/index.html:193
+msgid "Data Loading..."
+msgstr "ಡೇಟಾ ಲೋಡ್ ಆಗುತ್ತಿದೆ..."
+
+#: core/templates/index.html:152
+msgid "Reliance Ind."
+msgstr "ರಿಲಯನ್ಸ್ ಇಂಡ."
+
+#: core/templates/index.html:153
+msgid "REL • Technology"
+msgstr "REL • ತಂತ್ರಜ್ಞಾನ"
+
+#: core/templates/index.html:168
+msgid "TCS"
+msgstr "ಟಿಸಿಎಸ್"
+
+#: core/templates/index.html:169
+msgid "TCS . IT Services"
+msgstr "ಟಿಸಿಎಸ್ . ಐಟಿ ಸೇವೆಗಳು"
+
+#: core/templates/index.html:184
+msgid "ICICI"
+msgstr "ಐಸಿಐಸಿಐ"
+
+#: core/templates/index.html:185
+msgid "ICICI . Finance"
+msgstr "ಐಸಿಐಸಿಐ . ಹಣಕಾಸು"
+
+#: core/templates/index.html:199
+msgid "From Tweets to Trends — How it works"
+msgstr "ಟ್ವೀಟ್‌ಗಳಿಂದ ಟ್ರೆಂಡ್‌ಗಳಿಗೆ — ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ"
+
+#: core/templates/index.html:200
+msgid "Raw social chatter → signal processing → trade-ready alerts"
+msgstr "ಮೂಲ ಸಾಮಾಜಿಕ ಚರ್ಚೆ → ಸಿಗ್ನಲ್ ಪ್ರಕ್ರಿಯೆ → ಟ್ರೇಡ್‌ಗೆ ಸಿದ್ಧ ಅಲರ್ಟ್‌ಗಳು"
+
+#: core/templates/index.html:206
+msgid "Collect"
+msgstr "ಸಂಗ್ರಹಿಸಿ"
+
+#: core/templates/index.html:207
+msgid ""
+"We ingest tweets, threads, news, Reddit posts and message board chatter in "
+"real time across global feeds."
+msgstr ""
+"ನಾವು ಜಾಗತಿಕ ಫೀಡ್‌ಗಳಲ್ಲಿ ರಿಯಲ್-ಟೈಮ್‌ನಲ್ಲಿ ಟ್ವೀಟ್‌ಗಳು, ಥ್ರೆಡ್‌ಗಳು, ಸುದ್ದಿ, ರೆಡಿಟ್ ಪೋಸ್ಟ್‌ಗಳು "
+"ಮತ್ತು ಮೆಸೇಜ್ ಬೋರ್ಡ್ ಚರ್ಚೆಗಳನ್ನು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ."
+
+#: core/templates/index.html:213
+msgid "Filter & Classify"
+msgstr "ಫಿಲ್ಟರ್ ಮತ್ತು ವರ್ಗೀಕರಿಸಿ"
+
+#: core/templates/index.html:214
+msgid ""
+"Our NLP pipeline removes bots and noise, classifies event types, and tags "
+"tickers & topics automatically."
+msgstr ""
+"ನಮ್ಮ NLP ಪೈಪ್‌ಲೈನ್ ಬಾಟ್‌ಗಳು ಮತ್ತು ಅನಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ತೆಗೆದುಹಾಕಿ, ಘಟನೆ ಪ್ರಕಾರಗಳನ್ನು "
+"ವರ್ಗೀಕರಿಸಿ, ಟಿಕ್ಕರ್‌ಗಳು ಮತ್ತು ವಿಷಯಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಟ್ಯಾಗ್ ಮಾಡುತ್ತದೆ."
+
+#: core/templates/index.html:220
+msgid "Score"
+msgstr "ಅಂಕ ನೀಡಿ"
+
+#: core/templates/index.html:221
+msgid ""
+"Signals are scored for confidence, volume, and sentiment drift. Only high-"
+"impact signals generate alerts."
+msgstr ""
+"ಸಿಗ್ನಲ್‌ಗಳಿಗೆ ವಿಶ್ವಾಸ, ವಾಲ್ಯೂಮ್ ಮತ್ತು ಭಾವನೆ ಬದಲಾವಣೆಯ ಆಧಾರದ ಮೇಲೆ ಅಂಕ ನೀಡಲಾಗುತ್ತದೆ. "
+"ಹೆಚ್ಚಿನ ಪ್ರಭಾವದ ಸಿಗ್ನಲ್‌ಗಳು ಮಾತ್ರ ಅಲರ್ಟ್‌ಗಳನ್ನು ರಚಿಸುತ್ತವೆ."
+
+#: core/templates/index.html:230
+msgid ""
+"Takes the historical data and sentiments in account for furhter analysis."
+msgstr "ಮುಂದಿನ ವಿಶ್ಲೇಷಣೆಗೆ ಐತಿಹಾಸಿಕ ಡೇಟಾ ಮತ್ತು ಭಾವನೆಗಳನ್ನು ಪರಿಗಣಿಸುತ್ತದೆ."
+
+#: core/templates/index.html:236
+msgid "Stock Prediction"
+msgstr "ಶೇರು ಪೂರ್ವಾನುಮಾನ"
+
+#: core/templates/index.html:237
+msgid ""
+"After thorough analysis, we can predict the stock price movement and suggest "
+"trades."
+msgstr ""
+"ಸಮಗ್ರ ವಿಶ್ಲೇಷಣೆಯ ನಂತರ, ನಾವು ಶೇರು ಬೆಲೆ ಚಲನೆಯನ್ನು ಊಹಿಸಿ ಟ್ರೇಡ್‌ಗಳನ್ನು ಸೂಚಿಸಬಹುದು."
+
+#: core/templates/index.html:243
+msgid "Visualizations"
+msgstr "ದೃಶ್ಯೀಕರಣಗಳು"
+
+#: core/templates/index.html:244
+msgid ""
+"See trend timelines, sentiment heatmaps, ad correlation views to validate "
+"ideas before trading."
+msgstr ""
+"ಟ್ರೆಂಡ್ ಟೈಮ್‌ಲೈನ್‌ಗಳು, ಭಾವನೆ ಹೀಟ್‌ಮ್ಯಾಪ್‌ಗಳು ಮತ್ತು ಸಂಬಂಧ ದೃಶ್ಯಗಳನ್ನು ನೋಡಿ ಟ್ರೇಡಿಂಗ್ ಮೊದಲು "
+"ಐಡಿಯಾಗಳನ್ನು ಪರಿಶೀಲಿಸಿ."
+
+#: core/templates/index.html:254
+msgid "Ready to turn chatter into alpha?"
+msgstr "ಚರ್ಚೆಯನ್ನು ಲಾಭವಾಗಿಸಲು ಸಿದ್ಧವೇ?"
+
+#: core/templates/index.html:255
+msgid "Start a free trial — get alerts for your watchlist in minutes."
+msgstr "ಉಚಿತ ಟ್ರಯಲ್ ಆರಂಭಿಸಿ — ನಿಮಿಷಗಳಲ್ಲಿ ನಿಮ್ಮ ವಾಚ್‌ಲಿಸ್ಟ್‌ಗೆ ಅಲರ್ಟ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ."
+
+#: core/templates/index.html:260
+msgid "Start Free Trial"
+msgstr "ಉಚಿತ ಟ್ರಯಲ್ ಆರಂಭಿಸಿ"
+
+#: core/templates/index.html:264 core/templates/signup.html:18
+#, fuzzy
+#| msgid "From Tweets To Trades"
+msgid "From Tweets to Trades"
+msgstr "ಟ್ವೀಟ್‌ಗಳಿಂದ ವ್ಯಾಪಾರಗಳವರೆಗೆ"
+
+#: core/templates/index.html:266 core/templates/privacy_policy.html:8
+#: core/templates/privacy_policy.html:75
+msgid "Privacy Policy"
+msgstr ""
+
+#: core/templates/index.html:267
+#, fuzzy
+#| msgid "TCS . IT Services"
+msgid "Terms of Service"
+msgstr "ಟಿಸಿಎಸ್ . ಐಟಿ ಸೇವೆಗಳು"
+
+#: core/templates/privacy_policy.html:76
+#: core/templates/terms_of_service.html:77
+msgid "Last updated: February 2026"
+msgstr ""
+
+#: core/templates/privacy_policy.html:77
+msgid "1. Information We Collect"
+msgstr ""
+
+#: core/templates/privacy_policy.html:79
+msgid ""
+"We may collect basic account information such as your name, email address, "
+"and login credentials when you register on our platform."
+msgstr ""
+
+#: core/templates/privacy_policy.html:81
+msgid "2. How We Use Your Information"
+msgstr ""
+
+#: core/templates/privacy_policy.html:83
+msgid ""
+"Your information is used to provide stock analysis services, improve user "
+"experience, generate insights, and communicate important updates."
+msgstr ""
+
+#: core/templates/privacy_policy.html:85
+msgid "3. Data Security"
+msgstr ""
+
+#: core/templates/privacy_policy.html:87
+msgid ""
+"We implement appropriate security measures to protect your data from "
+"unauthorized access, alteration, or disclosure."
+msgstr ""
+
+#: core/templates/privacy_policy.html:89
+#, fuzzy
+#| msgid "TCS . IT Services"
+msgid "4. Third-Party Services"
+msgstr "ಟಿಸಿಎಸ್ . ಐಟಿ ಸೇವೆಗಳು"
+
+#: core/templates/privacy_policy.html:91
+msgid ""
+"Our platform may use third-party APIs such as market data providers. We are "
+"not responsible for their privacy practices."
+msgstr ""
+
+#: core/templates/privacy_policy.html:93
+msgid "5. Cookies"
+msgstr ""
+
+#: core/templates/privacy_policy.html:95
+msgid ""
+"We may use cookies to enhance user experience and maintain session "
+"authentication."
+msgstr ""
+
+#: core/templates/privacy_policy.html:97
+msgid "6. Changes to This Policy"
+msgstr ""
+
+#: core/templates/privacy_policy.html:99
+msgid ""
+"We may update this Privacy Policy from time to time. Changes will be "
+"reflected on this page."
+msgstr ""
+
+#: core/templates/privacy_policy.html:101
+msgid "7. Contact Us"
+msgstr ""
+
+#: core/templates/privacy_policy.html:103
+msgid ""
+"If you have any questions regarding this Privacy Policy, please contact us "
+"through the platform."
+msgstr ""
+
+#: core/templates/privacy_policy.html:105 core/templates/signin.html:64
+#: core/templates/signup.html:67 core/templates/terms_of_service.html:114
+msgid "Back to Home"
+msgstr ""
+
+#: core/templates/signin.html:8
+#, fuzzy
+#| msgid "Sign In"
+msgid "FTTT – Sign In"
+msgstr "ಲಾಗ್ ಇನ್"
+
+#: core/templates/signin.html:29
+#, fuzzy
+#| msgid "Welcome!"
+msgid "Welcome Back"
+msgstr "ಸ್ವಾಗತ!"
+
+#: core/templates/signin.html:38
+msgid "Sign in with Google"
+msgstr ""
+
+#: core/templates/signin.html:41
+msgid "— or sign in with email —"
+msgstr ""
+
+#: core/templates/signin.html:46 core/templates/signup.html:50
+msgid "Email Address"
+msgstr ""
+
+#: core/templates/signin.html:51 core/templates/signup.html:55
+msgid "Password"
+msgstr ""
+
+#: core/templates/signin.html:59
+#, python-format
+msgid ""
+"\n"
+"            Don’t have an account?\n"
+"            <a href=\"%(signup_url)s\">Sign Up</a>\n"
+"          "
+msgstr ""
+
+#: core/templates/signup.html:8
+#, fuzzy
+#| msgid "Sign Up"
+msgid "FTTT – Sign Up"
+msgstr "ಸೈನ್ ಅಪ್"
+
+#: core/templates/signup.html:28
+msgid "Create Your Account"
+msgstr ""
+
+#: core/templates/signup.html:37
+msgid "Sign Up with Google"
+msgstr ""
+
+#: core/templates/signup.html:40
+msgid "— or sign up with email —"
+msgstr ""
+
+#: core/templates/signup.html:45
+msgid "Full Name"
+msgstr ""
+
+#: core/templates/signup.html:46
+msgid "Enter your full name"
+msgstr ""
+
+#: core/templates/signup.html:56
+msgid "Must be 8+ characters"
+msgstr ""
+
+#: core/templates/signup.html:64
+msgid "Already have an account?"
+msgstr ""
+
+#: core/templates/terms_of_service.html:8
+#: core/templates/terms_of_service.html:76
+msgid "Terms & Conditions"
+msgstr ""
+
+#: core/templates/terms_of_service.html:79
+msgid "1. Acceptance of Terms"
+msgstr ""
+
+#: core/templates/terms_of_service.html:81
+msgid ""
+"By accessing and using this platform, you agree to comply with these Terms & "
+"Conditions."
+msgstr ""
+
+#: core/templates/terms_of_service.html:84
+msgid "2. Educational Purpose Only"
+msgstr ""
+
+#: core/templates/terms_of_service.html:86
+msgid ""
+"All stock predictions, sentiment scores, and analytics provided on this "
+"platform are for educational and informational purposes only."
+msgstr ""
+
+#: core/templates/terms_of_service.html:89
+msgid "3. No Financial Advice"
+msgstr ""
+
+#: core/templates/terms_of_service.html:91
+msgid ""
+"We do not provide financial, investment, or trading advice. Users are "
+"responsible for their own investment decisions."
+msgstr ""
+
+#: core/templates/terms_of_service.html:94
+msgid "4. User Responsibilities"
+msgstr ""
+
+#: core/templates/terms_of_service.html:96
+msgid ""
+"Users must provide accurate information during registration and maintain the "
+"confidentiality of their account credentials."
+msgstr ""
+
+#: core/templates/terms_of_service.html:99
+msgid "5. Limitation of Liability"
+msgstr ""
+
+#: core/templates/terms_of_service.html:101
+msgid ""
+"We are not liable for any financial losses or damages resulting from the use "
+"of this platform."
+msgstr ""
+
+#: core/templates/terms_of_service.html:104
+msgid "6. Modifications"
+msgstr ""
+
+#: core/templates/terms_of_service.html:106
+msgid ""
+"We reserve the right to modify or discontinue any part of the platform at "
+"any time without notice."
+msgstr ""
+
+#: core/templates/terms_of_service.html:109
+msgid "7. Governing Law"
+msgstr ""
+
+#: core/templates/terms_of_service.html:111
+msgid ""
+"These terms shall be governed by applicable laws of the jurisdiction in "
+"which the platform operates."
+msgstr ""
+
+#: fttt_project/settings.py:118
+msgid "English"
+msgstr "ಇಂಗ್ಲಿಷ್"
+
+#: fttt_project/settings.py:119
+msgid "Hindi"
+msgstr "ಹಿಂದಿ"
+
+#: fttt_project/settings.py:120
+msgid "Marathi"
+msgstr "ಮರಾಠಿ"
+
+#: fttt_project/settings.py:121
+msgid "Malayalam"
+msgstr "ಮಲಯಾಳಂ"
+
+#: fttt_project/settings.py:122
+msgid "Kannada"
+msgstr "ಕನ್ನಡ"

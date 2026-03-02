@@ -42,7 +42,7 @@
     </div>
     <!-- Comparison Section -->
     <div class="card" style="margin-top:20px; margin-bottom:20px;">
-      <h3>Select Multiple Companies (NIFTY 50)</h3>
+      <h3>{% trans "Select Multiple Companies (NIFTY 50)" %}</h3>
       <div class="dropdown-wrapper" style="margin-top:12px;">
         <select id="tickerSelect" multiple class="dropdown multi-select">
           {% for ticker, name in companies.items %}
@@ -54,17 +54,17 @@
       </div>
 
       <div class="tip" style="margin-top:10px;">
-        Hold Ctrl (Windows) or Cmd (Mac) to select multiple companies.
+        {% "Hold Ctrl (Windows) or Cmd (Mac) to select multiple companies." %}"
       </div>
 
       <div class="controls" style="margin-top:14px;">
         <button class="btn btn-primary compare-btn">
-          Compare Selected Stocks
+          {% trans "Compare Selected Stocks" %}
         </button>
       </div>
 
       <div id="comparisonLoading" class="comparison-loading" style="display:none; margin-top:10px;">
-        <span>Comparing stocks</span>
+        <span>{% trans "Comparing stocks" %}</span>
         <span class="loading-dots"></span>
       </div>
       <div id="selectedStocksLine" class="comparison-loading" style="display:none;"></div>
@@ -74,7 +74,7 @@
 
       <div class="charts-row">
         <div class="card chart-card">
-          <h3>Stock Comparison Chart</h3>
+          <h3>{% trans "Stock Comparison Chart" %}</h3>
           <div class="chart-wrap">
             <canvas id="comparisonChart"></canvas>
           </div>
@@ -82,7 +82,7 @@
       </div>
 
       <div class="card" style="margin-top:16px;">
-        <h3>Key Metrics Comparison</h3>
+        <h3>{% trans "Key Metrics Comparison" %}</h3>
         <div id="comparisonStats"></div>
       </div>
     </div>

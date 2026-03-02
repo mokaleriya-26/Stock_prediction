@@ -10,14 +10,12 @@ import pandas as pd
 import requests
 from datetime import datetime, timedelta
 import os
-import spacy
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import torch.nn.functional as F
 from deep_translator import GoogleTranslator
 from django.utils import translation
-
-nlp = spacy.load("en_core_web_sm", disable=["tagger", "parser", "lemmatizer"])
+import re
 
 COMPANY_NAMES = {
     "ADANIENT": "Adani Enterprises Limited",
@@ -72,24 +70,77 @@ COMPANY_NAMES = {
     "WIPRO": "Wipro Limited",
 }
 
+COMPANY_ALIASES = {
+    "ADANIENT": ["adani enterprises"],
+    "ADANIPORTS": ["adani ports", "adani ports & sez"],
+    "APOLLOHOSP": ["apollo hospitals", "apollo hospital", "apollo"],
+    "ASIANPAINT": ["asian paints"],
+    "AXISBANK": ["axis bank", "axis"],
+    "BAJAJ-AUTO": ["bajaj auto", "bajaj"],
+    "BAJAJFINSV": ["bajaj finserv", "bajaj"],
+    "BAJFINANCE": ["bajaj finance","bajaj fin"],
+    "BEL": ["bharat electronics", "bel"],
+    "BHARTIARTL": ["bharti airtel", "airtel"],
+    "CIPLA": ["cipla"],
+    "COALINDIA": ["coal india"],
+    "DRREDDY": ["dr reddy", "dr. reddy", "reddy laboratories"],
+    "EICHERMOT": ["eicher motors", "royal enfield", "eicher"],
+    "ETERNAL": ["eternal life insurance"],
+    "GRASIM": ["grasim"],
+    "HCLTECH": ["hcl tech", "hcl technologies", "hcl"],
+    "HDFCBANK": ["hdfc bank"],
+    "HDFCLIFE": ["hdfc life","hdfc"],
+    "HINDALCO": ["hindalco"],
+    "HINDUNILVR": ["hindustan unilever", "hul", "unilever"],
+    "ICICIBANK": ["icici bank", "icici"],
+    "INDIGO": ["interglobe aviation","indigo airlines","indigo shares","indigo"],
+    "INFY": ["infosys"],
+    "ITC": ["itc"],
+    "JIOFIN": ["jio financial", "jio finance", "jio"],
+    "JSWSTEEL": ["jsw steel", "jsw"],
+    "KOTAKBANK": ["kotak bank", "kotak mahindra","kotak"],
+    "LT": ["larsen & toubro", "l&t", "lt"],
+    "M&M": ["mahindra", "mahindra & mahindra", "m&m"],
+    "MARUTI": ["maruti", "maruti suzuki"],
+    "MAXHEALTH": ["max healthcare", "max health"],
+    "NESTLEIND": ["nestle india", "nestle"],
+    "NTPC": ["ntpc"],
+    "ONGC": ["ongc", "oil and natural gas"],
+    "POWERGRID": ["power grid", "powergrid"],
+    "RELIANCE": ["reliance", "reliance industries", "ril"],
+    "SBILIFE": ["sbi life"],
+    "SBIN": ["state bank of india", "sbi"],
+    "SHRIRAMFIN": ["shriram finance", "shriram"],
+    "SUNPHARMA": ["sun pharma", "sun pharmaceutical"],
+    "TATACONSUM": ["tata consumer", "tata consumer products"],
+    "TATASTEEL": ["tata steel"],
+    "TCS": ["tcs", "tata consultancy services"],
+    "TECHM": ["tech mahindra"],
+    "TITAN": ["titan"],
+    "TMPV": ["tata motors", "tata motors passenger"],
+    "TRENT": ["trent"],
+    "ULTRACEMCO": ["ultratech cement",],
+    "WIPRO": ["wipro"],
+}
+
 # ===================== CONFIG =====================
-NEWS_API_KEY = "2d365d32d1ac438498abaaed02e8c679" # <-- PUT YOUR KEY HERE
+NEWS_API_KEY = "84fc43ca1f7045ad88e16857dbb0f901" # <-- PUT YOUR KEY HERE
 LOOKBACK = 60 # Same lookback as training
 
 # ===================== LOAD THE "BRAIN" (ONCE, WHEN SERVER STARTS) =====================
 print("Loading AI model and scaler...")
 try:
-    MODEL_PATH = os.path.join(settings.ML_MODELS_DIR, 'stock_model.h5')
+    MODEL_PATH = os.path.join(settings.ML_MODELS_DIR, 'stock_model.keras')
     SCALER_PATH = os.path.join(settings.ML_MODELS_DIR, 'stock_scaler.joblib')
 
     model = load_model(MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
+    scalers = joblib.load(SCALER_PATH)
 
     print("✅ Model and scaler loaded successfully.")
 except Exception as e:
     print(f"❌ Error loading model/scaler: {e}")
     model = None
-    scaler = None
+    scalers = None
 
 print("Loading FinBERT model...")
 try:
@@ -167,49 +218,41 @@ def build_company_keywords(ticker, company_name):
     return list(keywords)
 
 financial_keywords = [
+    # Stock & Earnings
     "stock", "shares", "earnings", "results",
-    "profit", "loss", "revenue", "market",
-    "q1", "q2", "q3", "q4",
-    "alert", "target", "buy", "sell", "hold",
-    "surge", "falls", "jumps", "finance",
-    "budget", "update", "guide",
-    "dividend", "rate", "growth", "decline"
+    "profit", "loss", "revenue", "ebitda",
+    "net profit", "net loss", "operating",
+    "quarter", "quarterly", "annual", "fy",
+    "margin", "guidance", "forecast", "outlook",
+
+    # Market Action
+    "target", "buy", "sell", "hold",
+    "surge", "falls", "jumps", "rally",
+    "plunge", "slump", "gains", "drops",
+    "soars", "tumbles", "rises",
+
+    # Corporate Actions
+    "announces", "announced", "announce",
+    "board", "meeting","merge","fundraising",
+    "acquisition", "acquires", "acquired",
+    "merger", "stake", "investment",
+    "ipo", "buyback", "bonus", "split",
+    "rising", "falling","raises","lowers",
+    "listing","allotment",
+
+    # Leadership
+    "appoints", "appointment", "ceo", "cfo",
+    "director", "resigns", "resignation", "chairman",
+
+    # Finance & Regulatory
+    "dividend", "rate", "growth", "decline",
+    "loan", "credit", "rbi", "approval", "penalty",
+    "regulatory","compliance", "sanction", "order", 
 ]
 
 def is_financial_article(title):
     title_lower = title.lower()
     return any(word in title_lower for word in financial_keywords)
-
-
-def is_article_about_company(title, company_name):
-    doc = nlp(title)
-
-    detected_orgs = [ent.text.lower() for ent in doc.ents if ent.label_ == "ORG"]
-
-    company_clean = company_name.replace(" Limited", "").lower()
-    company_words = company_clean.split()
-
-    # 1️⃣ Check detected ORGs
-    for org in detected_orgs:
-        if company_clean in org:
-            return True
-        
-        # Partial match (at least 2 words match)
-        match_count = sum(1 for word in company_words if word in org)
-        if match_count >= 2:
-            return True
-
-    # 2️⃣ Fallback check in title
-    title_lower = title.lower()
-
-    if company_clean in title_lower:
-        return True
-
-    match_count = sum(1 for word in company_words if word in title_lower)
-    if match_count >= 2:
-        return True
-
-    return False
 
 def get_finbert_sentiment(text):
     if finbert_model is None:
@@ -242,53 +285,58 @@ def get_finbert_sentiment(text):
 
     return score, label, confidence_score
 
+def alias_match(title, aliases):
+    title = title.lower().replace("-", " ")
+    for alias in aliases:
+        alias_clean = alias.lower().replace("-", " ")
+        pattern = r"\b" + re.escape(alias_clean) + r"\b"
+        if re.search(pattern, title):
+            return True
+    return False
+
 def fetch_company_news(ticker, from_date, to_date, lang="en"):
     headlines = []
     sentiments = []
     seen_titles = set()
+    symbol = ticker.split(".")[0]
+    aliases = COMPANY_ALIASES.get(symbol, [])
 
     try:
         # =============================
         # 1️⃣ YAHOO FINANCE NEWS
         # =============================
         ticker_obj = yf.Ticker(ticker)
-        yahoo_news = ticker_obj.news
+        yahoo_news = ticker_obj.news or []
 
-        for item in yahoo_news[:10]:
+        for item in yahoo_news[:15]:
             title = item.get("title")
+            if not title or title in seen_titles:
+                continue
             link = item.get("link")
             publisher = item.get("publisher")
             provider_time = item.get("providerPublishTime")
 
-            if not title:
+            alias_hit = alias_match(title, aliases)
+            if not alias_hit:
                 continue
 
-            formatted_time = None
+            title_lower = title.lower()
+            # Safe datetime handling
             if provider_time:
                 dt = datetime.fromtimestamp(provider_time)
-                if dt < datetime.now() - timedelta(days=30):
-                    continue
                 formatted_time = dt.strftime("%d %b %Y • %I:%M %p")
+            else:
+                dt = datetime.now()
+                formatted_time = None
 
-            if not title or title in seen_titles:
-                continue
-            seen_titles.add(title)
             score, label, confidence = get_finbert_sentiment(title)
+           
+            seen_titles.add(title)
             sentiments.append(score)
-            translated_title = title
 
-            if lang != "en":
-                try:
-                    translated_title = GoogleTranslator(
-                        source="auto",
-                        target=lang
-                    ).translate(title)
-                except:
-                    translated_title = title
-                    
             headlines.append({
                 "source": publisher or "Yahoo Finance",
-                "title": translated_title,
+                "title": title,
                 "url": link,
                 "published_at": formatted_time,
                 "raw_time": dt,
@@ -304,25 +352,19 @@ def fetch_company_news(ticker, from_date, to_date, lang="en"):
         # =============================
         # 2️⃣ NEWS API (FALLBACK ADDITION)
         # =============================
-        symbol = ticker.split(".")[0]
-        company_full = COMPANY_NAMES.get(symbol, symbol)
-        company_clean = company_full.replace(" Limited", "")
-
         url = "https://newsapi.org/v2/everything"
+        query_string = " OR ".join(f'"{a}"' for a in aliases) if aliases else symbol
 
         params = {
-            "q": f'"{company_clean}"',
-            "from": from_date,
-            "to": to_date,
+            "q": query_string,
             "language": "en",
             "sortBy": "publishedAt",
-            "pageSize": 10,
+            "pageSize": 15,
             "apiKey": NEWS_API_KEY
         }
 
         response = requests.get(url, params=params, timeout=15)
         data = response.json()
-
         if data.get("status") == "ok":
             articles = data.get("articles", [])
 
@@ -330,11 +372,18 @@ def fetch_company_news(ticker, from_date, to_date, lang="en"):
                 title = a.get("title")
                 if not title or title in seen_titles:
                     continue
-
+                company_full = COMPANY_NAMES.get(symbol, symbol)
+                company_clean = company_full.replace(" Limited", "").lower()         
+                title_lower = title.lower()
+                #if not is_financial_article(title):
+                #    continue
+                alias_hit = alias_match(title, aliases)
+                if not alias_hit:
+                    continue
                 seen_titles.add(title)
                 score, label, confidence = get_finbert_sentiment(title)
+                
                 sentiments.append(score)
-
                 translated_title = title
                 if lang != "en":
                     try:
@@ -386,6 +435,18 @@ def fetch_company_news(ticker, from_date, to_date, lang="en"):
         h.pop("raw_time", None)
     return sentiment_score, headlines[:5]
 
+def compute_rsi(series, period=14):
+    delta = series.diff()
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
+
+    avg_gain = gain.rolling(period).mean()
+    avg_loss = loss.rolling(period).mean()
+
+    rs = avg_gain / avg_loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
+
 def prepare_features(stock_data, sentiment_score):
     """Prepares data for prediction."""
     stock_data["sentiment"] = sentiment_score
@@ -415,7 +476,7 @@ def get_stock_prediction(request, ticker):
     """
     This is the function that runs when a user visits your API URL.
     """
-    if model is None or scaler is None:
+    if model is None or scalers is None:
         return JsonResponse({"error": "Model not loaded"}, status=500)
 
     if request.method != "GET":
@@ -472,22 +533,26 @@ def get_stock_prediction(request, ticker):
             news_end.strftime('%Y-%m-%d'),
             lang
         )
-        future_sentiment = 0.0
         print(f"Current sentiment for {ticker}: {sentiment:.4f}")
 
         # ----- 2. PREPARE DATA FOR PREDICTION -----
-        stock_data_features = prepare_features(stock_data.copy(), sentiment)
-        stock_data_features = stock_data_features.bfill().ffill()
-        
         symbol = ticker.split(".")[0]
         stock_id = stock_to_id.get(ticker, 0)
+        stock_data_features = prepare_features(stock_data.copy(), sentiment)
+        stock_data_features["RSI"] = compute_rsi(stock_data_features["price"])
         stock_data_features["stock_id"] = stock_id
+        stock_data_features = stock_data_features.bfill().ffill()
 
-        features_to_predict = stock_data_features[["price", "sentiment", "MA5", "MA10", "stock_id"]].values
+        features_to_predict = stock_data_features[["price", "sentiment", "MA5", "MA10", "RSI", "stock_id"]].values
         last_sequence_unscaled = features_to_predict[-LOOKBACK:]
         
-        current_seq_scaled = scaler.transform(last_sequence_unscaled)
-        current_seq_scaled = current_seq_scaled.reshape((1, LOOKBACK, 5))
+        stock_scaler = scalers.get(ticker)
+
+        if stock_scaler is None:
+            raise Exception(f"No scaler found for {ticker}")
+
+        current_seq_scaled = stock_scaler.transform(last_sequence_unscaled)
+        current_seq_scaled = current_seq_scaled.reshape((1, LOOKBACK, 6))
 
         future_sentiment = 0.0  # IMPORTANT FIX
         # ----- 3. RUN 14-DAY PREDICTION (CORRECT WAY) -----
@@ -497,10 +562,10 @@ def get_stock_prediction(request, ticker):
         pred_scaled = model.predict(current_seq_scaled, verbose=0)[0]  # shape (14,)
 
         # Inverse scale correctly
-        dummy = np.zeros((14, 5))
+        dummy = np.zeros((14, 6))
         dummy[:, 0] = pred_scaled  # Close column only
 
-        predicted_prices = scaler.inverse_transform(dummy)[:, 0]
+        predicted_prices = stock_scaler.inverse_transform(dummy)[:, 0]
         predicted_prices = [float(p) for p in predicted_prices]
 
         # 🔒 Optional stabilizer (VERY IMPORTANT)
@@ -565,8 +630,6 @@ def get_stock_prediction(request, ticker):
             "dates": dates.dt.strftime("%Y-%m-%d").tolist(),
             "prices": prices.round(2).tolist()
         }
-
-        # print("HISTORICAL GRAPH DATA:", historical_graph) (safety check)
 
         # 3. Prediction Graph
         print("DEBUG: Processing prediction_graph...")

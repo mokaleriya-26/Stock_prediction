@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-19 17:27+0000\n"
+"POT-Creation-Date: 2026-03-02 13:43+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: core/templates/analysis.html:8
-#| msgid "From Tweets to Trends — How it works"
 msgid "From Tweets To Trades — Dashboard (NIFTY 50)"
 msgstr "ट्वीट्स से ट्रेंड्स — यह कैसे काम करता है"
 
-#: core/templates/analysis.html:28 core/templates/signin.html:19
-#| msgid "From Tweets to Trades"
+#: core/templates/analysis.html:28 core/templates/comparison.html:27
+#: core/templates/signin.html:19
 msgid "From Tweets To Trades"
 msgstr "ट्वीट्स से ट्रेड्स"
 
@@ -31,44 +30,50 @@ msgstr "ट्वीट्स से ट्रेड्स"
 msgid "Select one NIFTY 50 company to generate insights"
 msgstr "इनसाइट्स प्राप्त करने के लिए निफ्टी 50 की एक कंपनी चुनें"
 
-#: core/templates/analysis.html:32
-#| msgid "Sign Out"
+#: core/templates/analysis.html:34 core/templates/comparison.html:36
+#, fuzzy
+#| msgid "Back to Home"
+msgid "Back to Home Page"
+msgstr "होम पेज पर वापस जाएँ"
+
+#: core/templates/analysis.html:37 core/templates/comparison.html:39
 msgid "Sign out"
 msgstr "साइन आउट"
 
-#: core/templates/analysis.html:39
+#: core/templates/analysis.html:46
 msgid "Choose one company (NIFTY 50)"
 msgstr "एक कंपनी चुनें (निफ्टी 50)"
 
-#: core/templates/analysis.html:42
+#: core/templates/analysis.html:49
 msgid "-- Select a company --"
 msgstr "-- एक कंपनी चुनें --"
 
-#: core/templates/analysis.html:45
+#: core/templates/analysis.html:52
 msgid ""
 "Tip: pick one ticker. Charts and news will update for the selected company."
 msgstr "सुझाव: एक टिकर चुनें। चार्ट और समाचार चुनी गई कंपनी के अनुसार अपडेट होंगे।"
 
-#: core/templates/analysis.html:47
-#| msgid "AI-driven Insights"
+#: core/templates/analysis.html:54
 msgid "Generate Insights"
 msgstr "एआई आधारित इनसाइट्स"
 
-#: core/templates/analysis.html:54
+#: core/templates/analysis.html:62
 msgid "Welcome!"
 msgstr "स्वागत है!"
 
-#: core/templates/analysis.html:55
+#: core/templates/analysis.html:64
 msgid "Select a NIFTY 50 company to view charts, news, and predictions."
 msgstr "चार्ट, समाचार और पूर्वानुमान देखने के लिए निफ्टी 50 की एक कंपनी चुनें।"
 
-#: core/templates/analysis.html:65
+#: core/templates/analysis.html:69
+msgid "Key Stats"
+msgstr "मुख्य आँकड़े"
 
-#| msgid "Stock Prediction"
+#: core/templates/analysis.html:80
 msgid "14-Day Price Prediction"
 msgstr "स्टॉक प्रेडिक्शन"
 
-#: core/templates/analysis.html:67
+#: core/templates/analysis.html:82
 msgid ""
 "\n"
 "          Model: Ensemble • Confidence:\n"
@@ -78,34 +83,67 @@ msgstr ""
 "          मॉडल: एन्सेम्बल • विश्वास स्तर:\n"
 "          "
 
-#: core/templates/analysis.html:76
+#: core/templates/analysis.html:91
 msgid "Historical Price (Past 30 days)"
 msgstr "ऐतिहासिक मूल्य (पिछले 30 दिन)"
 
-#: core/templates/analysis.html:77
+#: core/templates/analysis.html:92
 msgid "Source: sample data"
 msgstr "स्रोत: नमूना डेटा"
 
-#: core/templates/analysis.html:84
+#: core/templates/analysis.html:99
 msgid "Predicted Values (14 Days)"
 msgstr "अनुमानित मूल्य (14 दिन)"
 
-#: core/templates/analysis.html:85
+#: core/templates/analysis.html:100
 msgid "Click a tile to highlight"
 msgstr "हाइलाइट करने के लिए किसी टाइल पर क्लिक करें"
 
-#: core/templates/analysis.html:92
+#: core/templates/analysis.html:107
 msgid "Latest News (—)"
 msgstr "ताज़ा समाचार (—)"
 
-#: core/templates/analysis.html:97
-msgid "Key Stats"
-msgstr "मुख्य आँकड़े"
+#: core/templates/analysis.html:112
+msgid "Risk Score Meter"
+msgstr "जोखिम स्कोर मीटर"
 
-#: core/templates/analysis.html:103
+#: core/templates/analysis.html:122
+msgid "Buy / Sell / Hold Signal"
+msgstr "खरीदें / बेचें / होल्ड संकेत"
+
+#: core/templates/analysis.html:136
 msgid ""
 "Prototype — dropdown uses NIFTY 50 constituents (source: NIFTY / Wikipedia)."
 msgstr "प्रोटोटाइप — ड्रॉपडाउन में निफ्टी 50 कंपनियाँ (स्रोत: निफ्टी / विकिपीडिया)।"
+
+#: core/templates/comparison.html:9 core/templates/index.html:42
+msgid "Compare Stocks"
+msgstr "शेयरों की तुलना करें"
+
+#: core/templates/comparison.html:29
+msgid "Compare multiple NIFTY 50 companies"
+msgstr "एक से अधिक निफ्टी 50 कंपनियों की तुलना करें"
+
+#: core/templates/comparison.html:45
+#| msgid "Choose one company (NIFTY 50)"
+msgid "Select Multiple Companies (NIFTY 50)"
+msgstr "एक से अधिक कंपनियां चुनें (निफ्टी 50)"
+
+#: core/templates/comparison.html:62
+msgid "Compare Selected Stocks"
+msgstr "चयनित शेयरों की तुलना करें"
+
+#: core/templates/comparison.html:67
+msgid "Comparing stocks"
+msgstr "शेयरों की तुलना की जा रही है"
+
+#: core/templates/comparison.html:77
+msgid "Stock Comparison Chart"
+msgstr "शेयर तुलना चार्ट"
+
+#: core/templates/comparison.html:85
+msgid "Key Metrics Comparison"
+msgstr "मुख्य मापदंडों की तुलना"
 
 #: core/templates/index.html:9
 msgid "FTTT - Market Alerts"
@@ -119,37 +157,36 @@ msgstr "ट्वीट्स से"
 msgid "to Trades"
 msgstr "ट्रेड्स तक"
 
-#: core/templates/index.html:37 core/templates/index.html:39
-#: core/templates/index.html:216
+#: core/templates/index.html:38 core/templates/index.html:229
 msgid "Analysis"
 msgstr "विश्लेषण"
 
-#: core/templates/index.html:41
+#: core/templates/index.html:45
 msgid "Top Companies"
 msgstr "शीर्ष कंपनियाँ"
 
-#: core/templates/index.html:42
+#: core/templates/index.html:48
 msgid "How it Works"
 msgstr "यह कैसे काम करता है"
 
-#: core/templates/index.html:59
+#: core/templates/index.html:72
 msgid "Sign Out"
 msgstr "साइन आउट"
 
-#: core/templates/index.html:61 core/templates/signin.html:55
+#: core/templates/index.html:74 core/templates/signin.html:55
 #: core/templates/signup.html:65
 msgid "Sign In"
 msgstr "साइन इन"
 
-#: core/templates/index.html:62 core/templates/signup.html:60
+#: core/templates/index.html:75 core/templates/signup.html:60
 msgid "Sign Up"
 msgstr "साइन अप"
 
-#: core/templates/index.html:71
+#: core/templates/index.html:84
 msgid "Real-time • AI • Sentiment"
 msgstr "रीयल-टाइम • एआई • सेंटिमेंट"
 
-#: core/templates/index.html:73
+#: core/templates/index.html:86
 msgid ""
 "\n"
 "            Never Miss a <span class=\"accent-text\">Market-Moving</"
@@ -161,7 +198,7 @@ msgstr ""
 "चूकें\n"
 "            "
 
-#: core/templates/index.html:77
+#: core/templates/index.html:90
 msgid ""
 "From Tweets to Trades — convert social chatter into real-time trading "
 "signals and market alerts. Trusted by thousands of active traders and "
@@ -170,23 +207,23 @@ msgstr ""
 "ट्वीट्स से ट्रेड्स — सोशल मीडिया की चर्चा को रीयल-टाइम ट्रेडिंग सिग्नल और मार्केट अलर्ट्स में "
 "बदलें। हजारों सक्रिय ट्रेडर्स और विश्लेषकों द्वारा विश्वसनीय।"
 
-#: core/templates/index.html:79
+#: core/templates/index.html:92
 msgid "User Friendly • 5-minute integration"
 msgstr "उपयोग में आसान • 5 मिनट में सेटअप"
 
-#: core/templates/index.html:87
+#: core/templates/index.html:100
 msgid "LIVE INSIGHT"
 msgstr "लाइव इनसाइट"
 
-#: core/templates/index.html:88
+#: core/templates/index.html:101
 msgid "Loading..."
 msgstr "लोड हो रहा है..."
 
-#: core/templates/index.html:99
+#: core/templates/index.html:112
 msgid "Market Trend Analysis"
 msgstr "मार्केट ट्रेंड विश्लेषण"
 
-#: core/templates/index.html:100
+#: core/templates/index.html:113
 msgid ""
 "Continuously analyze market data to identify emerging trends and highlight "
 "sectors showing unusual momentum or investor attention."
@@ -194,11 +231,11 @@ msgstr ""
 "मार्केट डेटा का लगातार विश्लेषण करें ताकि उभरते ट्रेंड्स की पहचान हो सके और उन सेक्टर्स को "
 "हाइलाइट किया जा सके जहाँ असामान्य गतिविधि या निवेशकों का ध्यान हो।"
 
-#: core/templates/index.html:104
+#: core/templates/index.html:117
 msgid "AI-driven Insights"
 msgstr "एआई आधारित इनसाइट्स"
 
-#: core/templates/index.html:105
+#: core/templates/index.html:118
 msgid ""
 "Proprietary models filter noise and surface high-confidence trade ideas with "
 "sentiment and event scoring."
@@ -206,11 +243,11 @@ msgstr ""
 "उन्नत मॉडल शोर को हटाकर उच्च-विश्वसनीयता वाले ट्रेड आइडियाज प्रस्तुत करते हैं, सेंटिमेंट और "
 "इवेंट स्कोरिंग के साथ।"
 
-#: core/templates/index.html:109
+#: core/templates/index.html:122
 msgid "Sentiment Tracking"
 msgstr "सेंटिमेंट ट्रैकिंग"
 
-#: core/templates/index.html:110
+#: core/templates/index.html:123
 msgid ""
 "Track sentiment trends across sectors and map social momentum to price "
 "movement with clear visualizations."
@@ -218,64 +255,64 @@ msgstr ""
 "विभिन्न सेक्टर्स में सेंटिमेंट ट्रेंड्स को ट्रैक करें और स्पष्ट विज़ुअलाइजेशन के साथ सोशल मोमेंटम को "
 "प्राइस मूवमेंट से जोड़ें।"
 
-#: core/templates/index.html:115
+#: core/templates/index.html:128
 msgid "Top Trending Companies"
 msgstr "शीर्ष ट्रेंडिंग कंपनियाँ"
 
-#: core/templates/index.html:116
+#: core/templates/index.html:129
 msgid "Live social and market movement"
 msgstr "लाइव सोशल और मार्केट मूवमेंट"
 
-#: core/templates/index.html:123
+#: core/templates/index.html:136
 msgid "HDFC Bank"
 msgstr "एचडीएफसी बैंक"
 
-#: core/templates/index.html:124
+#: core/templates/index.html:137
 msgid "HDFC . Finance"
 msgstr "एचडीएफसी • वित्त"
 
-#: core/templates/index.html:132 core/templates/index.html:148
-#: core/templates/index.html:164 core/templates/index.html:180
+#: core/templates/index.html:145 core/templates/index.html:161
+#: core/templates/index.html:177 core/templates/index.html:193
 msgid "Data Loading..."
 msgstr "डेटा लोड हो रहा है..."
 
-#: core/templates/index.html:139
+#: core/templates/index.html:152
 msgid "Reliance Ind."
 msgstr "रिलायंस इंड."
 
-#: core/templates/index.html:140
+#: core/templates/index.html:153
 msgid "REL • Technology"
 msgstr "रिलायंस • टेक्नोलॉजी"
 
-#: core/templates/index.html:155
+#: core/templates/index.html:168
 msgid "TCS"
 msgstr "टीसीएस"
 
-#: core/templates/index.html:156
+#: core/templates/index.html:169
 msgid "TCS . IT Services"
 msgstr "टीसीएस • आईटी सेवाएँ"
 
-#: core/templates/index.html:171
+#: core/templates/index.html:184
 msgid "ICICI"
 msgstr "आईसीआईसीआई"
 
-#: core/templates/index.html:172
+#: core/templates/index.html:185
 msgid "ICICI . Finance"
 msgstr "आईसीआईसीआई • वित्त"
 
-#: core/templates/index.html:186
+#: core/templates/index.html:199
 msgid "From Tweets to Trends — How it works"
 msgstr "ट्वीट्स से ट्रेंड्स — यह कैसे काम करता है"
 
-#: core/templates/index.html:187
+#: core/templates/index.html:200
 msgid "Raw social chatter → signal processing → trade-ready alerts"
 msgstr "कच्ची सोशल चर्चा → सिग्नल प्रोसेसिंग → ट्रेड के लिए तैयार अलर्ट्स"
 
-#: core/templates/index.html:193
+#: core/templates/index.html:206
 msgid "Collect"
 msgstr "संग्रह"
 
-#: core/templates/index.html:194
+#: core/templates/index.html:207
 msgid ""
 "We ingest tweets, threads, news, Reddit posts and message board chatter in "
 "real time across global feeds."
@@ -283,11 +320,11 @@ msgstr ""
 "हम ट्वीट्स, थ्रेड्स, न्यूज़, रेडिट पोस्ट्स और मैसेज बोर्ड की चर्चाओं को रीयल-टाइम में वैश्विक "
 "स्रोतों से एकत्र करते हैं।"
 
-#: core/templates/index.html:200
+#: core/templates/index.html:213
 msgid "Filter & Classify"
 msgstr "फ़िल्टर और वर्गीकृत"
 
-#: core/templates/index.html:201
+#: core/templates/index.html:214
 msgid ""
 "Our NLP pipeline removes bots and noise, classifies event types, and tags "
 "tickers & topics automatically."
@@ -295,11 +332,11 @@ msgstr ""
 "हमारी NLP प्रणाली बॉट्स और अनावश्यक शोर को हटाती है, इवेंट प्रकारों को वर्गीकृत करती है "
 "और टिकर्स व टॉपिक्स को स्वचालित रूप से टैग करती है।"
 
-#: core/templates/index.html:207
+#: core/templates/index.html:220
 msgid "Score"
 msgstr "स्कोर"
 
-#: core/templates/index.html:208
+#: core/templates/index.html:221
 msgid ""
 "Signals are scored for confidence, volume, and sentiment drift. Only high-"
 "impact signals generate alerts."
@@ -307,61 +344,61 @@ msgstr ""
 "सिग्नल्स को विश्वास स्तर, वॉल्यूम और सेंटिमेंट बदलाव के आधार पर स्कोर किया जाता है। केवल "
 "उच्च प्रभाव वाले सिग्नल्स अलर्ट उत्पन्न करते हैं।"
 
-#: core/templates/index.html:217
+#: core/templates/index.html:230
 msgid ""
 "Takes the historical data and sentiments in account for furhter analysis."
 msgstr "आगे के विश्लेषण के लिए ऐतिहासिक डेटा और सेंटिमेंट को ध्यान में रखता है।"
 
-#: core/templates/index.html:223
+#: core/templates/index.html:236
 msgid "Stock Prediction"
 msgstr "स्टॉक प्रेडिक्शन"
 
-#: core/templates/index.html:224
+#: core/templates/index.html:237
 msgid ""
 "After thorough analysis, we can predict the stock price movement and suggest "
 "trades."
 msgstr ""
 "गहन विश्लेषण के बाद, हम स्टॉक मूल्य की दिशा का अनुमान लगाते हैं और ट्रेड सुझाव देते हैं।"
 
-#: core/templates/index.html:230
+#: core/templates/index.html:243
 msgid "Visualizations"
 msgstr "विज़ुअलाइजेशन"
 
-#: core/templates/index.html:231
+#: core/templates/index.html:244
 msgid ""
 "See trend timelines, sentiment heatmaps, ad correlation views to validate "
 "ideas before trading."
 msgstr "ट्रेड करने से पहले ट्रेंड टाइमलाइन, सेंटिमेंट हीटमैप और कोरिलेशन व्यू देखें।"
 
-#: core/templates/index.html:241
+#: core/templates/index.html:254
 msgid "Ready to turn chatter into alpha?"
 msgstr "क्या आप चर्चा को मुनाफे में बदलने के लिए तैयार हैं?"
 
-#: core/templates/index.html:242
+#: core/templates/index.html:255
 msgid "Start a free trial — get alerts for your watchlist in minutes."
 msgstr "फ्री ट्रायल शुरू करें — अपनी वॉचलिस्ट के लिए मिनटों में अलर्ट प्राप्त करें।"
 
-#: core/templates/index.html:247
+#: core/templates/index.html:260
 msgid "Start Free Trial"
 msgstr "फ्री ट्रायल शुरू करें"
 
-#: core/templates/index.html:251 core/templates/signup.html:18
+#: core/templates/index.html:264 core/templates/signup.html:18
 msgid "From Tweets to Trades"
 msgstr "ट्वीट्स से ट्रेड्स"
 
-#: core/templates/index.html:253 core/templates/privacy_policy.html:8
+#: core/templates/index.html:266 core/templates/privacy_policy.html:8
 #: core/templates/privacy_policy.html:75
 msgid "Privacy Policy"
 msgstr "गोपनीयता नीति"
 
-#: core/templates/index.html:254
+#: core/templates/index.html:267
 msgid "Terms of Service"
 msgstr "सेवा की शर्तें"
 
 #: core/templates/privacy_policy.html:76
 #: core/templates/terms_of_service.html:77
 msgid "Last updated: February 2026"
-msgstr "अंतिम अपडेट: फरवरी 2026"    
+msgstr "अंतिम अपडेट: फरवरी 2026"
 
 #: core/templates/privacy_policy.html:77
 msgid "1. Information We Collect"
@@ -371,7 +408,9 @@ msgstr "1. हम कौन सी जानकारी एकत्र कर�
 msgid ""
 "We may collect basic account information such as your name, email address, "
 "and login credentials when you register on our platform."
-msgstr "जब आप हमारे प्लेटफॉर्म पर पंजीकरण करते हैं, तो हम आपका नाम, ईमेल पता और लॉगिन विवरण जैसी बुनियादी जानकारी एकत्र कर सकते हैं।"
+msgstr ""
+"जब आप हमारे प्लेटफॉर्म पर पंजीकरण करते हैं, तो हम आपका नाम, ईमेल पता और लॉगिन विवरण "
+"जैसी बुनियादी जानकारी एकत्र कर सकते हैं।"
 
 #: core/templates/privacy_policy.html:81
 msgid "2. How We Use Your Information"
@@ -381,7 +420,9 @@ msgstr "2. हम आपकी जानकारी का उपयोग क�
 msgid ""
 "Your information is used to provide stock analysis services, improve user "
 "experience, generate insights, and communicate important updates."
-msgstr "आपकी जानकारी का उपयोग स्टॉक विश्लेषण सेवाएँ प्रदान करने, उपयोगकर्ता अनुभव बेहतर बनाने, इनसाइट्स उत्पन्न करने और महत्वपूर्ण अपडेट साझा करने के लिए किया जाता है।"
+msgstr ""
+"आपकी जानकारी का उपयोग स्टॉक विश्लेषण सेवाएँ प्रदान करने, उपयोगकर्ता अनुभव बेहतर बनाने, "
+"इनसाइट्स उत्पन्न करने और महत्वपूर्ण अपडेट साझा करने के लिए किया जाता है।"
 
 #: core/templates/privacy_policy.html:85
 msgid "3. Data Security"
@@ -391,10 +432,10 @@ msgstr "3. डेटा सुरक्षा"
 msgid ""
 "We implement appropriate security measures to protect your data from "
 "unauthorized access, alteration, or disclosure."
-msgstr "हम आपके डेटा को अनधिकृत पहुँच, बदलाव या खुलासे से बचाने के लिए उचित सुरक्षा उपाय अपनाते हैं।"
+msgstr ""
+"हम आपके डेटा को अनधिकृत पहुँच, बदलाव या खुलासे से बचाने के लिए उचित सुरक्षा उपाय अपनाते हैं।"
 
 #: core/templates/privacy_policy.html:89
-#| msgid "TCS . IT Services"
 msgid "4. Third-Party Services"
 msgstr "4. तृतीय-पक्ष सेवाएँ"
 
@@ -402,7 +443,9 @@ msgstr "4. तृतीय-पक्ष सेवाएँ"
 msgid ""
 "Our platform may use third-party APIs such as market data providers. We are "
 "not responsible for their privacy practices."
-msgstr "हमारा प्लेटफॉर्म मार्केट डेटा प्रदाताओं जैसी तृतीय-पक्ष API का उपयोग कर सकता है। उनकी गोपनीयता नीतियों के लिए हम जिम्मेदार नहीं हैं।"
+msgstr ""
+"हमारा प्लेटफॉर्म मार्केट डेटा प्रदाताओं जैसी तृतीय-पक्ष API का उपयोग कर सकता है। उनकी "
+"गोपनीयता नीतियों के लिए हम जिम्मेदार नहीं हैं।"
 
 #: core/templates/privacy_policy.html:93
 msgid "5. Cookies"
@@ -412,7 +455,9 @@ msgstr "5. कुकीज़"
 msgid ""
 "We may use cookies to enhance user experience and maintain session "
 "authentication."
-msgstr "हम उपयोगकर्ता अनुभव बेहतर बनाने और सत्र प्रमाणीकरण बनाए रखने के लिए कुकीज़ का उपयोग कर सकते हैं।"
+msgstr ""
+"हम उपयोगकर्ता अनुभव बेहतर बनाने और सत्र प्रमाणीकरण बनाए रखने के लिए कुकीज़ का उपयोग कर "
+"सकते हैं।"
 
 #: core/templates/privacy_policy.html:97
 msgid "6. Changes to This Policy"
@@ -422,7 +467,9 @@ msgstr "6. इस नीति में परिवर्तन"
 msgid ""
 "We may update this Privacy Policy from time to time. Changes will be "
 "reflected on this page."
-msgstr "हम समय-समय पर इस गोपनीयता नीति को अपडेट कर सकते हैं। परिवर्तन इस पृष्ठ पर प्रदर्शित होंगे।"
+msgstr ""
+"हम समय-समय पर इस गोपनीयता नीति को अपडेट कर सकते हैं। परिवर्तन इस पृष्ठ पर प्रदर्शित "
+"होंगे।"
 
 #: core/templates/privacy_policy.html:101
 msgid "7. Contact Us"
@@ -432,7 +479,9 @@ msgstr "7. हमसे संपर्क करें"
 msgid ""
 "If you have any questions regarding this Privacy Policy, please contact us "
 "through the platform."
-msgstr "यदि इस गोपनीयता नीति के बारे में कोई प्रश्न है, तो कृपया प्लेटफॉर्म के माध्यम से हमसे संपर्क करें।"
+msgstr ""
+"यदि इस गोपनीयता नीति के बारे में कोई प्रश्न है, तो कृपया प्लेटफॉर्म के माध्यम से हमसे संपर्क "
+"करें।"
 
 #: core/templates/privacy_policy.html:105 core/templates/signin.html:64
 #: core/templates/signup.html:67 core/templates/terms_of_service.html:114
@@ -440,7 +489,6 @@ msgid "Back to Home"
 msgstr "होम पेज पर वापस जाएँ"
 
 #: core/templates/signin.html:8
-#| msgid "Sign In"
 msgid "FTTT – Sign In"
 msgstr "FTTT – साइन इन"
 
@@ -478,7 +526,6 @@ msgstr ""
 "          "
 
 #: core/templates/signup.html:8
-#| msgid "Sign Up"
 msgid "FTTT – Sign Up"
 msgstr "FTTT – साइन अप"
 
@@ -523,7 +570,8 @@ msgstr "1. शर्तों की स्वीकृति"
 msgid ""
 "By accessing and using this platform, you agree to comply with these Terms & "
 "Conditions."
-msgstr "इस प्लेटफॉर्म का उपयोग करके आप इन नियमों और शर्तों का पालन करने के लिए सहमत होते हैं।"
+msgstr ""
+"इस प्लेटफॉर्म का उपयोग करके आप इन नियमों और शर्तों का पालन करने के लिए सहमत होते हैं।"
 
 #: core/templates/terms_of_service.html:84
 msgid "2. Educational Purpose Only"
@@ -533,7 +581,9 @@ msgstr "2. केवल शैक्षणिक उद्देश्य के
 msgid ""
 "All stock predictions, sentiment scores, and analytics provided on this "
 "platform are for educational and informational purposes only."
-msgstr "इस प्लेटफॉर्म पर उपलब्ध सभी स्टॉक पूर्वानुमान, सेंटिमेंट स्कोर और विश्लेषण केवल शैक्षणिक और जानकारी के उद्देश्य से हैं।"
+msgstr ""
+"इस प्लेटफॉर्म पर उपलब्ध सभी स्टॉक पूर्वानुमान, सेंटिमेंट स्कोर और विश्लेषण केवल शैक्षणिक और "
+"जानकारी के उद्देश्य से हैं।"
 
 #: core/templates/terms_of_service.html:89
 msgid "3. No Financial Advice"
@@ -543,7 +593,9 @@ msgstr "3. कोई वित्तीय सलाह नहीं"
 msgid ""
 "We do not provide financial, investment, or trading advice. Users are "
 "responsible for their own investment decisions."
-msgstr "हम वित्तीय, निवेश या ट्रेडिंग सलाह प्रदान नहीं करते। उपयोगकर्ता अपने निवेश निर्णयों के लिए स्वयं जिम्मेदार हैं।"
+msgstr ""
+"हम वित्तीय, निवेश या ट्रेडिंग सलाह प्रदान नहीं करते। उपयोगकर्ता अपने निवेश निर्णयों के लिए "
+"स्वयं जिम्मेदार हैं।"
 
 #: core/templates/terms_of_service.html:94
 msgid "4. User Responsibilities"
@@ -553,7 +605,9 @@ msgstr "4. उपयोगकर्ता की जिम्मेदारि�
 msgid ""
 "Users must provide accurate information during registration and maintain the "
 "confidentiality of their account credentials."
-msgstr "उपयोगकर्ताओं को पंजीकरण के दौरान सही जानकारी प्रदान करनी चाहिए और अपने खाते की गोपनीय जानकारी सुरक्षित रखनी चाहिए।"
+msgstr ""
+"उपयोगकर्ताओं को पंजीकरण के दौरान सही जानकारी प्रदान करनी चाहिए और अपने खाते की "
+"गोपनीय जानकारी सुरक्षित रखनी चाहिए।"
 
 #: core/templates/terms_of_service.html:99
 msgid "5. Limitation of Liability"
@@ -563,7 +617,9 @@ msgstr "5. उत्तरदायित्व की सीमा"
 msgid ""
 "We are not liable for any financial losses or damages resulting from the use "
 "of this platform."
-msgstr "इस प्लेटफॉर्म के उपयोग से होने वाले किसी भी वित्तीय नुकसान या क्षति के लिए हम जिम्मेदार नहीं हैं।"
+msgstr ""
+"इस प्लेटफॉर्म के उपयोग से होने वाले किसी भी वित्तीय नुकसान या क्षति के लिए हम जिम्मेदार "
+"नहीं हैं।"
 
 #: core/templates/terms_of_service.html:104
 msgid "6. Modifications"
@@ -573,7 +629,9 @@ msgstr "6. संशोधन"
 msgid ""
 "We reserve the right to modify or discontinue any part of the platform at "
 "any time without notice."
-msgstr "हम बिना सूचना के प्लेटफॉर्म के किसी भी हिस्से में परिवर्तन या उसे बंद करने का अधिकार सुरक्षित रखते हैं।"
+msgstr ""
+"हम बिना सूचना के प्लेटफॉर्म के किसी भी हिस्से में परिवर्तन या उसे बंद करने का अधिकार "
+"सुरक्षित रखते हैं।"
 
 #: core/templates/terms_of_service.html:109
 msgid "7. Governing Law"
@@ -583,7 +641,8 @@ msgstr "7. लागू कानून"
 msgid ""
 "These terms shall be governed by applicable laws of the jurisdiction in "
 "which the platform operates."
-msgstr "ये शर्तें उस क्षेत्राधिकार के लागू कानूनों द्वारा शासित होंगी जहाँ प्लेटफॉर्म संचालित होता है।"
+msgstr ""
+"ये शर्तें उस क्षेत्राधिकार के लागू कानूनों द्वारा शासित होंगी जहाँ प्लेटफॉर्म संचालित होता है।"
 
 #: fttt_project/settings.py:118
 msgid "English"
@@ -592,3 +651,11 @@ msgstr "अंग्रेज़ी"
 #: fttt_project/settings.py:119
 msgid "Hindi"
 msgstr "हिन्दी"
+
+#: fttt_project/settings.py:120
+msgid "Marathi"
+msgstr "मराठी"
+
+#: fttt_project/settings.py:121
+msgid "Malayalam"
+msgstr "मलयालम"

@@ -27,7 +27,7 @@ TICKERS = [
     "TATASTEEL.NS","TCS.NS","TECHM.NS","TITAN.NS","TMPV.NS","TRENT.NS","ULTRACEMCO.NS","WIPRO.NS"
 ]
 
-NEWS_API_KEY = "2d365d32d1ac438498abaaed02e8c679"
+NEWS_API_KEY = "84fc43ca1f7045ad88e16857dbb0f901"
 TRAIN_START_DATE = "2020-01-01"
 TRAIN_END_DATE = datetime.now().strftime('%Y-%m-%d')
 LOOKBACK = 60
@@ -75,7 +75,7 @@ def fetch_news_sentiment_daily(query, start, end):
     """
     print("Fetching daily news sentiment...")
 
-    if NEWS_API_KEY == "2d365d32d1ac438498abaaed02e8c679":
+    if not NEWS_API_KEY:
         print("NewsAPI key not set. Using neutral sentiment.")
         return pd.DataFrame(columns=["date", "sentiment"])
 
@@ -132,6 +132,18 @@ def fetch_news_sentiment_daily(query, start, end):
         print("⚠️ Sentiment fetch failed:", e)
         return pd.DataFrame(columns=["date", "sentiment"])
 
+def compute_rsi(series, period=14):
+    delta = series.diff()
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
+
+    avg_gain = gain.rolling(period).mean()
+    avg_loss = loss.rolling(period).mean()
+
+    rs = avg_gain / avg_loss
+    rsi = 100 - (100 / (1 + rs))
+
+    return rsi
 
 def prepare_features(stock_data, sentiment_df):
     print("Preparing features (MAs + daily sentiment)...")
@@ -149,6 +161,7 @@ def prepare_features(stock_data, sentiment_df):
     # Moving averages
     stock_data["MA5"] = stock_data["Close"].rolling(5).mean()
     stock_data["MA10"] = stock_data["Close"].rolling(10).mean()
+    stock_data["RSI"] = compute_rsi(stock_data["Close"])
 
     stock_data.dropna(inplace=True)
     return stock_data
@@ -164,16 +177,16 @@ def create_sequences(data, lookback=60, horizon=14):
 
 def build_lstm_model(input_shape):
     model = Sequential([
-        LSTM(64, return_sequences=True, input_shape=input_shape),
-        Dropout(0.2),
+        LSTM(128, return_sequences=True, input_shape=input_shape),
+        Dropout(0.3),
         LSTM(64),
-        Dropout(0.2),
-        Dense(32, activation="relu"),
-        Dense(14)   # ✅ single-day output
+        Dropout(0.3),
+        Dense(64, activation="relu"),
+        Dense(14)   # 14-day forecast
     ])
+
     model.compile(optimizer="adam", loss="mse")
     return model
-
 
 # --- MAIN SCRIPT TO RUN ---
 if __name__ == "__main__":
@@ -192,11 +205,11 @@ if __name__ == "__main__":
             print(f"Skipping {ticker}, no data.")
             continue
 
-        sentiment_df = fetch_news_sentiment_daily(ticker, TRAIN_START_DATE, TRAIN_END_DATE)
+        sentiment_df = pd.DataFrame(columns=["date", "sentiment"])
         stock_data = prepare_features(stock_data, sentiment_df)
 
         stock_id = stock_to_id[ticker]
-        features_df = stock_data.loc[:, ["Close", "sentiment", "MA5", "MA10"]].copy()
+        features_df = stock_data.loc[:, ["Close", "sentiment", "MA5", "MA10", "RSI"]].copy()
         features_df["stock_id"] = stock_id
         all_data.append(features_df)
 
@@ -208,44 +221,67 @@ if __name__ == "__main__":
     combined_data = pd.concat(all_data, axis=0, ignore_index=True)
 
     # 🔒 FORCE FINAL FEATURE SET
-    combined_data = combined_data[["Close", "sentiment", "MA5", "MA10", "stock_id"]]
+    combined_data = combined_data[["Close", "sentiment", "MA5", "MA10", "RSI", "stock_id"]]
 
     print("FINAL combined_data shape:", combined_data.shape)
     print("Columns:", combined_data.columns.tolist())
 
     # 2. Normalize
-    scaler = MinMaxScaler(feature_range=(0, 1))
-    scaled_data = scaler.fit_transform(combined_data)
+    print("\nCreating sequences stock-wise...")
+    X_all, y_all = [], []
+    scalers = {}
+    for ticker in TICKERS:
+        stock_id = stock_to_id[ticker]
+        stock_df = combined_data[combined_data["stock_id"] == stock_id]
 
-    # 3. Create sequences
-    X, y = create_sequences(scaled_data, LOOKBACK, 14)
+        if len(stock_df) < LOOKBACK + 14:
+            print(f"Skipping {ticker}, not enough data.")
+            continue
+
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        scaled_stock = scaler.fit_transform(stock_df)
+        scalers[ticker] = scaler
+
+        X_stock, y_stock = create_sequences(scaled_stock, LOOKBACK, 14)
+
+        X_all.append(X_stock)
+        y_all.append(y_stock)
+
+    X = np.concatenate(X_all)
+    y = np.concatenate(y_all)
+
     print("X shape:", X.shape)
     print("y shape:", y.shape)
 
     # 4. Build & train model
-    model = build_lstm_model(input_shape=(LOOKBACK, 5))
+    model = build_lstm_model(input_shape=(LOOKBACK, 6))
 
     early_stop = EarlyStopping(
         monitor="val_loss",
-        patience=6,
-        restore_best_weights=True
+        patience=8,
+        restore_best_weights=True,
+        verbose=1
     )
 
     print("\nTraining model... This may take a few minutes.")
+    split_index = int(len(X) * 0.8)
+    X_train, X_val = X[:split_index], X[split_index:]
+    y_train, y_val = y[:split_index], y[split_index:]
+
     model.fit(
-        X, y,
+        X_train, y_train,
+        validation_data=(X_val, y_val),
         epochs=EPOCHS,
         batch_size=32,
-        validation_split=0.2,
         callbacks=[early_stop],
         verbose=1
     )
 
     # 5. Save model and scaler
-    model.save("ml_models/stock_model.h5")
-    joblib.dump(scaler, "ml_models/stock_scaler.joblib")
+    model.save("ml_models/stock_model.keras")
+    joblib.dump(scalers, "ml_models/stock_scaler.joblib")
     joblib.dump(stock_to_id, "ml_models/stock_id_mapping.joblib")
 
     print("✅ Model saved.")
-    print("✅ Model saved to ml_models/stock_model.h5")
+    print("✅ Model saved to ml_models/stock_model.keras")
     print("✅ Scaler saved to ml_models/stock_scaler.joblib")
