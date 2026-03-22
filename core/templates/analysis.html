@@ -77,6 +77,11 @@
     <!-- Charts Row -->
     <div class="charts-row">
       <div class="card chart-card">
+        <h3>{% trans "Historical Price (Past 30 days)" %}</h3>
+        <div class="muted">{% trans "Source: sample data" %}</div>
+        <div class="chart-wrap"><canvas id="histChart"></canvas></div>
+      </div>
+      <div class="card chart-card">
         <h3>{% trans "14-Day Price Prediction" %}</h3>
         <div class="muted">
           {% blocktrans %}
@@ -85,12 +90,6 @@
           <strong id="predConfidence">—</strong>
         </div>
         <div class="chart-wrap"><canvas id="predChart"></canvas></div>
-      </div>
-
-      <div class="card chart-card">
-        <h3>{% trans "Historical Price (Past 30 days)" %}</h3>
-        <div class="muted">{% trans "Source: sample data" %}</div>
-        <div class="chart-wrap"><canvas id="histChart"></canvas></div>
       </div>
     </div>
 
@@ -115,6 +114,7 @@
             <div class="risk-fill" id="riskFill"></div>
           </div>
           <div class="risk-label" id="riskLabel">—</div>
+          <div class="risk-note">{% trans "Risk shows how safe or risky the decision is." %}</div>
         </div>
 
         <hr style="margin:20px 0; border:1px solid rgba(255,255,255,0.1);">
@@ -126,10 +126,10 @@
             <span id="signalArrow">→</span>
           </div>
           <div class="signal-strength" id="signalConfidence">
-            Signal Strength: —
+            {% trans "Signal Strength: —" %}
           </div>
           <div class="signal-note" id="signalNote">
-            Awaiting prediction data...
+            {% trans "Awaiting prediction data..." %}
           </div>
         </div>
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-02 13:44+0530\n"
+"POT-Creation-Date: 2026-03-15 19:19+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "From Tweets To Trades — Dashboard (NIFTY 50)"
 msgstr "ट्विट्स ते ट्रेड्स — डॅशबोर्ड (निफ्टी 50)"
 
-#: core/templates/analysis.html:28 core/templates/comparison.html:27
+#: core/templates/analysis.html:28 core/templates/comparison.html:25
 #: core/templates/signin.html:19
 msgid "From Tweets To Trades"
 msgstr "ट्विट्स ते ट्रेड्स"
@@ -30,13 +30,13 @@ msgstr "ट्विट्स ते ट्रेड्स"
 msgid "Select one NIFTY 50 company to generate insights"
 msgstr "अंतर्दृष्टी निर्माण करण्यासाठी एक निफ्टी 50 कंपनी निवडा"
 
-#: core/templates/analysis.html:34 core/templates/comparison.html:36
+#: core/templates/analysis.html:34 core/templates/comparison.html:33
 #, fuzzy
 #| msgid "Back to Home"
 msgid "Back to Home Page"
 msgstr "मुख्यपृष्ठावर परत जा"
 
-#: core/templates/analysis.html:37 core/templates/comparison.html:39
+#: core/templates/analysis.html:37 core/templates/comparison.html:36
 msgid "Sign out"
 msgstr "साइन आउट"
 
@@ -111,84 +111,100 @@ msgstr "जोखीम गुणांकन मीटर"
 msgid "Buy / Sell / Hold Signal"
 msgstr "खरेदी / विक्री / होल्ड संकेत"
 
+#: core/templates/analysis.html:129
+msgid "Signal Strength: —"
+msgstr "संकेताची ताकद:-"
+
+#: core/templates/analysis.html:132
+msgid "Awaiting prediction data..."
+msgstr "भविष्यवाणीच्या डेटाची प्रतीक्षा आहे..."
+
 #: core/templates/analysis.html:136
 msgid ""
 "Prototype — dropdown uses NIFTY 50 constituents (source: NIFTY / Wikipedia)."
 msgstr ""
 "प्रोटोटाइप — ड्रॉपडाउनमध्ये निफ्टी 50 घटक वापरले आहेत (स्रोत: निफ्टी / विकिपीडिया)."
 
-#: core/templates/comparison.html:9 core/templates/index.html:42
+#: core/templates/comparison.html:8 core/templates/index.html:35
 msgid "Compare Stocks"
 msgstr "शेअर्सची तुलना करा"
 
-#: core/templates/comparison.html:29
+#: core/templates/comparison.html:27
 msgid "Compare multiple NIFTY 50 companies"
 msgstr "अनेक निफ्टी 50 कंपन्यांची तुलना करा"
 
-#: core/templates/comparison.html:45
+#: core/templates/comparison.html:42
 #, fuzzy
 #| msgid "Choose one company (NIFTY 50)"
 msgid "Select Multiple Companies (NIFTY 50)"
 msgstr "अनेक कंपन्या निवडा (निफ्टी 50)"
 
-#: core/templates/comparison.html:62
+#: core/templates/comparison.html:53
+msgid "Hold Ctrl (Windows) or Cmd (Mac) to select multiple companies."
+msgstr "एकापेक्षा जास्त कंपन्या निवडण्यासाठी Ctrl (Windows) किंवा Cmd (Mac) दाबून ठेवा."
+
+#: core/templates/comparison.html:57
 msgid "Compare Selected Stocks"
 msgstr "निवडलेल्या शेअर्सची तुलना करा"
 
-#: core/templates/comparison.html:67
+#: core/templates/comparison.html:61
 msgid "Comparing stocks"
 msgstr "शेअर्सची तुलना सुरू आहे"
 
-#: core/templates/comparison.html:77
+#: core/templates/comparison.html:70
 msgid "Stock Comparison Chart"
 msgstr "शेअर तुलना चार्ट"
 
-#: core/templates/comparison.html:85
+#: core/templates/comparison.html:77
 msgid "Key Metrics Comparison"
 msgstr "महत्वाच्या मेट्रिक्सची तुलना"
+
+#: core/templates/comparison.html:82
+msgid "Investment Verdict"
+msgstr "गुंतवणुकीचा अंतिम निर्णय"
 
 #: core/templates/index.html:9
 msgid "FTTT - Market Alerts"
 msgstr "FTTT - मार्केट अलर्ट्स"
 
-#: core/templates/index.html:31
+#: core/templates/index.html:29
 msgid "From Tweets"
 msgstr "ट्विट्सपासून"
 
-#: core/templates/index.html:32
+#: core/templates/index.html:30
 msgid "to Trades"
 msgstr "ट्रेड्सपर्यंत"
 
-#: core/templates/index.html:38 core/templates/index.html:229
+#: core/templates/index.html:34 core/templates/index.html:307
 msgid "Analysis"
 msgstr "विश्लेषण"
 
-#: core/templates/index.html:45
+#: core/templates/index.html:36
 msgid "Top Companies"
 msgstr "शीर्ष कंपन्या"
 
-#: core/templates/index.html:48
+#: core/templates/index.html:37
 msgid "How it Works"
 msgstr "हे कसे कार्य करते"
 
-#: core/templates/index.html:72
+#: core/templates/index.html:52
 msgid "Sign Out"
 msgstr "साइन आउट"
 
-#: core/templates/index.html:74 core/templates/signin.html:55
+#: core/templates/index.html:54 core/templates/signin.html:55
 #: core/templates/signup.html:65
 msgid "Sign In"
 msgstr "साइन इन"
 
-#: core/templates/index.html:75 core/templates/signup.html:60
+#: core/templates/index.html:55 core/templates/signup.html:60
 msgid "Sign Up"
 msgstr "नोंदणी करा"
 
-#: core/templates/index.html:84
+#: core/templates/index.html:64
 msgid "Real-time • AI • Sentiment"
 msgstr "रिअल-टाइम • AI • भावना विश्लेषण"
 
-#: core/templates/index.html:86
+#: core/templates/index.html:66
 msgid ""
 "\n"
 "            Never Miss a <span class=\"accent-text\">Market-Moving</"
@@ -200,7 +216,7 @@ msgstr ""
 "पुन्हा कधीही चुकवू नका\n"
 "            "
 
-#: core/templates/index.html:90
+#: core/templates/index.html:70
 msgid ""
 "From Tweets to Trades — convert social chatter into real-time trading "
 "signals and market alerts. Trusted by thousands of active traders and "
@@ -209,23 +225,218 @@ msgstr ""
 "ट्विट्स ते ट्रेड्स — सोशल चर्चेला रिअल-टाइम ट्रेडिंग सिग्नल्स आणि मार्केट अलर्टमध्ये रूपांतरित "
 "करा. हजारो सक्रिय ट्रेडर्स आणि विश्लेषकांचा विश्वास."
 
-#: core/templates/index.html:92
+#: core/templates/index.html:71
 msgid "User Friendly • 5-minute integration"
 msgstr "वापरकर्ता अनुकूल • 5 मिनिटांत एकत्रीकरण"
 
-#: core/templates/index.html:100
+#: core/templates/index.html:77
 msgid "LIVE INSIGHT"
 msgstr "थेट अंतर्दृष्टी"
 
-#: core/templates/index.html:101
+#: core/templates/index.html:78
 msgid "Loading..."
 msgstr "लोड होत आहे..."
 
-#: core/templates/index.html:112
+#: core/templates/index.html:91
+msgid "Everything you need to trade smarter"
+msgstr "अधिक हुशारीने ट्रेड करण्यासाठी तुम्हाला लागणारी सर्व साधने"
+
+#: core/templates/index.html:92
+msgid ""
+"From sentiment signals to AI predictions — our platform gives you an edge at "
+"every step of your research."
+msgstr ""
+"भावनात्मक संकेतांपासून (Sentiment Signals) ते AI अंदाजांपर्यंत — आमचे प्लॅटफॉर्म तुमच्या "
+"संशोधनाच्या प्रत्येक टप्प्यावर तुम्हाला एक अतिरिक्त फायदा देते."
+
+#: core/templates/index.html:99
+#, fuzzy
+#| msgid "Stock Prediction"
+msgid "Predictor"
+msgstr "शेअर अंदाज"
+
+#: core/templates/index.html:100
+msgid "Predict stock movement"
+msgstr "शेअरच्या किंमतीची हालचाल भाकीत करा"
+
+#: core/templates/index.html:100
+msgid "before it happens"
+msgstr "होण्यापूर्वीच"
+
+#: core/templates/index.html:101
+msgid ""
+"Our model analyses historical data, social sentiment, and volume patterns to "
+"forecast short-term price direction with a confidence score."
+msgstr ""
+"आमचे मॉडेल ऐतिहासिक डेटा, सामाजिक भावना आणि ट्रेडिंग व्हॉल्यूमच्या पॅटर्नचे विश्लेषण करून "
+"अल्पकालीन किंमतीच्या दिशेचा अंदाज विश्वासार्हता गुणांक सह देते."
+
+#: core/templates/index.html:102
+#, fuzzy
+#| msgid "Stock Prediction"
+msgid "Try the Predictor"
+msgstr "शेअर अंदाज"
+
+#: core/templates/index.html:106
+msgid "TCS.NS"
+msgstr "टीसीएस.एनएस"
+
+#: core/templates/index.html:109
+msgid "Confidence"
+msgstr "विश्वासार्हता"
+
+#: core/templates/index.html:114
+#, fuzzy
+#| msgid "Sentiment Tracking"
+msgid "Sentiment"
+msgstr "अभिप्राय ट्रॅकिंग"
+
+#: core/templates/index.html:119
+#, fuzzy
+#| msgid "Risk Score Meter"
+msgid "Risk Score"
+msgstr "जोखीम गुणांकन मीटर"
+
+#: core/templates/index.html:128
+#, fuzzy
+#| msgid "Sign In"
+msgid "Signal Engine"
+msgstr "साइन इन"
+
+#: core/templates/index.html:129
+msgid "Clear"
+msgstr "स्पष्ट"
+
+#: core/templates/index.html:129
+#, fuzzy
+#| msgid "Buy / Sell / Hold Signal"
+msgid "Buy / Sell / Hold"
+msgstr "खरेदी / विक्री / होल्ड संकेत"
+
+#: core/templates/index.html:129
+msgid "signals"
+msgstr "संकेत"
+
+#: core/templates/index.html:130
+msgid ""
+"No more second-guessing. Our engine combines price action, social momentum, "
+"and sentiment drift to give you a clear action signal."
+msgstr ""
+"आता पुन्हा अंदाज बांधण्याची गरज नाही. आमचे इंजिन किंमतीतील हालचाल, सोशल मीडियावरील "
+"गती (social momentum) आणि भावनांमधील बदल (sentiment drift) यांना एकत्र करून "
+"तुम्हाला स्पष्ट कृतीचा संकेत देते."
+
+#: core/templates/index.html:131
+msgid "See Live Signals"
+msgstr "थेट संकेत पहा"
+
+#: core/templates/index.html:136
+msgid "BUY"
+msgstr "खरेदी"
+
+#: core/templates/index.html:140
+msgid "SELL"
+msgstr "विक्री"
+
+#: core/templates/index.html:144
+msgid "HOLD"
+msgstr "धरा"
+
+#: core/templates/index.html:151
+#, fuzzy
+#| msgid "Comparing stocks"
+msgid "Comparison Tool"
+msgstr "शेअर्सची तुलना सुरू आहे"
+
+#: core/templates/index.html:152
+#, fuzzy
+#| msgid "Compare Stocks"
+msgid "Compare stocks"
+msgstr "शेअर्सची एकमेकांच्या बाजूला "
+
+#: core/templates/index.html:152
+msgid "side by side"
+msgstr "तुलना करा"
+
+#: core/templates/index.html:153
+msgid ""
+"Pit any two NSE stocks head-to-head across sentiment, price trend, volume — "
+"so you always pick the stronger trade."
+msgstr ""
+"कोणतेही दोन NSE शेअर्स भावना (sentiment), किंमत ट्रेंड आणि व्हॉल्यूम यांच्या आधारे "
+"समोरासमोर तुलना करा — त्यामुळे तुम्ही नेहमी अधिक मजबूत ट्रेड निवडू शकता."
+
+#: core/templates/index.html:154
+#, fuzzy
+#| msgid "Compare Stocks"
+msgid "Compare Now"
+msgstr "शेअर्सची तुलना करा"
+
+#: core/templates/index.html:158 core/templates/index.html:246
+msgid "TCS"
+msgstr "टीसीएस"
+
+#: core/templates/index.html:160
+msgid "VS"
+msgstr "विरुद्ध"
+
+#: core/templates/index.html:162
+msgid "INFY"
+msgstr "इन्फी"
+
+#: core/templates/index.html:169
+#, fuzzy
+#| msgid "Sentiment Tracking"
+msgid "Sentiment Analysis"
+msgstr "अभिप्राय ट्रॅकिंग"
+
+#: core/templates/index.html:170
+msgid "Track social mood"
+msgstr "सोशल मीडियावरील भावना ट्रॅक करा"
+
+#: core/templates/index.html:170
+msgid "in real time"
+msgstr "रिअल टाइममध्ये"
+
+#: core/templates/index.html:171
+msgid ""
+"We ingest thousands of tweets, news articles, and forum posts every hour — "
+"scoring market sentiment by ticker, sector, and event type so you always "
+"know the crowd's pulse."
+msgstr ""
+"आम्ही दर तासाला हजारो ट्वीट्स, बातम्या आणि फोरम पोस्ट्सचे विश्लेषण करतो — आणि टिकलर, "
+"सेक्टर व इव्हेंटच्या प्रकारानुसार बाजारातील भावना (market sentiment) मोजतो, त्यामुळे "
+"तुम्हाला नेहमीच लोकांच्या मतांची दिशा कळते."
+
+#: core/templates/index.html:172
+msgid "View Sentiment Dashboard"
+msgstr "सेन्टिमेंट डॅशबोर्ड पहा"
+
+#: core/templates/index.html:175
+msgid "Banking"
+msgstr "बँकिंग"
+
+#: core/templates/index.html:176
+msgid "IT"
+msgstr "आयटी"
+
+#: core/templates/index.html:177
+msgid "Energy"
+msgstr "ऊर्जा"
+
+#: core/templates/index.html:178
+msgid "FMCG"
+msgstr "एफएमसीजी"
+
+#: core/templates/index.html:179
+msgid "Pharma"
+msgstr "फार्मा"
+
+#: core/templates/index.html:190
 msgid "Market Trend Analysis"
 msgstr "बाजार ट्रेंड विश्लेषण"
 
-#: core/templates/index.html:113
+#: core/templates/index.html:191
 msgid ""
 "Continuously analyze market data to identify emerging trends and highlight "
 "sectors showing unusual momentum or investor attention."
@@ -233,11 +444,11 @@ msgstr ""
 "उदयास येणारे ट्रेंड ओळखण्यासाठी आणि असामान्य गती किंवा गुंतवणूकदारांचे लक्ष वेधणाऱ्या "
 "क्षेत्रांना हायलाइट करण्यासाठी बाजार डेटा सतत विश्लेषित करा."
 
-#: core/templates/index.html:117
+#: core/templates/index.html:195
 msgid "AI-driven Insights"
 msgstr "AI आधारित अंतर्दृष्टी"
 
-#: core/templates/index.html:118
+#: core/templates/index.html:196
 msgid ""
 "Proprietary models filter noise and surface high-confidence trade ideas with "
 "sentiment and event scoring."
@@ -245,11 +456,11 @@ msgstr ""
 "आमचे मालकी हक्काचे मॉडेल्स अनावश्यक डेटा फिल्टर करून उच्च आत्मविश्वास असलेले ट्रेड आयडिया "
 "भावना आणि इव्हेंट स्कोअरिंगसह सादर करतात."
 
-#: core/templates/index.html:122
+#: core/templates/index.html:200
 msgid "Sentiment Tracking"
 msgstr "अभिप्राय ट्रॅकिंग"
 
-#: core/templates/index.html:123
+#: core/templates/index.html:201
 msgid ""
 "Track sentiment trends across sectors and map social momentum to price "
 "movement with clear visualizations."
@@ -257,64 +468,60 @@ msgstr ""
 "विविध क्षेत्रांतील भावना ट्रेंड ट्रॅक करा आणि स्पष्ट दृश्य मांडणीद्वारे सामाजिक गतीचे किंमत "
 "हालचालींशी मॅपिंग करा."
 
-#: core/templates/index.html:128
+#: core/templates/index.html:206
 msgid "Top Trending Companies"
 msgstr "टॉप ट्रेंडिंग कंपन्या"
 
-#: core/templates/index.html:129
+#: core/templates/index.html:207
 msgid "Live social and market movement"
 msgstr "लाईव्ह सोशल आणि बाजार हालचाली"
 
-#: core/templates/index.html:136
+#: core/templates/index.html:214
 msgid "HDFC Bank"
 msgstr "एचडीएफसी बँक"
 
-#: core/templates/index.html:137
+#: core/templates/index.html:215
 msgid "HDFC . Finance"
 msgstr "एचडीएफसी • वित्त"
 
-#: core/templates/index.html:145 core/templates/index.html:161
-#: core/templates/index.html:177 core/templates/index.html:193
+#: core/templates/index.html:223 core/templates/index.html:239
+#: core/templates/index.html:255 core/templates/index.html:271
 msgid "Data Loading..."
 msgstr "डेटा लोड होत आहे..."
 
-#: core/templates/index.html:152
+#: core/templates/index.html:230
 msgid "Reliance Ind."
 msgstr "रिलायंस इंड."
 
-#: core/templates/index.html:153
+#: core/templates/index.html:231
 msgid "REL • Technology"
 msgstr "रिलायंस • तंत्रज्ञान"
 
-#: core/templates/index.html:168
-msgid "TCS"
-msgstr "टीसीएस"
-
-#: core/templates/index.html:169
+#: core/templates/index.html:247
 msgid "TCS . IT Services"
 msgstr "टीसीएस • आयटी सेवा"
 
-#: core/templates/index.html:184
+#: core/templates/index.html:262
 msgid "ICICI"
 msgstr "आयसीआयसीआय"
 
-#: core/templates/index.html:185
+#: core/templates/index.html:263
 msgid "ICICI . Finance"
 msgstr "आयसीआयसीआय • वित्त"
 
-#: core/templates/index.html:199
+#: core/templates/index.html:277
 msgid "From Tweets to Trends — How it works"
 msgstr "ट्विट्स ते ट्रेंड्स — हे कसे कार्य करते"
 
-#: core/templates/index.html:200
+#: core/templates/index.html:278
 msgid "Raw social chatter → signal processing → trade-ready alerts"
 msgstr "कच्ची सोशल चर्चा → सिग्नल प्रोसेसिंग → ट्रेडसाठी तयार अलर्ट्स"
 
-#: core/templates/index.html:206
+#: core/templates/index.html:284
 msgid "Collect"
 msgstr "संकलन"
 
-#: core/templates/index.html:207
+#: core/templates/index.html:285
 msgid ""
 "We ingest tweets, threads, news, Reddit posts and message board chatter in "
 "real time across global feeds."
@@ -322,11 +529,11 @@ msgstr ""
 "आम्ही जागतिक फीडमधून ट्विट्स, थ्रेड्स, बातम्या, Reddit पोस्ट्स आणि मेसेज बोर्ड चर्चा रिअल-"
 "टाइममध्ये संकलित करतो."
 
-#: core/templates/index.html:213
+#: core/templates/index.html:291
 msgid "Filter & Classify"
 msgstr "फिल्टर आणि वर्गीकरण"
 
-#: core/templates/index.html:214
+#: core/templates/index.html:292
 msgid ""
 "Our NLP pipeline removes bots and noise, classifies event types, and tags "
 "tickers & topics automatically."
@@ -334,11 +541,11 @@ msgstr ""
 "आमची NLP प्रणाली बॉट्स आणि अनावश्यक डेटा काढून टाकते, इव्हेंट प्रकारांचे वर्गीकरण करते आणि "
 "टिकर्स व विषयांना स्वयंचलित टॅग करते."
 
-#: core/templates/index.html:220
+#: core/templates/index.html:298
 msgid "Score"
 msgstr "स्कोअर"
 
-#: core/templates/index.html:221
+#: core/templates/index.html:299
 msgid ""
 "Signals are scored for confidence, volume, and sentiment drift. Only high-"
 "impact signals generate alerts."
@@ -346,57 +553,154 @@ msgstr ""
 "सिग्नल्सना आत्मविश्वास, व्हॉल्यूम आणि भावना बदल यानुसार स्कोअर दिला जातो. फक्त उच्च-"
 "प्रभाव सिग्नल्स अलर्ट निर्माण करतात."
 
-#: core/templates/index.html:230
+#: core/templates/index.html:308
 msgid ""
 "Takes the historical data and sentiments in account for furhter analysis."
 msgstr "पुढील विश्लेषणासाठी ऐतिहासिक डेटा आणि भावना विचारात घेतल्या जातात."
 
-#: core/templates/index.html:236
+#: core/templates/index.html:314
 msgid "Stock Prediction"
 msgstr "शेअर अंदाज"
 
-#: core/templates/index.html:237
+#: core/templates/index.html:315
 msgid ""
 "After thorough analysis, we can predict the stock price movement and suggest "
 "trades."
 msgstr ""
 "सखोल विश्लेषणानंतर आम्ही शेअर किंमत हालचालींचा अंदाज लावू शकतो आणि ट्रेड सुचवू शकतो."
 
-#: core/templates/index.html:243
+#: core/templates/index.html:321
 msgid "Visualizations"
 msgstr "दृश्य मांडणी"
 
-#: core/templates/index.html:244
+#: core/templates/index.html:322
 msgid ""
 "See trend timelines, sentiment heatmaps, ad correlation views to validate "
 "ideas before trading."
 msgstr ""
 "ट्रेडिंगपूर्वी कल्पना पडताळण्यासाठी ट्रेंड टाइमलाइन, भावना हीटमॅप्स आणि सहसंबंध दृश्ये पहा."
 
-#: core/templates/index.html:254
+#: core/templates/index.html:335
+msgid "Our Mission"
+msgstr "आमचे ध्येय"
+
+#: core/templates/index.html:337
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "            Never Miss a <span class=\"accent-text\">Market-Moving</"
+#| "span><br>Moment Again\n"
+#| "            "
+msgid ""
+"\n"
+"              Built for traders who<br><span class=\"accent-text\">demand "
+"more</span> from their data\n"
+"              "
+msgstr ""
+"\n"
+"            <span class=\"accent-text\">बाजार हलवणारा</span><br>एकही क्षण "
+"पुन्हा कधीही चुकवू नका\n"
+"            "
+
+#: core/templates/index.html:342
+msgid ""
+"We're building From Tweets to Trades — to help you express your trading and "
+"investing ideas, and to help you analyse Indian markets better."
+msgstr ""
+"आम्ही ट्विट्स ते ट्रेड्स तयार करत आहोत — जे तुम्हाला तुमचे ट्रेडिंग आणि गुंतवणुकीचे विचार व्यक्त "
+"करण्यास मदत करेल आणि भारतीय बाजाराचे अधिक चांगले विश्लेषण करण्यास सहाय्य करेल."
+
+#: core/templates/index.html:345
+msgid ""
+"Stock Markets are the true indicator of the growth of any country's economy. "
+"We are bullish on India's prospects to be one of the largest economies in "
+"the world. We believe that Stock Markets provide a unique opportunity for "
+"all Indians to participate in India's growth story — and we are enabling the "
+"same."
+msgstr ""
+"शेअर बाजार हा कोणत्याही देशाच्या अर्थव्यवस्थेच्या वाढीचा खरा निर्देशक असतो. भारत जगातील "
+"सर्वात मोठ्या अर्थव्यवस्थांपैकी एक होण्याची मोठी क्षमता ठेवतो, याबद्दल आम्ही सकारात्मक "
+"आहोत. आमचा विश्वास आहे की शेअर बाजार सर्व भारतीयांना भारताच्या विकासाच्या प्रवासात "
+"सहभागी होण्याची एक अनोखी संधी देतो — आणि आम्ही ते शक्य करण्यासाठी काम करत आहोत."
+
+#: core/templates/index.html:348
+msgid ""
+"Most screening, trading, and investing platforms available today have not "
+"evolved with time. We plan to change that — a technology-led platform built "
+"for super traders and long-term investors, powered by real-time AI and "
+"social intelligence."
+msgstr ""
+"आज उपलब्ध असलेल्या बहुतांश स्क्रीनिंग, ट्रेडिंग आणि गुंतवणूक प्लॅटफॉर्मनी काळानुसार स्वतःमध्ये "
+"बदल केलेले नाहीत. आम्ही ते बदलण्याची योजना आखत आहोत — रिअल-टाइम AI आणि सोशल "
+"इंटेलिजन्सने समर्थित, सुपर ट्रेडर्स आणि दीर्घकालीन गुंतवणूकदारांसाठी तयार केलेला तंत्रज्ञानावर "
+"आधारित प्लॅटफॉर्म."
+
+#: core/templates/index.html:355
+msgid "NSE Stocks Tracked"
+msgstr "ट्रॅक केलेले NSE शेअर्स"
+
+#: core/templates/index.html:359
+msgid "Social Sentiment Feeds"
+msgstr "सोशल सेन्टिमेंट फीड्स"
+
+#: core/templates/index.html:363
+#, fuzzy
+#| msgid "Stock Prediction"
+msgid "Predictions"
+msgstr "शेअर अंदाज"
+
+#: core/templates/index.html:367
+msgid "Languages Supported"
+msgstr "समर्थित भाषा"
+
+#: core/templates/index.html:374
+msgid "Precision over noise"
+msgstr "गोंधळापेक्षा अचूकता अधिक महत्त्वाची"
+
+#: core/templates/index.html:375
+msgid "Only high-confidence signals make it through our NLP pipeline."
+msgstr "फक्त उच्च विश्वासार्हतेचे संकेतच आमच्या NLP पाइपलाइनमधून पुढे जातात."
+
+#: core/templates/index.html:381
+msgid "Built for India"
+msgstr "भारतासाठी तयार केलेले"
+
+#: core/templates/index.html:382
+msgid "NSE, multilingual support — designed for the Indian market."
+msgstr "NSE आणि बहुभाषिक समर्थनासह — भारतीय बाजारासाठी डिझाइन केलेले."
+
+#: core/templates/index.html:388
+msgid "Speed matters"
+msgstr "वेग महत्त्वाचा आहे"
+
+#: core/templates/index.html:389
+msgid "Market-moving signals delivered in real time, not hours later."
+msgstr "बाजारावर परिणाम करणारे संकेत तासांनंतर नाही, तर रिअल टाइममध्ये दिले जातात."
+
+#: core/templates/index.html:401
 msgid "Ready to turn chatter into alpha?"
 msgstr "गप्पांना नफ्यात रूपांतर करण्यास तयार आहात?"
 
-#: core/templates/index.html:255
+#: core/templates/index.html:402
 msgid "Start a free trial — get alerts for your watchlist in minutes."
 msgstr "मोफत ट्रायल सुरू करा — काही मिनिटांत आपल्या वॉचलिस्टसाठी अलर्ट मिळवा."
 
-#: core/templates/index.html:260
+#: core/templates/index.html:407
 msgid "Start Free Trial"
 msgstr "मोफत ट्रायल सुरू करा"
 
-#: core/templates/index.html:264 core/templates/signup.html:18
+#: core/templates/index.html:411 core/templates/signup.html:18
 #, fuzzy
 #| msgid "From Tweets To Trades"
 msgid "From Tweets to Trades"
 msgstr "ट्विट्स ते ट्रेड्स"
 
-#: core/templates/index.html:266 core/templates/privacy_policy.html:8
+#: core/templates/index.html:413 core/templates/privacy_policy.html:8
 #: core/templates/privacy_policy.html:75
 msgid "Privacy Policy"
 msgstr "गोपनीयता धोरण"
 
-#: core/templates/index.html:267
+#: core/templates/index.html:414
 msgid "Terms of Service"
 msgstr "अटी व शर्ती"
 
@@ -645,18 +949,22 @@ msgid ""
 msgstr ""
 "या अटी प्लॅटफॉर्म कार्यरत असलेल्या क्षेत्रातील लागू कायद्यांनुसार नियंत्रित केल्या जातील."
 
-#: fttt_project/settings.py:118
+#: fttt_project/settings.py:119
 msgid "English"
 msgstr "इंग्रजी"
 
-#: fttt_project/settings.py:119
+#: fttt_project/settings.py:120
 msgid "Hindi"
 msgstr "हिंदी"
 
-#: fttt_project/settings.py:120
+#: fttt_project/settings.py:121
 msgid "Marathi"
 msgstr "मराठी"
 
-#: fttt_project/settings.py:121
+#: fttt_project/settings.py:122
 msgid "Malayalam"
 msgstr "मल्याळम"
+
+#: fttt_project/settings.py:123
+msgid "Kannada"
+msgstr "कन्नड"

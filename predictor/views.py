@@ -16,6 +16,7 @@ import torch.nn.functional as F
 from deep_translator import GoogleTranslator
 from django.utils import translation
 import re
+from .twitter_utils import get_twitter_sentiment_for_ticker
 
 COMPANY_NAMES = {
     "ADANIENT": "Adani Enterprises Limited",
@@ -32,7 +33,7 @@ COMPANY_NAMES = {
     "COALINDIA": "Coal India Limited",
     "DRREDDY": "Dr. Reddy's Laboratories Limited",
     "EICHERMOT": "Eicher Motors Limited",
-    "ETERNAL": "Eternal Life Insurance Limited",
+    "ETERNAL": "Eternal Limited",
     "GRASIM": "Grasim Industries Limited",
     "HCLTECH": "HCL Technologies Limited",
     "HDFCBANK": "HDFC Bank Limited",
@@ -85,7 +86,7 @@ COMPANY_ALIASES = {
     "COALINDIA": ["coal india"],
     "DRREDDY": ["dr reddy", "dr. reddy", "reddy laboratories"],
     "EICHERMOT": ["eicher motors", "royal enfield", "eicher"],
-    "ETERNAL": ["eternal life insurance"],
+    "ETERNAL": ["eternal"],
     "GRASIM": ["grasim"],
     "HCLTECH": ["hcl tech", "hcl technologies", "hcl"],
     "HDFCBANK": ["hdfc bank"],
@@ -154,6 +155,7 @@ except Exception as e:
 STOCK_ID_PATH = os.path.join(settings.ML_MODELS_DIR, 'stock_id_mapping.joblib')
 stock_to_id = joblib.load(STOCK_ID_PATH)
 # ===================== HELPER FUNCTIONS =====================
+
 def compare_stocks(request):
     tickers_param = request.GET.get("tickers")
 
@@ -161,11 +163,13 @@ def compare_stocks(request):
         return JsonResponse({"error": "No tickers provided"}, status=400)
 
     tickers = tickers_param.split(",")
-
     comparison_data = []
 
     for ticker in tickers:
         try:
+            ticker_obj = yf.Ticker(ticker)
+            fast_info = getattr(ticker_obj, "fast_info", {}) or {}
+
             stock_data = yf.download(ticker, period="3mo", interval="1d")
 
             if stock_data.empty:
@@ -176,83 +180,34 @@ def compare_stocks(request):
             if isinstance(stock_data.columns, pd.MultiIndex):
                 stock_data.columns = stock_data.columns.get_level_values(0)
 
-            last_price = float(stock_data["Close"].iloc[-1])
-            start_price = float(stock_data["Close"].iloc[0])
+            if "Adj Close" in stock_data.columns:
+                stock_data["price"] = stock_data["Adj Close"]
+            elif "Close" in stock_data.columns:
+                stock_data["price"] = stock_data["Close"]
+            else:
+                continue
 
-            percent_change = ((last_price - start_price) / start_price) * 100
+            start_price = float(stock_data["price"].iloc[0])
 
+            current_price = (
+                safe_float(fast_info.get("lastPrice")) or
+                safe_float(fast_info.get("regularMarketPrice")) or
+                safe_float(stock_data["price"].iloc[-1])
+            )
+
+            percent_change = ((current_price - start_price) / start_price) * 100
+            print("COMPARE DEBUG:", ticker, current_price, percent_change)
             comparison_data.append({
                 "ticker": ticker,
-                "current_price": round(last_price, 2),
+                "current_price": round(current_price, 2),
                 "percent_change_3m": round(percent_change, 2)
             })
 
         except Exception as e:
-            print("Comparison error:", e)
+            print("Comparison error:", ticker, e)
 
+    print("FINAL comparison_data:", comparison_data)
     return JsonResponse({"comparison": comparison_data})
-
-def build_company_keywords(ticker, company_name):
-    """
-    Builds flexible keywords for matching news titles.
-    Works for ALL companies.
-    """
-    symbol = ticker.split(".")[0].lower()
-
-    words = company_name.lower().split()
-
-    keywords = set()
-
-    # Full company name
-    keywords.add(company_name.lower())
-
-    # Individual words (Axis, Bank)
-    for w in words:
-        if len(w) > 4:  # avoid junk like "of", "and"
-            keywords.add(w)
-
-    # Ticker symbol variations
-    keywords.add(symbol)
-    keywords.add(symbol.replace("bank", ""))
-
-    return list(keywords)
-
-financial_keywords = [
-    # Stock & Earnings
-    "stock", "shares", "earnings", "results",
-    "profit", "loss", "revenue", "ebitda",
-    "net profit", "net loss", "operating",
-    "quarter", "quarterly", "annual", "fy",
-    "margin", "guidance", "forecast", "outlook",
-
-    # Market Action
-    "target", "buy", "sell", "hold",
-    "surge", "falls", "jumps", "rally",
-    "plunge", "slump", "gains", "drops",
-    "soars", "tumbles", "rises",
-
-    # Corporate Actions
-    "announces", "announced", "announce",
-    "board", "meeting","merge","fundraising",
-    "acquisition", "acquires", "acquired",
-    "merger", "stake", "investment",
-    "ipo", "buyback", "bonus", "split",
-    "rising", "falling","raises","lowers",
-    "listing","allotment",
-
-    # Leadership
-    "appoints", "appointment", "ceo", "cfo",
-    "director", "resigns", "resignation", "chairman",
-
-    # Finance & Regulatory
-    "dividend", "rate", "growth", "decline",
-    "loan", "credit", "rbi", "approval", "penalty",
-    "regulatory","compliance", "sanction", "order", 
-]
-
-def is_financial_article(title):
-    title_lower = title.lower()
-    return any(word in title_lower for word in financial_keywords)
 
 def get_finbert_sentiment(text):
     if finbert_model is None:
@@ -320,7 +275,6 @@ def fetch_company_news(ticker, from_date, to_date, lang="en"):
             if not alias_hit:
                 continue
 
-            title_lower = title.lower()
             # Safe datetime handling
             if provider_time:
                 dt = datetime.fromtimestamp(provider_time)
@@ -334,9 +288,18 @@ def fetch_company_news(ticker, from_date, to_date, lang="en"):
             seen_titles.add(title)
             sentiments.append(score)
 
+            translated_title = title
+            if lang != "en":
+                try:
+                    translated_title = GoogleTranslator(source="auto", target=lang).translate(title)
+                except Exception as e:
+                    print("Yahoo title translation error:", e)
+                    translated_title = title
+
             headlines.append({
                 "source": publisher or "Yahoo Finance",
-                "title": title,
+                "title": translated_title,
+                "original_title": title,
                 "url": link,
                 "published_at": formatted_time,
                 "raw_time": dt,
@@ -372,11 +335,6 @@ def fetch_company_news(ticker, from_date, to_date, lang="en"):
                 title = a.get("title")
                 if not title or title in seen_titles:
                     continue
-                company_full = COMPANY_NAMES.get(symbol, symbol)
-                company_clean = company_full.replace(" Limited", "").lower()         
-                title_lower = title.lower()
-                #if not is_financial_article(title):
-                #    continue
                 alias_hit = alias_match(title, aliases)
                 if not alias_hit:
                     continue
@@ -409,6 +367,7 @@ def fetch_company_news(ticker, from_date, to_date, lang="en"):
                 headlines.append({
                     "source": a.get("source", {}).get("name", "NewsAPI"),
                     "title": translated_title,
+                    "original_title": title,
                     "url": a.get("url", "#"),
                     "published_at": formatted_time,
                     "raw_time": raw_dt,
@@ -472,17 +431,61 @@ def safe_int(x):
     except:
         return int(0)
 
+def generate_ai_summary(ticker, news_headlines, lang="en"):
+    symbol = ticker.split(".")[0]
+    company_name = COMPANY_NAMES.get(symbol, symbol)
+
+    if not news_headlines:
+        summary_en = (
+            f"No major recent news was found for {company_name}. "
+            f"The prediction is mainly based on historical price trends and technical indicators."
+        )
+    else:
+        positive = sum(1 for item in news_headlines if item.get("sentiment_label") == "Positive")
+        negative = sum(1 for item in news_headlines if item.get("sentiment_label") == "Negative")
+        neutral = sum(1 for item in news_headlines if item.get("sentiment_label") == "Neutral")
+
+        top_headlines = []
+        for item in news_headlines[:2]:
+            title = item.get("original_title") or item.get("title")
+            if title:
+                top_headlines.append(title)
+
+        if positive > negative:
+            tone = "mostly positive"
+        elif negative > positive:
+            tone = "mostly negative"
+        else:
+            tone = "mixed"
+
+        summary_en = (
+            f"Recent news sentiment for {company_name} is {tone}. "
+            f"Out of the latest {len(news_headlines)} news items, "
+            f"{positive} were positive, {negative} were negative, and {neutral} were neutral. "
+        )
+
+        if top_headlines:
+            summary_en += "Key topics include: " + "; ".join(top_headlines[:2]) + ". "
+
+        summary_en += (
+            "This summary is generated from recent headlines and helps explain the market mood around the stock."
+        )
+
+    if lang != "en":
+        try:
+            return GoogleTranslator(source="en", target=lang).translate(summary_en)
+        except Exception as e:
+            print("AI summary translation error:", e)
+
+    return summary_en
+
 def get_stock_prediction(request, ticker):
     """
     This is the function that runs when a user visits your API URL.
     """
-    if model is None or scalers is None:
-        return JsonResponse({"error": "Model not loaded"}, status=500)
-
-    if request.method != "GET":
-        return JsonResponse({"error": "Invalid request method"}, status=405)
-
     try:
+        if model is None or scalers is None:
+            return JsonResponse({"error": "Model not loaded"}, status=500)
         # ----- 1. GET ALL DATA -----
         lang = translation.get_language() or "en"
         print(f"\n--- Request received for {ticker} ---")
@@ -515,9 +518,13 @@ def get_stock_prediction(request, ticker):
             stock_data = yf.download(tickers=alt_ticker, period="6mo", interval="1d")
             stock_data.reset_index(inplace=True)
 
-            # 🔒 ALSO APPLY IT TO FALLBACK DATA
+            if isinstance(stock_data.columns, pd.MultiIndex):
+                stock_data.columns = stock_data.columns.get_level_values(0)
+
             if "Adj Close" in stock_data.columns:
-                stock_data["Close"] = stock_data["Adj Close"]
+                stock_data["price"] = stock_data["Adj Close"]
+            elif "Close" in stock_data.columns:
+                stock_data["price"] = stock_data["Close"]
 
         # 🔒 Always keep correct order
         stock_data = stock_data.sort_values("Date")
@@ -533,10 +540,24 @@ def get_stock_prediction(request, ticker):
             news_end.strftime('%Y-%m-%d'),
             lang
         )
+        ai_summary = generate_ai_summary(ticker, news_headlines, lang)
+
+        # ================== SENTIMENT + SIGNAL LOGIC ==================
+        twitter_sentiment = get_twitter_sentiment_for_ticker(ticker)
         print(f"Current sentiment for {ticker}: {sentiment:.4f}")
 
+        # Normalize twitter sentiment
+        if isinstance(twitter_sentiment, dict):
+            tw_sent = twitter_sentiment.get("score", 0.0)
+        else:
+            tw_sent = twitter_sentiment if twitter_sentiment is not None else 0.0
+
+        # Final combined sentiment
+        sentiment_score = (0.6 * sentiment) + (0.4 * tw_sent)
+        if request.method != "GET":
+            return JsonResponse({"error": "Invalid request method"}, status=405)
+        
         # ----- 2. PREPARE DATA FOR PREDICTION -----
-        symbol = ticker.split(".")[0]
         stock_id = stock_to_id.get(ticker, 0)
         stock_data_features = prepare_features(stock_data.copy(), sentiment)
         stock_data_features["RSI"] = compute_rsi(stock_data_features["price"])
@@ -554,7 +575,6 @@ def get_stock_prediction(request, ticker):
         current_seq_scaled = stock_scaler.transform(last_sequence_unscaled)
         current_seq_scaled = current_seq_scaled.reshape((1, LOOKBACK, 6))
 
-        future_sentiment = 0.0  # IMPORTANT FIX
         # ----- 3. RUN 14-DAY PREDICTION (CORRECT WAY) -----
         print("Running 14-day prediction (multi-output model)...")
 
@@ -567,6 +587,64 @@ def get_stock_prediction(request, ticker):
 
         predicted_prices = stock_scaler.inverse_transform(dummy)[:, 0]
         predicted_prices = [float(p) for p in predicted_prices]
+        # ===== PRICE TREND =====
+        last_close_series = stock_data["price"].iloc[-1]
+
+        if hasattr(last_close_series, "values"):
+            last_close = float(last_close_series.values[0])
+        else:
+            last_close = float(last_close_series)
+
+        price_trend = (predicted_prices[-1] - last_close) / last_close
+
+        final_score = (0.6 * sentiment_score) + (0.4 * price_trend)
+
+       # ================== PURE NEWS-BASED SIGNAL ==================
+
+        positive_count = sum(1 for n in news_headlines if n["sentiment_label"] == "Positive")
+        negative_count = sum(1 for n in news_headlines if n["sentiment_label"] == "Negative")
+        neutral_count = sum(1 for n in news_headlines if n["sentiment_label"] == "Neutral")
+
+        total_news = len(news_headlines) if news_headlines else 1
+
+        # Majority logic
+        if positive_count / total_news > 0.6:
+            signal = "BUY"
+
+        elif negative_count / total_news > 0.6:
+            signal = "SELL"
+
+        else:
+            # Mixed → use sentiment score
+            if sentiment_score > 0.1:
+                signal = "BUY"
+            elif sentiment_score < -0.1:
+                signal = "SELL"
+            else:
+                signal = "HOLD"
+
+        # Signal strength (based on sentiment only)
+        signal_strength = round(abs(sentiment_score) * 100, 2)
+
+        pred_std = np.std(predicted_prices)
+        pred_mean = np.mean(predicted_prices) if np.mean(predicted_prices) != 0 else 1
+        volatility_ratio = pred_std / pred_mean
+        confidence = max(40, min(95, round((1 - volatility_ratio) * 100, 2)))
+
+        # ================== RISK SCORE ==================
+
+        risk_from_volatility = min(100, volatility_ratio * 100)
+        risk_from_sentiment = (1 - abs(final_score)) * 100
+
+        risk_score = round((0.6 * risk_from_volatility + 0.4 * risk_from_sentiment), 2)
+
+        # Explanation message
+        if signal == "BUY":
+            explanation = "Positive sentiment detected from news and social media. Uptrend possible."
+        elif signal == "SELL":
+            explanation = "Negative sentiment detected. Downward pressure likely."
+        else:
+            explanation = "Neutral sentiment. Sideways consolidation likely."
 
         # 🔒 Optional stabilizer (VERY IMPORTANT)
         last_close_series = stock_data["price"].iloc[-1]
@@ -588,6 +666,7 @@ def get_stock_prediction(request, ticker):
             one_year_data.columns = one_year_data.columns.get_level_values(0)
         year_low = safe_float(one_year_data["Low"].min())
         year_high = safe_float(one_year_data["High"].max())
+        fast_info = getattr(ticker_obj, "fast_info", {}) or {}
 
         key_stats = {
             # Price data (from history)
@@ -650,16 +729,25 @@ def get_stock_prediction(request, ticker):
 
         # ----- 6. RETURN THE FINAL, COMPLETE JSON -----
         print("--- Request complete. Sending JSON response. ---")
+        print("Current Django language:", translation.get_language())
+        lang = (translation.get_language() or "en").split("-")[0]
+        print("LANG USED:", lang)
         return JsonResponse({
             "ticker": ticker,
             "key_stats": key_stats,
             "latest_news": news_headlines,
             "historical_graph_data": historical_graph,
-            "prediction_graph_data": prediction_graph
+            "prediction_graph_data": prediction_graph,
+            "twitter_sentiment": twitter_sentiment,
+            "confidence": confidence,
+            "ai_summary": ai_summary,
+            "signal": signal,
+            "signal_strength": signal_strength,
+            "risk_score": risk_score,
+            "final_sentiment": round(final_score, 3),
+            "explanation": explanation,
         })
 
     except Exception as e:
         print(f"❌ An error occurred during prediction: {e}")
-        return JsonResponse({"error": str(e)}, status=500)
-    
-    
+        return JsonResponse({"error": str(e)}, status=500)    

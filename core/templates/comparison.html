@@ -1,6 +1,5 @@
 {% load static %}
 {% load i18n %}
-
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
@@ -16,7 +15,6 @@
   <link rel="stylesheet" href="{% static 'core/analysis.css' %}?v=1">
   <link rel="stylesheet" href="{% static 'core/comparison.css' %}?v=1">
 </head>
-
 <body>
   <div class="container">
     <!-- Top Bar -->
@@ -30,7 +28,6 @@
           </div>
         </div>
       </div>
-
       <div class="top-actions">
         <a href="{% url 'home' %}" class="btn btn-ghost">
           {% trans "Back to Home Page" %}
@@ -52,26 +49,22 @@
           {% endfor %}
         </select>
       </div>
-
       <div class="tip" style="margin-top:10px;">
         {% trans "Hold Ctrl (Windows) or Cmd (Mac) to select multiple companies." %}
       </div>
-
       <div class="controls" style="margin-top:14px;">
         <button class="btn btn-primary compare-btn">
           {% trans "Compare Selected Stocks" %}
         </button>
       </div>
-
       <div id="comparisonLoading" class="comparison-loading" style="display:none; margin-top:10px;">
         <span>{% trans "Comparing stocks" %}</span>
         <span class="loading-dots"></span>
       </div>
       <div id="selectedStocksLine" class="comparison-loading" style="display:none;"></div>
     </div>
-    <!-- Full Width Section (Match Analysis Structure) -->
+    <!-- Full Width Section -->
     <div class="full-width-section">
-
       <div class="charts-row">
         <div class="card chart-card">
           <h3>{% trans "Stock Comparison Chart" %}</h3>
@@ -80,10 +73,14 @@
           </div>
         </div>
       </div>
-
       <div class="card" style="margin-top:16px;">
         <h3>{% trans "Key Metrics Comparison" %}</h3>
         <div id="comparisonStats"></div>
+      </div>
+      <!-- Investment Verdict -->
+      <div class="card verdict-block" id="verdictBlock" style="display:none; margin-top:16px;">
+        <h3>{% trans "Investment Verdict" %}</h3>
+        <div id="verdictContent"></div>
       </div>
     </div>
   </div>

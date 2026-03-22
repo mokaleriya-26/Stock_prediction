@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newsTitle = document.getElementById("newsTitle");
     const newsList = document.getElementById("newsList");
     
-    // Stats
+    // Stats 
     const statsTable = document.getElementById("statsTable");
 
     // Charts
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "COALINDIA.NS - Coal India Limited",
         "DRREDDY.NS - Dr. Reddy's Laboratories Limited",
         "EICHERMOT.NS - Eicher Motors Limited",
-        "ETERNAL.NS - Eternal Life Insurance Limited",
+        "ETERNAL.NS - Eternal Limited",
         "GRASIM.NS - Grasim Industries Limited",
         "HCLTECH.NS - HCL Technologies Limited",
         "HDFCBANK.NS - HDFC Bank Limited",
@@ -121,8 +121,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(errorData.error || "Failed to fetch data");
             }
             
-            const data = await response.json(); // This is your REAL JSON!
+            const data = await response.json();
+            console.log("API data:", data);
 
+            const predConfidenceEl = document.getElementById("predConfidence");
+            console.log("predConfidence element:", predConfidenceEl);
+
+            if (predConfidenceEl) {
+                predConfidenceEl.textContent =
+                    data.confidence != null ? `${Number(data.confidence).toFixed(0)}%` : "—";
+            } else {
+                console.error("Element with id 'predConfidence' not found");
+            }
             // 3. Populate all the UI elements with REAL data
             
             // Populate News
@@ -278,22 +288,20 @@ document.addEventListener("DOMContentLoaded", () => {
             volatility = volatility / prices.length;
 
             // Normalize risk score (simple scaling)
-            let riskScore = Math.min(100, (volatility / lastPrice) * 1000);
-
+            const riskScore = data.risk_score;
             const riskFill = document.getElementById("riskFill");
             const riskLabel = document.getElementById("riskLabel");
+
             riskFill.style.width = riskScore + "%";
+
             if (riskScore < 30) {
                 riskLabel.textContent = "Low Risk";
-                riskFill.style.boxShadow = "0 0 15px #14FFEC";
             }
             else if (riskScore < 60) {
                 riskLabel.textContent = "Moderate Risk";
-                riskFill.style.boxShadow = "0 0 15px #00E0FF";
             }
             else {
                 riskLabel.textContent = "High Risk";
-                riskFill.style.boxShadow = "0 0 15px #ff6b6b";
             }
 
             // BUY / SELL / HOLD SIGNAL
@@ -304,29 +312,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
             signalText.classList.remove("signal-buy", "signal-sell", "signal-hold");
 
-            let confidencePercent = Math.abs((predictedFirst - lastPrice) / lastPrice) * 100;
-            confidencePercent = Math.min(confidencePercent, 100).toFixed(2);
+            // 👉 USE BACKEND VALUES
+            const signal = data.signal;
+            const strength = data.signal_strength;
 
-            if (predictedFirst > lastPrice * 1.02) {
-                signalText.textContent = "BUY";
+            // Set signal text
+            signalText.textContent = signal;
+
+            // Arrow + color + message
+            if (signal === "BUY") {
                 signalArrow.textContent = "↑";
                 signalText.classList.add("signal-buy");
-                signalNote.textContent = "Upward momentum detected.";
-            } 
-            else if (predictedFirst < lastPrice * 0.98) {
-                signalText.textContent = "SELL";
+                signalNote.textContent = "Majority of news is positive.";
+            }
+            else if (signal === "SELL") {
                 signalArrow.textContent = "↓";
                 signalText.classList.add("signal-sell");
-                signalNote.textContent = "Downward pressure expected.";
-            } 
+                signalNote.textContent = "Majority of news is negative.";
+            }
             else {
-                signalText.textContent = "HOLD";
                 signalArrow.textContent = "→";
                 signalText.classList.add("signal-hold");
-                signalNote.textContent = "Sideways consolidation likely.";
+                signalNote.textContent = "Mixed or weak sentiment.";
             }
 
-            confidenceDiv.textContent = "Signal Strength: " + confidencePercent + "%";
+            // Show strength from backend
+            confidenceDiv.textContent = "Signal Strength: " + strength + "%";
 
         } catch (error) {
             console.error("Failed to generate insights:", error);
