@@ -68,69 +68,39 @@ def fetch_stock_data(ticker, start, end):
     return data
 
 
-def fetch_news_sentiment_daily(query, start, end):
+def load_kaggle_sentiment_data():
     """
-    Returns a dataframe with columns:
-    date, sentiment
+    Returns a dataframe with columns: company, date, sentiment
+    Assigns synthetic dates to the tweets between TRAIN_START_DATE and TRAIN_END_DATE.
     """
-    print("Fetching daily news sentiment...")
-
-    if not NEWS_API_KEY:
-        print("NewsAPI key not set. Using neutral sentiment.")
-        return pd.DataFrame(columns=["date", "sentiment"])
-
-    url = "https://newsapi.org/v2/everything"
-
-    params = {
-        "q": query,
-        "from": start,
-        "to": end,
-        "sortBy": "publishedAt",
-        "language": "en",
-        "pageSize": 100,   # max per request
-        "apiKey": NEWS_API_KEY
-    }
-
-    try:
-        res = requests.get(url, params=params, timeout=15)
-        data = res.json()
-
-        if data.get("status") != "ok":
-            print("⚠️ NewsAPI error:", data)
-            return pd.DataFrame(columns=["date", "sentiment"])
-
-        articles = data.get("articles", [])
-        if not articles:
-            print("⚠️ No news articles found.")
-            return pd.DataFrame(columns=["date", "sentiment"])
-
-        rows = []
-        for a in articles:
-            title = a.get("title")
-            published = a.get("publishedAt")  # ISO string
-
-            if not title or not published:
-                continue
-
-            # Convert to date only (YYYY-MM-DD)
-            dt = pd.to_datetime(published).date()
-
-            polarity = TextBlob(title).sentiment.polarity
-            rows.append((dt, polarity))
-
-        if not rows:
-            return pd.DataFrame(columns=["date", "sentiment"])
-
-        df = pd.DataFrame(rows, columns=["date", "sentiment"])
-
-        # Daily mean sentiment
-        df = df.groupby("date", as_index=False)["sentiment"].mean()
-
-        return df
-
-    except Exception as e:
-        print("⚠️ Sentiment fetch failed:", e)
-        return pd.DataFrame(columns=["date", "sentiment"])
+    print("Loading local Kaggle sentiment dataset with synthetic dates...")
+    csv_path = os.path.join("fttt_project", "dataset", "twitter_sentiment_processed_new.csv")
+    if not os.path.exists(csv_path):
+        print(f"⚠️ Dataset not found: {csv_path}")
+        return pd.DataFrame(columns=["date", "company", "sentiment"])
+    
+    df = pd.read_csv(csv_path)
+    
+    # Map sentiment text to numeric
+    sentiment_mapping = {"Positive": 1.0, "Neutral": 0.0, "Negative": -1.0}
+    df["sentiment"] = df["sentiment"].map(sentiment_mapping).fillna(0.0)
+    
+    # Normalize ticker (e.g., $ICICIBANK.NSE -> ICICIBANK.NS)
+    df["company"] = df["company"].astype(str).str.replace('$', '', regex=False).str.replace('.NSE', '.NS', regex=False)
+    
+    # Assign synthetic dates between TRAIN_START_DATE and TRAIN_END_DATE
+    start_dt = pd.to_datetime(TRAIN_START_DATE).date()
+    end_dt = pd.to_datetime(TRAIN_END_DATE).date()
+    date_range = pd.date_range(start=start_dt, end=end_dt).date
+    
+    # Randomly assign dates to the tweets (seeded for reproducibility)
+    np.random.seed(42)
+    df["date"] = np.random.choice(date_range, size=len(df))
+    
+    # Average daily sentiment per company
+    daily_sentiment = df.groupby(["company", "date"], as_index=False)["sentiment"].mean()
+    
+    return daily_sentiment
 
 def compute_rsi(series, period=14):
     delta = series.diff()
@@ -194,6 +164,9 @@ if __name__ == "__main__":
 
     os.makedirs("ml_models", exist_ok=True)
 
+    # Load all sentiment data once
+    kaggle_sentiment_df = load_kaggle_sentiment_data()
+
     # 1. Fetch & combine data from all companies
     all_data = []
 
@@ -205,7 +178,8 @@ if __name__ == "__main__":
             print(f"Skipping {ticker}, no data.")
             continue
 
-        sentiment_df = pd.DataFrame(columns=["date", "sentiment"])
+        # Extract sentiment for this specific ticker
+        sentiment_df = kaggle_sentiment_df[kaggle_sentiment_df["company"] == ticker][["date", "sentiment"]]
         stock_data = prepare_features(stock_data, sentiment_df)
 
         stock_id = stock_to_id[ticker]
