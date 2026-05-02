@@ -47,8 +47,12 @@ except Exception:
 # ══════════════════════════════════════════════════════════════════════════════
 # CONFIG
 # ══════════════════════════════════════════════════════════════════════════════
-GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
-NEWS_API_KEY   = st.secrets.get("NEWS_API_KEY") or os.getenv("NEWS_API_KEY")
+try:
+    GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+    NEWS_API_KEY   = st.secrets.get("NEWS_API_KEY") or os.getenv("NEWS_API_KEY")
+except Exception:
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    NEWS_API_KEY   = os.getenv("NEWS_API_KEY")
 LOOKBACK = 60
 
 st.set_page_config(
@@ -229,20 +233,7 @@ def get_batch_prices(tickers):
         return prices
     except: return {tk: None for tk in tickers}
 
-# ── Session Persistence ──
-def save_session(username, logged_out=False):
-    try:
-        with open("session_state.json", "w") as f:
-            json.dump({"username": username, "logged_out": logged_out}, f)
-    except: pass
 
-def load_persistent_session():
-    try:
-        if os.path.exists("session_state.json"):
-            with open("session_state.json", "r") as f:
-                return json.load(f)
-    except: pass
-    return None
 
 # ── Query Param Routing ──
 if "page" in st.query_params:
@@ -275,8 +266,9 @@ html,body,[data-testid="stAppViewContainer"],[data-testid="stApp"]{
 }
 [data-testid="stHeader"]{background:transparent !important; display:none;}
 [data-testid="stSidebar"]{display:none !important;}
-.block-container{padding:0 2.5rem 3rem !important; max-width:1400px !important;}
-section[data-testid="stMain"] > div{padding-top:0 !important;}
+.block-container, [data-testid="stMainBlockContainer"] { padding-top: 2rem !important; padding-bottom: 3rem !important; padding-left: 2.5rem !important; padding-right: 2.5rem !important; max-width: 1400px !important; }
+section[data-testid="stMain"] > div { padding-top: 0 !important; }
+[data-testid="stAppViewBlockContainer"] { padding-top: 2rem !important; }
 
 /* ── hide streamlit chrome ── */
 #MainMenu,footer,[data-testid="stToolbar"],.stDeployButton{visibility:hidden !important; display:none !important;}
@@ -343,17 +335,7 @@ div[data-testid="stVerticalBlock"]:has(span#watchlist-marker) {
     margin-top: 20px !important;
 }
 
-/* ── Auth Page Button Scaling ── */
-div[data-testid="stVerticalBlock"]:has(span#auth-marker) div[data-testid="stButton"] {
-    display: flex !important;
-    justify-content: center !important;
-}
-div[data-testid="stVerticalBlock"]:has(span#auth-marker) div[data-testid="stButton"] button {
-    width: auto !important;
-    min-width: 200px !important;
-    padding: 10px 30px !important;
-    font-size: 14px !important;
-}
+/* ── Auth Page Button Scaling Removed so buttons span full width ── */
 
 /* ── Specific Overrides for List Items ── */
 .list-header { font-size: 13px; font-weight: 700; color: rgba(217,226,236,0.3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
@@ -414,8 +396,7 @@ div[data-testid="stButton"] button:hover {
   color: #00E0FF !important;
   background: rgba(0,224,255,0.05) !important;
 }
-[data-testid="stHorizontalBlock"]:has(.brand-logo) div[data-testid="stButton"]:has(button[key*="signup"]) button,
-[data-testid="stHorizontalBlock"]:has(.brand-logo) div[data-testid="stButton"]:has(button[key*="signout"]) button {
+[data-testid="stHorizontalBlock"]:has(.brand-logo) > div:nth-child(10) div[data-testid="stButton"] button {
   background: linear-gradient(90deg, #00E0FF, #14FFEC) !important;
   color: #011627 !important;
   border-radius: 8px !important;
@@ -1187,37 +1168,17 @@ CHART_LAYOUT = dict(
 # ══════════════════════════════════════════════════════════════════════════════
 # SESSION STATE
 # ══════════════════════════════════════════════════════════════════════════════
-# ── Session Persistence ──
-def save_session(username, logged_out=False):
-    try:
-        with open("session_state.json", "w") as f:
-            json.dump({"username": username, "logged_out": logged_out}, f)
-    except: pass
 
-def load_persistent_session():
-    try:
-        if os.path.exists("session_state.json"):
-            with open("session_state.json", "r") as f:
-                return json.load(f)
-    except: pass
-    return None
 
 # Initialize Session State
-for k,v in [("page","home"),("lang","English"),("lang_code","en"),("signed_in",False),("username",""),
+for k,v in [("page","home"),("lang","English"),("lang_code","en"),("signed_in",False),("username",None),
               ("scroll_to",None),("auth_mode","login"),("auth_redirect",None)]:
     if k not in st.session_state: st.session_state[k]=v
-
-if "initialized_persistent" not in st.session_state:
-    st.session_state.initialized_persistent = True
-    ps = load_persistent_session()
-    if ps and not ps.get("logged_out"):
-        st.session_state.signed_in = True
-        st.session_state.username = ps.get("username", "")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TOP NAV BAR
 # ══════════════════════════════════════════════════════════════════════════════
-n0,n1,n2,n3,nh,nw,nb,n6,n7,n8 = st.columns([2.8, 0.7, 0.8, 1.1, 0.8, 0.9, 0.6, 1.0, 0.6, 0.7])
+n0,n1,n2,n3,nh,nw,nb,n6,n7,n8 = st.columns([2.8, 0.7, 0.8, 1.1, 0.8, 0.9, 0.4, 0.9, 0.8, 0.8])
 
 with n0:
     st.markdown("""
@@ -1283,9 +1244,8 @@ with n7:
 with n8:
     if st.session_state.signed_in:
         if st.button(translate_text("Sign Out", st.session_state.lang_code), key="nav_signout"):
-            save_session(st.session_state.username, logged_out=True) # Mark as logged out
             st.session_state.signed_in=False
-            st.session_state.username=""
+            st.session_state.username=None
             st.session_state.page="home"; st.rerun()
     else:
         if st.button(translate_text("Sign Up", st.session_state.lang_code), key="nav_signup"):
@@ -1447,7 +1407,7 @@ if st.session_state.page == "auth":
                     st.session_state.auth_error = "Invalid username or password."
                 else:
                     st.session_state.signed_in = True; st.session_state.username = u
-                    save_session(u, logged_out=False) # Persist
+
                     st.session_state.auth_error = ""
                     st.session_state.page = st.session_state.get("auth_redirect") or "home"
                     st.rerun()
@@ -1475,7 +1435,7 @@ if st.session_state.page == "auth":
                 else:
                     if add_user(u, p):
                         st.session_state.signed_in = True; st.session_state.username = u
-                        save_session(u, logged_out=False) # Persist
+
                         st.session_state.page = st.session_state.get("auth_redirect") or "home"
                         st.rerun()
                     else:
@@ -1820,6 +1780,11 @@ elif st.session_state.page == "home":
 # ANALYSIS PAGE
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.page == "analysis":
+    if not st.session_state.signed_in:
+        st.session_state.auth_redirect = "analysis"
+        st.session_state.page = "auth"
+        st.rerun()
+        st.stop()
 
     # ── CSS that styles Streamlit's own column containers for the left panel ──
     st.markdown("""
@@ -2212,6 +2177,11 @@ elif st.session_state.page == "analysis":
 # COMPARISON PAGE
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.page == "comparison":
+    if not st.session_state.signed_in:
+        st.session_state.auth_redirect = "comparison"
+        st.session_state.page = "auth"
+        st.rerun()
+        st.stop()
 
     st.markdown("""
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
@@ -2467,6 +2437,11 @@ elif st.session_state.page == "terms":
 </div>''', unsafe_allow_html=True)
 
 elif st.session_state.page == "history":
+    if not st.session_state.signed_in:
+        st.session_state.auth_redirect = "history"
+        st.session_state.page = "auth"
+        st.rerun()
+        st.stop()
     user = st.session_state.username if st.session_state.signed_in else "guest"
     
     with st.container():
@@ -2499,6 +2474,11 @@ elif st.session_state.page == "history":
                 ''', unsafe_allow_html=True)
 
 elif st.session_state.page == "watchlist":
+    if not st.session_state.signed_in:
+        st.session_state.auth_redirect = "watchlist"
+        st.session_state.page = "auth"
+        st.rerun()
+        st.stop()
     user = st.session_state.username if st.session_state.signed_in else "guest"
     
     with st.container():
@@ -2540,6 +2520,11 @@ elif st.session_state.page == "watchlist":
                 ''', unsafe_allow_html=True)
 
 elif st.session_state.page == "alerts":
+    if not st.session_state.signed_in:
+        st.session_state.auth_redirect = "alerts"
+        st.session_state.page = "auth"
+        st.rerun()
+        st.stop()
     user = st.session_state.username if st.session_state.signed_in else "guest"
     
     with st.container():
