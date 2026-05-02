@@ -770,6 +770,60 @@ hr{border:1px solid rgba(255,255,255,0.08) !important; margin:16px 0 !important;
 }
 .verdict-summary strong{color:#00E0FF; font-weight:800;}
 .verdict-disc{margin-top:12px; font-size:11px; color:rgba(255,255,255,0.2); text-align:center;}
+/* Default Grid Definitions */
+.grid-history-head { display:grid; grid-template-columns:1.2fr 1fr 1.5fr; gap:20px; padding:0 10px; }
+.grid-watchlist-head { display:grid; grid-template-columns:1.2fr 1fr 0.8fr; gap:20px; padding:0 10px; }
+.grid-history-row { display:grid; grid-template-columns:1.2fr 1fr 1.5fr; gap:20px; padding:15px 10px; align-items:center; }
+.grid-watchlist-row { display:grid; grid-template-columns:1.2fr 1fr 0.8fr; gap:20px; padding:15px 10px; align-items:center; }
+.grid-alerts-head { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px; padding:0 10px; }
+.grid-alerts-row { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px; padding:15px 10px; align-items:center; }
+
+@media (max-width: 768px) {
+  /* Reduce padding on main containers */
+  .block-container, [data-testid="stMainBlockContainer"] { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .about-wrapper, .welcome-card, .vcard, .ks-card, .feat-card, .showcase-card { padding: 20px 15px !important; }
+  
+  /* Typography Scaling */
+  .hero-title { font-size: 28px !important; }
+  .showcase-title { font-size: 20px !important; }
+  .brand-text .line1 { font-size: 13px !important; }
+  
+  /* Navbar Wrapping - Override Streamlit column stacking */
+  div[data-testid="stHorizontalBlock"]:has(.brand-logo) {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 10px !important;
+  }
+  div[data-testid="stHorizontalBlock"]:has(.brand-logo) > div {
+      min-width: unset !important;
+      width: auto !important;
+      flex: 0 0 auto !important;
+  }
+
+  /* Grid Resets for Mobile */
+  .about-stats-grid,
+  .grid-history-head, .grid-history-row,
+  .grid-watchlist-head, .grid-watchlist-row,
+  .grid-alerts-head, .grid-alerts-row {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+  }
+  
+  .grid-history-head, .grid-watchlist-head, .grid-alerts-head {
+      display: none !important; /* Hide headers on mobile to save space */
+  }
+  
+  .grid-history-row, .grid-watchlist-row, .grid-alerts-row {
+      text-align: center;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .list-date, .list-price, .remove-link {
+      text-align: center !important;
+      justify-content: center;
+  }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1760,7 +1814,7 @@ elif st.session_state.page == "home":
             with in_col1:
                 st.text_input("email_cta", placeholder=translate_text("Your work email", lc), label_visibility="collapsed")
             with in_col2:
-                st.button(translate_text("Start Free Trial", lc), key="cta_main_btn")
+                st.button(translate_text("Start Free Trial", lc), key="cta_main_btn", use_container_width=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
         st.markdown(f'''
@@ -2011,7 +2065,7 @@ elif st.session_state.page == "analysis":
             w_user = st.session_state.username if st.session_state.signed_in else "guest"
             in_w = is_in_watchlist(w_user, tns)
             w_label = "⭐ " + translate_text("In Watchlist", st.session_state.lang_code) if in_w else "☆ " + translate_text("Add to Watchlist", st.session_state.lang_code)
-            if st.button(w_label, key="watchlist_toggle"):
+            if st.button(w_label, key="watchlist_toggle", use_container_width=True):
                 act = toggle_watchlist(w_user, tns)
                 st.toast(f"{tns} {act}!")
                 st.rerun()
@@ -2362,7 +2416,7 @@ elif st.session_state.page == "comparison":
 # PRIVACY POLICY PAGE
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.page == "privacy":
-    if st.button("← " + translate_text("Back to Home", lc), key="back_home_priv"):
+    if st.button("← " + translate_text("Back to Home", lc), key="back_home_priv", use_container_width=True):
         st.session_state.page = "home"; st.rerun()
     
     st.markdown(f'''<div class="glass-card" style="padding:40px; margin-top:20px; max-width:900px; margin:0 auto;">
@@ -2401,7 +2455,7 @@ elif st.session_state.page == "privacy":
 # TERMS OF SERVICE PAGE
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.page == "terms":
-    if st.button("← " + translate_text("Back to Home", lc), key="back_home_terms"):
+    if st.button("← " + translate_text("Back to Home", lc), key="back_home_terms", use_container_width=True):
         st.session_state.page = "home"; st.rerun()
     
     st.markdown(f'''<div class="glass-card" style="padding:40px; margin-top:20px; max-width:900px; margin:0 auto;">
@@ -2454,7 +2508,7 @@ elif st.session_state.page == "history":
         else:
             # Header Row
             st.markdown(f'''
-            <div style="display:grid; grid-template-columns:1.2fr 1fr 1.5fr; gap:20px; padding:0 10px;">
+            <div class="grid-history-head">
                 <div class="list-header">{translate_text("Ticker", lc)}</div>
                 <div class="list-header">{translate_text("Last Seen Price", lc)}</div>
                 <div class="list-header" style="text-align:right;">{translate_text("Date & Time", lc)}</div>
@@ -2465,7 +2519,7 @@ elif st.session_state.page == "history":
             for ticker, price, dt in history:
                 clean_dt = dt.split(".")[0]
                 st.markdown(f'''
-                <div style="display:grid; grid-template-columns:1.2fr 1fr 1.5fr; gap:20px; padding:15px 10px; align-items:center;">
+                <div class="grid-history-row">
                     <div class="list-ticker">{ticker}</div>
                     <div class="list-price">₹{price:.2f}</div>
                     <div class="list-date" style="text-align:right;">{clean_dt}</div>
@@ -2495,7 +2549,7 @@ elif st.session_state.page == "watchlist":
 
             # Header Row
             st.markdown(f'''
-            <div style="display:grid; grid-template-columns:1.2fr 1fr 0.8fr; gap:20px; padding:0 10px;">
+            <div class="grid-watchlist-head">
                 <div class="list-header">{translate_text("Ticker", lc)}</div>
                 <div class="list-header">{translate_text("Current Price", lc)}</div>
                 <div class="list-header" style="text-align:right;">{translate_text("Action", lc)}</div>
@@ -2509,7 +2563,7 @@ elif st.session_state.page == "watchlist":
                 price_html = f'<div class="list-price">{price_display}</div>'
                 
                 st.markdown(f'''
-                <div style="display:grid; grid-template-columns:1.2fr 1fr 0.8fr; gap:20px; padding:15px 10px; align-items:center;">
+                <div class="grid-watchlist-row">
                     <div class="list-ticker">{ticker}</div>
                     {price_html}
                     <div style="text-align:right;">
@@ -2570,7 +2624,7 @@ elif st.session_state.page == "alerts":
         else:
             # Header Row
             st.markdown(f'''
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px; padding:0 10px;">
+            <div class="grid-alerts-head">
                 <div class="list-header">{translate_text("Ticker", lc)}</div>
                 <div class="list-header">{translate_text("Old Price", lc)}</div>
                 <div class="list-header">{translate_text("New Price", lc)}</div>
@@ -2583,7 +2637,7 @@ elif st.session_state.page == "alerts":
                 icon = "📈" if direction == "increased" else "📉"
                 color = "#14FFEC" if direction == "increased" else "#FF6B6B"
                 st.markdown(f'''
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px; padding:15px 10px; align-items:center;">
+                <div class="grid-alerts-row">
                     <div class="list-ticker">{ticker}</div>
                     <div class="list-date">₹{old_p:.2f}</div>
                     <div class="list-price">₹{new_p:.2f}</div>
