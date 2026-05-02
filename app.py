@@ -47,8 +47,8 @@ except Exception:
 # ══════════════════════════════════════════════════════════════════════════════
 # CONFIG
 # ══════════════════════════════════════════════════════════════════════════════
-NEWS_API_KEY   = os.getenv("NEWS_API_KEY",   "84fc43ca1f7045ad88e16857dbb0f901")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyC6GM48tBnJBdlUjyER7Kb558-4SlG8JeE").strip()
+GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+NEWS_API_KEY   = st.secrets.get("NEWS_API_KEY") or os.getenv("NEWS_API_KEY")
 LOOKBACK = 60
 
 st.set_page_config(

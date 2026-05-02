@@ -3,4 +3,6 @@ __pycache__/
 db.sqlite3
 .DS_Store
 .vscode/
-.env/
+.env
+session_state.json
+users.db
