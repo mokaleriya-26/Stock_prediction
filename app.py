@@ -209,27 +209,49 @@ def init_db_cached():
 
 init_db_cached()
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=300, show_spinner=False)
 def get_ticker_history_cached(ticker, period="30d"):
     try:
         data = yf.download(ticker, period=period, progress=False)
         return data
     except: return pd.DataFrame()
 
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=600, show_spinner=False)
+def get_trending_data(top_list):
+    results = []
+    for sym, name, letter, sub in top_list:
+        try:
+            h2 = yf.download(f"{sym}.NS", period="2d", interval="1d", progress=False)
+            if isinstance(h2.columns, pd.MultiIndex): h2.columns = h2.columns.get_level_values(0)
+            pc2 = "Adj Close" if "Adj Close" in h2.columns else "Close"
+            cur = float(h2[pc2].iloc[-1]) if not h2.empty else 0
+            try: inf2 = yf.Ticker(f"{sym}.NS").info or {}
+            except: inf2 = {}
+            vol = inf2.get("volume", 0)
+            results.append({"sym": sym, "name": name, "letter": letter, "sub": sub, "cur": cur, "vol": vol})
+        except:
+            results.append({"sym": sym, "name": name, "letter": letter, "sub": sub, "cur": 0, "vol": 0})
+    return results
+
+@st.cache_data(ttl=60, show_spinner=False)
 def get_batch_prices(tickers):
     if not tickers: return {}
     try:
-        df = yf.download(tickers, period="1d", group_by='ticker', progress=False)
+        df = yf.download(tickers, period="1d", progress=False)
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
         prices = {}
-        for ticker in tickers:
-            try:
-                if len(tickers) > 1:
-                    val = df[ticker]['Close'].iloc[-1]
-                else:
-                    val = df['Close'].iloc[-1]
-                prices[ticker] = float(val)
-            except: prices[ticker] = None
+        if len(tickers) == 1:
+            tk = tickers[0]
+            val = df['Close'].iloc[-1] if 'Close' in df.columns else None
+            prices[tk] = float(val) if val is not None else None
+        else:
+            for tk in tickers:
+                try:
+                    t_data = yf.download(tk, period="1d", progress=False)
+                    if isinstance(t_data.columns, pd.MultiIndex): t_data.columns=t_data.columns.get_level_values(0)
+                    prices[tk] = float(t_data['Close'].iloc[-1])
+                except: prices[tk] = None
         return prices
     except: return {tk: None for tk in tickers}
 
@@ -1228,10 +1250,23 @@ CHART_LAYOUT = dict(
 # ══════════════════════════════════════════════════════════════════════════════
 
 
-# Initialize Session State
-for k,v in [("page","home"),("lang","English"),("lang_code","en"),("signed_in",False),("username",None),
-              ("scroll_to",None),("auth_mode","login"),("auth_redirect",None)]:
-    if k not in st.session_state: st.session_state[k]=v
+# Initialize Session State (at the start of the app)
+if "signed_in" not in st.session_state:
+    st.session_state.signed_in = False
+if "username" not in st.session_state:
+    st.session_state.username = None
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+if "lang" not in st.session_state:
+    st.session_state.lang = "English"
+if "lang_code" not in st.session_state:
+    st.session_state.lang_code = "en"
+if "auth_mode" not in st.session_state:
+    st.session_state.auth_mode = "login"
+if "auth_redirect" not in st.session_state:
+    st.session_state.auth_redirect = None
+if "scroll_to" not in st.session_state:
+    st.session_state.scroll_to = None
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TOP NAV BAR
@@ -1302,14 +1337,28 @@ with n7:
 with n8:
     if st.session_state.signed_in:
         if st.button(translate_text("Sign Out", st.session_state.lang_code), key="nav_signout"):
-            st.session_state.signed_in=False
-            st.session_state.username=None
-            st.session_state.page="home"; st.rerun()
+            st.session_state.signed_in = False
+            st.session_state.username = None
+            st.session_state.page = "home"
+            st.rerun()
     else:
         if st.button(translate_text("Sign Up", st.session_state.lang_code), key="nav_signup"):
-            st.session_state.auth_mode="signup"
-            st.session_state.auth_redirect=None
-            st.session_state.page="auth"; st.rerun()
+            st.session_state.auth_mode = "signup"
+            st.session_state.auth_redirect = None
+            st.session_state.page = "auth"
+            st.rerun()
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GLOBAL ACCESS PROTECTION
+# ══════════════════════════════════════════════════════════════════════════════
+# Protect internal pages from guest access
+if st.session_state.page in ["analysis", "comparison", "history", "watchlist", "alerts"]:
+    if not st.session_state.signed_in:
+        st.session_state.auth_mode = "login"
+        st.session_state.auth_redirect = st.session_state.page
+        st.session_state.page = "auth"
+        st.rerun()
+        st.stop()
 
 st.markdown("<div style='border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:28px;'></div>", unsafe_allow_html=True)
 
@@ -1509,6 +1558,14 @@ if st.session_state.page == "auth":
 # HOME PAGE
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.page == "home":
+    lc = st.session_state.lang_code
+    # Pre-fetch all trending data and hero chart data at the start to prevent layout jumps later
+    top_list_cfg = [("HDFCBANK","HDFC Bank","H","HDFC • Finance"),
+                    ("RELIANCE","Reliance Ind.","R","REL • Technology"),
+                    ("TCS","TCS","T","TCS • IT Services"),
+                    ("ICICIBANK","ICICI","I","ICICI • Finance")]
+    trending_results = get_trending_data(top_list_cfg)
+    hero_snap = get_ticker_history_cached("HDFCBANK.NS", period="30d")
 
     # HERO
     hl, hr = st.columns([1.1, 1], gap="large")
@@ -1526,7 +1583,7 @@ elif st.session_state.page == "home":
         </div>""", unsafe_allow_html=True)
 
     with hr:
-        snap = get_ticker_history_cached("HDFCBANK.NS", period="30d")
+        snap = hero_snap
         if not snap.empty:
             if isinstance(snap.columns, pd.MultiIndex): snap.columns=snap.columns.get_level_values(0)
             pc = "Adj Close" if "Adj Close" in snap.columns else "Close"
@@ -1547,7 +1604,7 @@ elif st.session_state.page == "home":
                            font=dict(size=15, color="#fff"), x=0.04, xanchor="left"),
                 shapes=[dict(type="rect",xref="paper",yref="paper",x0=0,y0=0,x1=1,y1=1,
                              line=dict(color="rgba(0,224,255,0.1)",width=1),fillcolor="rgba(0,0,0,0)")])
-            st.plotly_chart(fig_h, use_container_width=True)
+            st.plotly_chart(fig_h, width="stretch")
 
     st.markdown("<div style='margin:20px 0;'></div>", unsafe_allow_html=True)
 
@@ -1668,19 +1725,9 @@ elif st.session_state.page == "home":
       <div class="muted">{translate_text("Live social and market movement", st.session_state.lang_code)}</div>
     </div>""", unsafe_allow_html=True)
 
-    top_list = [("HDFCBANK","HDFC Bank","H","HDFC • Finance"),
-                ("RELIANCE","Reliance Ind.","R","REL • Technology"),
-                ("TCS","TCS","T","TCS • IT Services"),
-                ("ICICIBANK","ICICI","I","ICICI • Finance")]
     tc = st.columns(4, gap="small")
-    for col,(sym,name,letter,sub) in zip(tc,top_list):
-        h2 = yf.download(f"{sym}.NS",period="2d",interval="1d")
-        try: inf2 = yf.Ticker(f"{sym}.NS").info or {}
-        except: inf2 = {}
-        if isinstance(h2.columns,pd.MultiIndex): h2.columns=h2.columns.get_level_values(0)
-        pc2="Adj Close" if "Adj Close" in h2.columns else "Close"
-        cur=float(h2[pc2].iloc[-1]) if not h2.empty else 0
-        vol=inf2.get("volume",0)
+    for col, data in zip(tc, trending_results):
+        sym, name, letter, sub, cur, vol = data["sym"], data["name"], data["letter"], data["sub"], data["cur"], data["vol"]
         col.markdown(f"""
         <div class="company-row-card">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;">
@@ -1954,8 +2001,7 @@ elif st.session_state.page == "analysis":
     }
     .risk-fill {
         height:100%; border-radius:999px;
-        background: linear-gradient(90deg,#14FFEC 0%,#00E0FF 50%,#ff6b6b 100%);
-        box-shadow: 0 0 16px rgba(0,224,255,0.4);
+        transition: width 0.5s ease-in-out;
     }
     .risk-label { font-weight:700; font-size:14px; margin-bottom:3px; }
     .risk-note  { font-size:12px; color:rgba(217,226,236,0.5); }
@@ -2002,7 +2048,6 @@ elif st.session_state.page == "analysis":
         gen_btn = st.button("Generate Insights", use_container_width=True)
 
     with right_col:
-        # Only show welcome if no ticker is being actively viewed or persisted
         current_ticker = selected.split(" - ")[0].strip() if selected != "-- Select a company --" else None
         is_analyzing = selected != "-- Select a company --" and (gen_btn or (st.session_state.get("analyzed_ticker") == current_ticker))
         
@@ -2017,10 +2062,12 @@ elif st.session_state.page == "analysis":
               </div>
             </div>""", unsafe_allow_html=True)
 
-    if selected != "-- Select a company --" and (gen_btn or st.session_state.get("analyzed_ticker")):
-        # Persist the selection
+    # Main Analysis Logic: Only show data if we just clicked 'Generate' or if the persisted 'analyzed_ticker' matches the current selection.
+    current_ticker = selected.split(" - ")[0].strip() if selected != "-- Select a company --" else None
+    
+    if selected != "-- Select a company --" and (gen_btn or (st.session_state.get("analyzed_ticker") == current_ticker)):
         if gen_btn:
-            st.session_state.analyzed_ticker = selected.split(" - ")[0].strip()
+            st.session_state.analyzed_ticker = current_ticker
         
         tc  = st.session_state.analyzed_ticker
         tns = f"{tc}.NS"
@@ -2209,7 +2256,7 @@ elif st.session_state.page == "analysis":
             <div class="risk-outer">
               <div class="risk-section-title">{translate_text("Risk Score Meter", st.session_state.lang_code)}</div>
               <div class="risk-bar-wrap">
-                <div class="risk-fill" style="width:{risk:.0f}%;"></div>
+                <div class="risk-fill" style="width:{risk:.0f}%; background:{risk_color}; box-shadow:0 0 15px {risk_color}88;"></div>
               </div>
               <div class="risk-label" style="color:{risk_color};">{risk_lbl}</div>
               <div class="risk-note">{translate_text("Risk shows how safe or risky the decision is.", st.session_state.lang_code)}</div>
