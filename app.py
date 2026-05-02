@@ -1529,7 +1529,7 @@ elif st.session_state.page == "home":
                            font=dict(size=15, color="#fff"), x=0.04, xanchor="left"),
                 shapes=[dict(type="rect",xref="paper",yref="paper",x0=0,y0=0,x1=1,y1=1,
                              line=dict(color="rgba(0,224,255,0.1)",width=1),fillcolor="rgba(0,0,0,0)")])
-            st.plotly_chart(fig_h, width='stretch')
+            st.plotly_chart(fig_h, use_container_width=True)
 
     st.markdown("<div style='margin:20px 0;'></div>", unsafe_allow_html=True)
 
@@ -1976,7 +1976,7 @@ elif st.session_state.page == "analysis":
         options = ["-- Select a company --"] + [f"{t} - {n}" for t,n in COMPANY_NAMES.items()]
         selected = st.selectbox("Company", options, label_visibility="collapsed")
         st.markdown('<p style="color:rgba(217,226,236,0.6);font-size:13px;margin:6px 0 14px;line-height:1.55;">Tip: pick one ticker. Charts and news will update for the selected company.</p>', unsafe_allow_html=True)
-        gen_btn = st.button("Generate Insights", width='stretch')
+        gen_btn = st.button("Generate Insights", use_container_width=True)
 
     with right_col:
         # Only show welcome if no ticker is being actively viewed or persisted
@@ -2086,7 +2086,7 @@ elif st.session_state.page == "analysis":
                        autorange=False, range=[min_p1 - pad1, max_p1 + pad1], tickfont=dict(size=11)),
             legend=dict(orientation="h", y=1.05, font=dict(color="#D9E2EC", size=12),
                         bgcolor="rgba(0,0,0,0)"))
-        st.plotly_chart(fig1, width='stretch')
+        st.plotly_chart(fig1, use_container_width=True)
 
         st.markdown("<div style='margin:4px 0;'></div>", unsafe_allow_html=True)
 
@@ -2121,7 +2121,7 @@ elif st.session_state.page == "analysis":
                        autorange=False, range=[min_p2 - pad2, max_p2 + pad2], tickfont=dict(size=11)),
             legend=dict(orientation="h", y=1.05, font=dict(color="#D9E2EC", size=12),
                         bgcolor="rgba(0,0,0,0)"))
-        st.plotly_chart(fig2, width='stretch')
+        st.plotly_chart(fig2, use_container_width=True)
 
         # ── PREDICTED VALUE TILES ──────────────────────────────────────────
         tiles_row1 = "".join(
@@ -2230,7 +2230,7 @@ elif st.session_state.page == "comparison":
             placeholder="Click to select companies…",
             key="comp_select")
         st.markdown('<div class="muted" style="margin:6px 0 12px;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple companies.</div>', unsafe_allow_html=True)
-        cmp_btn = st.button("Compare Selected Stocks", width='stretch')
+        cmp_btn = st.button("Compare Selected Stocks", use_container_width=True)
 
     if chosen and cmp_btn:
         if len(chosen) < 2:
@@ -2272,7 +2272,7 @@ elif st.session_state.page == "comparison":
                 xaxis=dict(gridcolor="rgba(255,255,255,0.07)",color="rgba(255,255,255,0.6)"),
                 yaxis=dict(gridcolor="rgba(255,255,255,0.07)",color="rgba(255,255,255,0.6)", ticksuffix="%"),
                 legend=dict(orientation="h",y=1.06,font=dict(color="#D9E2EC",size=13)))
-            st.plotly_chart(fig, width='stretch')
+            st.plotly_chart(fig, use_container_width=True)
 
         # Key metrics table
         with st.container(border=True):
