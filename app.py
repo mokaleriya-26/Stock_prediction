@@ -85,6 +85,8 @@ def init_db():
                 direction TEXT,
                 detected_at TIMESTAMP
             )""")
+    c.execute('''CREATE TABLE IF NOT EXISTS persistent_sessions
+                 (browser_id TEXT PRIMARY KEY, username TEXT)''')
     # Add default users if table is empty
     c.execute("SELECT COUNT(*) FROM users")
     if c.fetchone()[0] == 0:
@@ -202,6 +204,47 @@ def get_watchlist(username):
         conn.close()
         return rows
     except: return []
+
+def get_browser_id():
+    """Generate a reasonably unique ID for the current browser instance."""
+    try:
+        ua = st.context.headers.get("User-Agent", "unknown")
+        ip = st.context.ip_address
+        return f"{ip}_{ua}"
+    except: return "unknown_device"
+
+def save_persistent_session(username):
+    try:
+        bid = get_browser_id()
+        if bid == "unknown_device": return
+        conn = sqlite3.connect("users.db")
+        c = conn.cursor()
+        c.execute("INSERT OR REPLACE INTO persistent_sessions (browser_id, username) VALUES (?, ?)", (bid, username))
+        conn.commit()
+        conn.close()
+    except: pass
+
+def clear_persistent_session():
+    try:
+        bid = get_browser_id()
+        conn = sqlite3.connect("users.db")
+        c = conn.cursor()
+        c.execute("DELETE FROM persistent_sessions WHERE browser_id=?", (bid,))
+        conn.commit()
+        conn.close()
+    except: pass
+
+def get_persistent_user():
+    try:
+        bid = get_browser_id()
+        if bid == "unknown_device": return None
+        conn = sqlite3.connect("users.db")
+        c = conn.cursor()
+        c.execute("SELECT username FROM persistent_sessions WHERE browser_id=?", (bid,))
+        row = c.fetchone()
+        conn.close()
+        return row[0] if row else None
+    except: return None
 
 @st.cache_resource
 def init_db_cached():
@@ -1252,7 +1295,14 @@ CHART_LAYOUT = dict(
 
 # Initialize Session State (at the start of the app)
 if "signed_in" not in st.session_state:
-    st.session_state.signed_in = False
+    # Try to restore session from persistent storage
+    p_user = get_persistent_user()
+    if p_user:
+        st.session_state.signed_in = True
+        st.session_state.username = p_user
+    else:
+        st.session_state.signed_in = False
+
 if "username" not in st.session_state:
     st.session_state.username = None
 if "page" not in st.session_state:
@@ -1337,6 +1387,7 @@ with n7:
 with n8:
     if st.session_state.signed_in:
         if st.button(translate_text("Sign Out", st.session_state.lang_code), key="nav_signout"):
+            clear_persistent_session()
             st.session_state.signed_in = False
             st.session_state.username = None
             st.session_state.page = "home"
@@ -1514,7 +1565,7 @@ if st.session_state.page == "auth":
                     st.session_state.auth_error = "Invalid username or password."
                 else:
                     st.session_state.signed_in = True; st.session_state.username = u
-
+                    save_persistent_session(u)
                     st.session_state.auth_error = ""
                     st.session_state.page = st.session_state.get("auth_redirect") or "home"
                     st.rerun()
@@ -1542,7 +1593,7 @@ if st.session_state.page == "auth":
                 else:
                     if add_user(u, p):
                         st.session_state.signed_in = True; st.session_state.username = u
-
+                        save_persistent_session(u)
                         st.session_state.page = st.session_state.get("auth_redirect") or "home"
                         st.rerun()
                     else:
