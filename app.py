@@ -779,21 +779,22 @@ hr{border:1px solid rgba(255,255,255,0.08) !important; margin:16px 0 !important;
 .grid-alerts-row { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px; padding:15px 10px; align-items:center; }
 
 @media (max-width: 768px) {
-  /* Reduce padding on main containers */
-  .block-container, [data-testid="stMainBlockContainer"] { padding-left: 1rem !important; padding-right: 1rem !important; }
-  .about-wrapper, .welcome-card, .vcard, .ks-card, .feat-card, .showcase-card { padding: 20px 15px !important; }
+  /* Increase padding to make it breathable but still mobile-friendly */
+  .block-container, [data-testid="stMainBlockContainer"] { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+  .about-wrapper, .welcome-card, .vcard, .ks-card, .feat-card, .showcase-card { padding: 28px 20px !important; }
   
   /* Typography Scaling */
-  .hero-title { font-size: 28px !important; }
-  .showcase-title { font-size: 20px !important; }
-  .brand-text .line1 { font-size: 13px !important; }
+  .hero-title { font-size: 32px !important; }
+  .showcase-title { font-size: 24px !important; }
+  .brand-text .line1 { font-size: 14px !important; }
   
   /* Navbar Wrapping - Override Streamlit column stacking */
   div[data-testid="stHorizontalBlock"]:has(.brand-logo) {
       display: flex !important;
       flex-wrap: wrap !important;
       justify-content: center !important;
-      gap: 10px !important;
+      gap: 14px !important;
+      padding-bottom: 10px !important;
   }
   div[data-testid="stHorizontalBlock"]:has(.brand-logo) > div {
       min-width: unset !important;
@@ -802,26 +803,29 @@ hr{border:1px solid rgba(255,255,255,0.08) !important; margin:16px 0 !important;
   }
 
   /* Grid Resets for Mobile */
-  .about-stats-grid,
-  .grid-history-head, .grid-history-row,
-  .grid-watchlist-head, .grid-watchlist-row,
-  .grid-alerts-head, .grid-alerts-row {
+  .about-stats-grid {
       grid-template-columns: 1fr !important;
-      gap: 8px !important;
+      gap: 16px !important;
   }
   
   .grid-history-head, .grid-watchlist-head, .grid-alerts-head {
       display: none !important; /* Hide headers on mobile to save space */
   }
   
+  /* Convert Table Rows into Mobile Cards for better readability */
   .grid-history-row, .grid-watchlist-row, .grid-alerts-row {
-      text-align: center;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+      text-align: left;
+      padding: 20px 24px !important;
+      background: rgba(255,255,255,0.03) !important;
+      border: 1px solid rgba(255,255,255,0.07) !important;
+      border-radius: 16px !important;
+      margin-bottom: 16px !important;
   }
   .list-date, .list-price, .remove-link {
-      text-align: center !important;
-      justify-content: center;
+      text-align: left !important;
+      justify-content: flex-start !important;
   }
 }
 </style>
