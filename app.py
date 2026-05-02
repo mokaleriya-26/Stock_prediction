@@ -48,7 +48,7 @@ except Exception:
 # CONFIG
 # ══════════════════════════════════════════════════════════════════════════════
 NEWS_API_KEY   = os.getenv("NEWS_API_KEY",   "84fc43ca1f7045ad88e16857dbb0f901")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyC6GM48tBnJBdlUjyER7Kb558-4SlG8JeE").strip()
 LOOKBACK = 60
 
 st.set_page_config(
