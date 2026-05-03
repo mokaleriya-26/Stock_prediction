@@ -303,9 +303,9 @@ def get_batch_prices(tickers):
 # ── Query Param Routing ──
 if "page" in st.query_params:
     p = st.query_params["page"]
-    if p in ["privacy", "terms", "home", "history", "watchlist"]:
+    if p in ["privacy", "terms", "home", "history", "watchlist", "analysis", "comparison"]:
         st.session_state.page = p
-        # Note: Clearing query params might trigger a rerun in some versions, 
+        # Note: Clearing query params might trigger a rerun in some versions,
         # but it's needed to prevent sticking to a page on browser refresh.
         st.query_params.clear()
 
@@ -469,7 +469,48 @@ div[data-testid="stButton"] button:hover {
   font-weight: 800 !important;
 }
 
-
+/* ── Showcase CTA Buttons (See Live Signals, Compare Now, etc.) ──────────── */
+/* A div.cta-btn-wrap marker is injected via st.markdown before each button.  */
+/* The adjacent-sibling selector scopes the style to only these buttons.       */
+div.cta-btn-wrap {
+  display: inline-block !important;
+  margin-top: 14px !important;
+  margin-bottom: 2px !important;
+}
+div.cta-btn-wrap + div[data-testid="stButton"] {
+  display: inline-flex !important;
+  width: auto !important;
+}
+div.cta-btn-wrap + div[data-testid="stButton"] button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  padding: 8px 20px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, rgba(0,224,255,0.12), rgba(20,255,236,0.08)) !important;
+  color: #00E0FF !important;
+  border: 1px solid rgba(0,224,255,0.35) !important;
+  box-shadow: 0 0 10px rgba(0,224,255,0.07) !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  letter-spacing: 0.01em !important;
+}
+div.cta-btn-wrap + div[data-testid="stButton"] button:hover {
+  background: linear-gradient(90deg, rgba(0,224,255,0.25), rgba(20,255,236,0.18)) !important;
+  border-color: rgba(0,224,255,0.65) !important;
+  box-shadow: 0 0 18px rgba(0,224,255,0.22) !important;
+  transform: scale(1.04) translateY(0px) !important;
+  color: #fff !important;
+}
+@media (max-width: 768px) {
+  div.cta-btn-wrap + div[data-testid="stButton"] button {
+    font-size: 12px !important;
+    padding: 7px 16px !important;
+  }
+}
 
 /* ── inputs ── */
 div[data-baseweb="select"], input {
@@ -597,22 +638,48 @@ hr{border:1px solid rgba(255,255,255,0.08) !important; margin:16px 0 !important;
 .hero-note{font-size:13px; color:rgba(217,226,236,0.55);}
 
 /* showcase cards */
+.showcase-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+@media (max-width: 800px) {
+  .showcase-grid-2 { grid-template-columns: 1fr; }
+}
+
 .showcase-card{
   position:relative;
   background:linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,255,255,0.015));
   border-radius:20px; padding:28px 32px;
   border:1px solid rgba(255,255,255,0.06); overflow:hidden; margin-bottom:16px;
+  display:flex; flex-direction:column;
 }
 .showcase-label{
-  display:inline-block; padding:4px 12px; border-radius:999px;
-  font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
-  color:#00E0FF; background:rgba(0,224,255,0.1); margin-bottom:12px;
+  display:inline-block; padding:2px 0;
+  font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+  color:#00E0FF; margin-bottom:12px;
 }
 .showcase-title{font-size:clamp(18px,2vw,24px); font-weight:800; color:#fff; margin:0 0 10px; line-height:1.2;}
 .showcase-desc{font-size:14px; color:rgba(217,226,236,0.65); line-height:1.7; margin:0 0 14px;}
 .showcase-cta{
-  font-size:13px; font-weight:700; color:#00E0FF; text-decoration:none;
-  border-bottom:1px solid rgba(0,224,255,0.3); padding-bottom:2px; cursor:pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #00E0FF;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  letter-spacing: 0.01em;
+}
+.showcase-cta:hover {
+  color: #fff;
+  text-decoration: none;
 }
 
 /* mock predictor */
@@ -646,9 +713,29 @@ hr{border:1px solid rgba(255,255,255,0.08) !important; margin:16px 0 !important;
 .sent-chip--neu{background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09); color:rgba(217,226,236,0.7);}
 
 /* feature cards */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 8px;
+  align-items: stretch;
+}
+@media (max-width: 900px) {
+  .feat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .feat-grid { grid-template-columns: 1fr; }
+}
 .feat-card{
   background:rgba(255,255,255,0.04); border-radius:16px; padding:24px;
-  border:1px solid rgba(255,255,255,0.05); height:100%;
+  border:1px solid rgba(255,255,255,0.05);
+  display: flex; flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.feat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0,224,255,0.18);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
 .feat-icon{
   width:52px; height:52px; border-radius:12px; font-size:22px;
@@ -1318,6 +1405,23 @@ if "auth_redirect" not in st.session_state:
 if "scroll_to" not in st.session_state:
     st.session_state.scroll_to = None
 
+# ── Protected Navigation Helper ──────────────────────────────────────────────
+def go_protected(target_page: str):
+    """Navigate to target_page if user is signed in, otherwise redirect to login.
+
+    Equivalent to the React pattern:
+        const handleProtectedNavigation = (route) => {
+            if (isAuthenticated) { navigate(route); } else { navigate('/login'); }
+        };
+    """
+    if st.session_state.get("signed_in"):
+        st.session_state.page = target_page
+    else:
+        st.session_state.auth_mode = "login"
+        st.session_state.auth_redirect = target_page
+        st.session_state.page = "auth"
+    st.rerun()
+
 # ══════════════════════════════════════════════════════════════════════════════
 # TOP NAV BAR
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1676,7 +1780,6 @@ elif st.session_state.page == "home":
       <div class="showcase-label">{translate_text("PREDICTOR", lc)}</div>
       <div class="showcase-title">{translate_text("Predict stock movement", lc)} <span class="accent-text">{translate_text("before it happens", lc)}</span></div>
       <p class="showcase-desc">{translate_text("Our model analyses historical data, social sentiment, and volume patterns to forecast short-term price direction with a confidence score.", lc)}</p>
-      <a class="showcase-cta">{translate_text("Try the Predictor", lc)} →</a>
       <div class="mock-predictor">
         <div style="font-weight:800;font-size:16px;margin-bottom:14px;">TCS.NS</div>
         <div class="bar-row">
@@ -1695,52 +1798,51 @@ elif st.session_state.page == "home":
           <span class="bar-val" style="color:#ff7b84;">32%</span>
         </div>
       </div>
+      <a href="?page=analysis" class="showcase-cta" target="_self">⚡ {translate_text("Try the Predictor", lc)} →</a>
     </div>''', unsafe_allow_html=True)
 
     # SIGNAL + COMPARISON row
-    sc1, sc2 = st.columns(2, gap="medium")
-    with sc1:
-        lc = st.session_state.lang_code
-        st.markdown(f'''
-        <div class="showcase-card">
-          <div class="showcase-label">{translate_text("SIGNAL ENGINE", lc)}</div>
-          <div class="showcase-title">{translate_text("Clear", lc)} <span class="accent-text">Buy / Sell / Hold</span> {translate_text("signals", lc)}</div>
-          <p class="showcase-desc">{translate_text("No more second-guessing. Our engine combines price action, social momentum, and sentiment drift to give you a clear action signal.", lc)}</p>
-          <a class="showcase-cta">{translate_text("See Live Signals", lc)} →</a>
-          <div class="signals-row">
-            <div class="sig-badge sig-badge--buy">
-              <div class="sig-icon">↑</div><div class="sig-lbl">{translate_text("BUY", lc)}</div>
-            </div>
-            <div class="sig-badge sig-badge--sell">
-              <div class="sig-icon">↓</div><div class="sig-lbl">{translate_text("SELL", lc)}</div>
-            </div>
-            <div class="sig-badge sig-badge--hold">
-              <div class="sig-icon">→</div><div class="sig-lbl">{translate_text("HOLD", lc)}</div>
-            </div>
+    lc = st.session_state.lang_code
+    st.markdown(f'''
+    <div class="showcase-grid-2">
+      <div class="showcase-card" style="margin-bottom:0;">
+        <div class="showcase-label">{translate_text("SIGNAL ENGINE", lc)}</div>
+        <div class="showcase-title">{translate_text("Clear", lc)} <span class="accent-text">Buy / Sell / Hold</span> {translate_text("signals", lc)}</div>
+        <p class="showcase-desc">{translate_text("No more second-guessing. Our engine combines price action, social momentum, and sentiment drift to give you a clear action signal.", lc)}</p>
+        <div class="signals-row">
+          <div class="sig-badge sig-badge--buy">
+            <div class="sig-icon">↑</div><div class="sig-lbl">{translate_text("BUY", lc)}</div>
           </div>
-        </div>''', unsafe_allow_html=True)
-    with sc2:
-        st.markdown(f'''
-        <div class="showcase-card">
-          <div class="showcase-label">{translate_text("COMPARISON TOOL", lc)}</div>
-          <div class="showcase-title">{translate_text("Compare stocks", lc)} <span class="accent-text">{translate_text("side by side", lc)}</span></div>
-          <p class="showcase-desc">{translate_text("Pit any two NSE stocks head-to-head across sentiment, price trend, volume — so you always pick the stronger trade.", lc)}</p>
-          <a class="showcase-cta">{translate_text("Compare Now", lc)} →</a>
-          <div style="display:flex;align-items:center;justify-content:space-around;
-               background:rgba(0,0,0,0.25);border-radius:14px;padding:20px;margin-top:14px;">
-            <span style="font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:900;color:#74f29b;">TCS</span>
-            <span style="font-size:18px;font-weight:800;color:rgba(217,226,236,0.4);">{translate_text("vs", lc)}</span>
-            <span style="font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:900;color:#ff7b84;">INFY</span>
+          <div class="sig-badge sig-badge--sell">
+            <div class="sig-icon">↓</div><div class="sig-lbl">{translate_text("SELL", lc)}</div>
           </div>
-        </div>''', unsafe_allow_html=True)
+          <div class="sig-badge sig-badge--hold">
+            <div class="sig-icon">→</div><div class="sig-lbl">{translate_text("HOLD", lc)}</div>
+          </div>
+        </div>
+        <a href="?page=analysis" class="showcase-cta" target="_self">📡 {translate_text("See Live Signals", lc)} →</a>
+      </div>
+      <div class="showcase-card" style="margin-bottom:0;">
+        <div class="showcase-label">{translate_text("COMPARISON TOOL", lc)}</div>
+        <div class="showcase-title">{translate_text("Compare stocks", lc)} <span class="accent-text">{translate_text("side by side", lc)}</span></div>
+        <p class="showcase-desc">{translate_text("Pit any two NSE stocks head-to-head across sentiment, price trend, volume — so you always pick the stronger trade.", lc)}</p>
+        <div style="display:flex;align-items:center;justify-content:space-around;
+             background:rgba(0,0,0,0.25);border-radius:14px;padding:20px;margin-top:14px;">
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:900;color:#74f29b;">TCS</span>
+          <span style="font-size:18px;font-weight:800;color:rgba(217,226,236,0.4);">{translate_text("vs", lc)}</span>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:900;color:#ff7b84;">INFY</span>
+        </div>
+        <a href="?page=comparison" class="showcase-cta" target="_self">⚖️ {translate_text("Compare Now", lc)} →</a>
+      </div>
+    </div>''', unsafe_allow_html=True)
 
     # SENTIMENT card
+    lc = st.session_state.lang_code
     st.markdown(f'''
     <div class="showcase-card">
       <div class="showcase-label">{translate_text("SENTIMENT ANALYSIS", lc)}</div>
       <div class="showcase-title">{translate_text("Track social mood", lc)} <span class="accent-text">{translate_text("in real time", lc)}</span></div>
       <p class="showcase-desc">{translate_text("We ingest thousands of tweets, news articles, and forum posts every hour — scoring market sentiment by ticker, sector, and event type so you always know the crowd's pulse.", lc)}</p>
-      <a class="showcase-cta">{translate_text("View Sentiment Dashboard", lc)} →</a>
       <div style="margin-top:14px;">
         <span class="sent-chip sent-chip--pos">📈 {translate_text("Banking", lc)} <strong>+72%</strong></span>
         <span class="sent-chip sent-chip--neg">📉 {translate_text("IT", lc)} <strong>-18%</strong></span>
@@ -1748,23 +1850,26 @@ elif st.session_state.page == "home":
         <span class="sent-chip sent-chip--pos">📈 {translate_text("FMCG", lc)} <strong>+55%</strong></span>
         <span class="sent-chip sent-chip--neg">📉 {translate_text("Pharma", lc)} <strong>-31%</strong></span>
       </div>
+      <a href="?page=analysis" class="showcase-cta" target="_self">📊 {translate_text("View Sentiment Dashboard", lc)} →</a>
     </div>''', unsafe_allow_html=True)
 
-    # FEATURE CARDS
-    f1,f2,f3 = st.columns(3, gap="medium")
-    for col,icon,title,desc in [
-        (f1,"⚡","Market Trend Analysis","Continuously analyze market data to identify emerging trends and highlight sectors showing unusual momentum or investor attention."),
-        (f2,"🤖","AI-driven Insights","Proprietary models filter noise and surface high-confidence trade ideas with sentiment and event scoring."),
-        (f3,"📰","Sentiment Tracking","Track sentiment trends across sectors and map social momentum to price movement with clear visualizations."),
+    # FEATURE CARDS — CSS grid (3 equal columns, responsive)
+    lc = st.session_state.lang_code
+    cards_html = ""
+    for icon, title, desc in [
+        ("⚡", "Market Trend Analysis", "Continuously analyze market data to identify emerging trends and highlight sectors showing unusual momentum or investor attention."),
+        ("🤖", "AI-driven Insights",   "Proprietary models filter noise and surface high-confidence trade ideas with sentiment and event scoring."),
+        ("📰", "Sentiment Tracking",   "Track sentiment trends across sectors and map social momentum to price movement with clear visualizations."),
     ]:
-        t_title = translate_text(title, st.session_state.lang_code)
-        t_desc  = translate_text(desc, st.session_state.lang_code)
-        col.markdown(f"""
+        t_title = translate_text(title, lc)
+        t_desc  = translate_text(desc,  lc)
+        cards_html += f"""
         <div class="feat-card">
           <div class="feat-icon">{icon}</div>
-          <div style="font-size:17px;font-weight:800;margin-bottom:8px;">{t_title}</div>
-          <p style="color:rgba(217,226,236,0.7);font-size:14px;margin:0;line-height:1.65;">{t_desc}</p>
-        </div>""", unsafe_allow_html=True)
+          <div style="font-size:17px;font-weight:800;margin-bottom:8px;color:#fff;">{t_title}</div>
+          <p style="color:rgba(217,226,236,0.7);font-size:14px;margin:0;line-height:1.65;flex:1;">{t_desc}</p>
+        </div>"""
+    st.markdown(f'<div class="feat-grid">{cards_html}</div>', unsafe_allow_html=True)
 
     st.markdown("<div style='margin:16px 0;'></div>", unsafe_allow_html=True)
 
@@ -1916,7 +2021,8 @@ elif st.session_state.page == "home":
             with in_col1:
                 st.text_input("email_cta", placeholder=translate_text("Your work email", lc), label_visibility="collapsed")
             with in_col2:
-                st.button(translate_text("Start Free Trial", lc), key="cta_main_btn", use_container_width=True)
+                if st.button(translate_text("Start Free Trial", lc), key="cta_main_btn", use_container_width=True):
+                    go_protected("analysis")
             st.markdown('</div>', unsafe_allow_html=True)
             
         st.markdown(f'''
