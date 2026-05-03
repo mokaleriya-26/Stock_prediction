@@ -690,14 +690,14 @@ hr{border:1px solid rgba(255,255,255,0.08) !important; margin:16px 0 !important;
   padding-top: 16px;
   font-size: 13px;
   font-weight: 700;
-  color: #00E0FF;
+  color: #00E0FF !important;
   text-decoration: none;
   cursor: pointer;
   transition: color 0.2s ease;
   letter-spacing: 0.01em;
 }
 .showcase-cta:hover {
-  color: #fff;
+  color: #fff !important;
   text-decoration: none;
 }
 
