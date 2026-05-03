@@ -1958,15 +1958,16 @@ elif st.session_state.page == "home":
 
     # HOW IT WORKS
     lc = st.session_state.lang_code
-    hw_html = f"""
+    hw_html = """
 <div class="content-section">
   <div id="how-it-works" style="position:relative;top:-80px;visibility:hidden;"></div>
   <div style="margin:10px 0 24px;">
-    <div style="font-size:24px;font-weight:800;margin-bottom:6px;">{translate_text("From Tweets to Trends — How it works", lc)}</div>
-    <div class="muted">{translate_text("Raw social chatter → signal processing → trade-ready alerts", lc)}</div>
+    <div style="font-size:24px;font-weight:800;margin-bottom:6px;">{t_title_main}</div>
+    <div class="muted">{t_desc_main}</div>
   </div>
   <div class="how-it-works-grid">
-"""
+""".replace("{t_title_main}", translate_text("From Tweets to Trends — How it works", lc)).replace("{t_desc_main}", translate_text("Raw social chatter → signal processing → trade-ready alerts", lc))
+
     steps=[
         ("1","Collect","We ingest tweets, threads, news, Reddit posts and message board chatter in real time across global feeds."),
         ("2","Filter & Classify","Our NLP pipeline removes bots and noise, classifies event types, and tags tickers & topics automatically."),
@@ -1978,7 +1979,7 @@ elif st.session_state.page == "home":
     for num,title,desc in steps:
         t_title = translate_text(title, lc)
         t_desc  = translate_text(desc, lc)
-        hw_html += f"""
+        hw_html += """
 <div class="flow-step">
   <div class="flow-num">{num}</div>
   <div>
@@ -1986,77 +1987,97 @@ elif st.session_state.page == "home":
     <p style="margin:0;color:rgba(217,226,236,0.7);font-size:13px;line-height:1.55;">{t_desc}</p>
   </div>
 </div>
-"""
+""".replace("{num}", str(num)).replace("{t_title}", t_title).replace("{t_desc}", t_desc)
+
     hw_html += "</div></div>"
     # st.html(hw_html) replaced below
 
     # ABOUT
-    about_html = f"""
+    about_html = """
 <div class="content-section">
   <div class="about-grid">
     <div style="padding:8px 0;">
       <div style="display:inline-block;padding:5px 14px;border-radius:999px;font-size:12px;
            font-weight:800;color:#00E0FF;background:rgba(0,224,255,0.1);
-           border:1px solid rgba(0,224,255,0.2);margin-bottom:16px;">{translate_text("Our Mission", lc)}</div>
+           border:1px solid rgba(0,224,255,0.2);margin-bottom:16px;">{t_our_mission}</div>
       <div style="font-size:clamp(24px,3vw,36px);font-weight:800;line-height:1.2;margin-bottom:18px;">
-        {translate_text("Built for traders who", lc)}<br>
-        <span style="background:linear-gradient(90deg,#14FFEC,#00E0FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">{translate_text("demand more", lc)}</span>
-        {translate_text("from their data", lc)}
+        {t_built_for}<br>
+        <span style="background:linear-gradient(90deg,#14FFEC,#00E0FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">{t_demand_more}</span>
+        {t_from_their_data}
       </div>
       <p style="color:rgba(217,226,236,0.78);font-size:15px;line-height:1.7;margin:0 0 14px;">
-        {translate_text("We're building From Tweets to Trades — to help you express your trading and investing ideas, and to help you analyse Indian markets better.", lc)}
+        {t_p1}
       </p>
       <p style="color:rgba(217,226,236,0.65);font-size:14px;line-height:1.7;margin:0 0 14px;">
-        {translate_text("Stock Markets are the true indicator of the growth of any country's economy. We are bullish on India's prospects to be one of the largest economies in the world. We believe that Stock Markets provide a unique opportunity for all Indians to participate in India's growth story — and we are enabling the same.", lc)}
+        {t_p2}
       </p>
       <p style="color:rgba(217,226,236,0.65);font-size:14px;line-height:1.7;margin:0;">
-        {translate_text("Most screening, trading, and investing platforms available today have not evolved with time. We plan to change that — a technology-led platform built for super traders and long-term investors, powered by real-time AI and social intelligence.", lc)}
+        {t_p3}
       </p>
     </div>
     <div>
       <div class="about-stats-grid">
         <div class="about-stat-box">
           <div class="about-stat-num" style="color:#00E0FF;">50</div>
-          <div class="about-stat-lbl">{translate_text("NSE Stocks Tracked", lc)}</div>
+          <div class="about-stat-lbl">{t_nse_stocks}</div>
         </div>
         <div class="about-stat-box">
-          <div class="about-stat-num" style="color:#14FFEC;font-size:18px;">{translate_text("Real-time", lc)}</div>
-          <div class="about-stat-lbl">{translate_text("Social Sentiment Feeds", lc)}</div>
+          <div class="about-stat-num" style="color:#14FFEC;font-size:18px;">{t_real_time}</div>
+          <div class="about-stat-lbl">{t_social_sentiment}</div>
         </div>
         <div class="about-stat-box">
-          <div class="about-stat-num" style="color:#00E0FF;">14 {translate_text("Days", lc)}</div>
-          <div class="about-stat-lbl">{translate_text("Predictions", lc)}</div>
+          <div class="about-stat-num" style="color:#00E0FF;">14 {t_days}</div>
+          <div class="about-stat-lbl">{t_predictions}</div>
         </div>
         <div class="about-stat-box">
           <div class="about-stat-num" style="color:#14FFEC;">5</div>
-          <div class="about-stat-lbl">{translate_text("Languages Supported", lc)}</div>
+          <div class="about-stat-lbl">{t_languages}</div>
         </div>
       </div>
       <div class="about-val">
         <div class="about-val-ico">🎯</div>
         <div>
-          <div class="about-val-title">{translate_text("Precision over noise", lc)}</div>
-          <div class="about-val-desc">{translate_text("Only high-confidence signals make it through our NLP pipeline.", lc)}</div>
+          <div class="about-val-title">{t_precision}</div>
+          <div class="about-val-desc">{t_precision_desc}</div>
         </div>
       </div>
       <div class="about-val">
         <div class="about-val-ico">🇮🇳</div>
         <div>
-          <div class="about-val-title">{translate_text("Built for India", lc)}</div>
-          <div class="about-val-desc">{translate_text("NSE, multilingual support — designed for the Indian market.", lc)}</div>
+          <div class="about-val-title">{t_built_for_india}</div>
+          <div class="about-val-desc">{t_built_for_india_desc}</div>
         </div>
       </div>
       <div class="about-val" style="margin-bottom:0;">
         <div class="about-val-ico">⚡</div>
         <div>
-          <div class="about-val-title">{translate_text("Speed matters", lc)}</div>
-          <div class="about-val-desc">{translate_text("Market-moving signals delivered in real time, not hours later.", lc)}</div>
+          <div class="about-val-title">{t_speed}</div>
+          <div class="about-val-desc">{t_speed_desc}</div>
         </div>
       </div>
     </div>
   </div>
 </div>
-"""
+""".replace("{t_our_mission}", translate_text("Our Mission", lc))\
+  .replace("{t_built_for}", translate_text("Built for traders who", lc))\
+  .replace("{t_demand_more}", translate_text("demand more", lc))\
+  .replace("{t_from_their_data}", translate_text("from their data", lc))\
+  .replace("{t_p1}", translate_text("We're building From Tweets to Trades — to help you express your trading and investing ideas, and to help you analyse Indian markets better.", lc))\
+  .replace("{t_p2}", translate_text("Stock Markets are the true indicator of the growth of any country's economy. We are bullish on India's prospects to be one of the largest economies in the world. We believe that Stock Markets provide a unique opportunity for all Indians to participate in India's growth story — and we are enabling the same.", lc))\
+  .replace("{t_p3}", translate_text("Most screening, trading, and investing platforms available today have not evolved with time. We plan to change that — a technology-led platform built for super traders and long-term investors, powered by real-time AI and social intelligence.", lc))\
+  .replace("{t_nse_stocks}", translate_text("NSE Stocks Tracked", lc))\
+  .replace("{t_real_time}", translate_text("Real-time", lc))\
+  .replace("{t_social_sentiment}", translate_text("Social Sentiment Feeds", lc))\
+  .replace("{t_days}", translate_text("Days", lc))\
+  .replace("{t_predictions}", translate_text("Predictions", lc))\
+  .replace("{t_languages}", translate_text("Languages Supported", lc))\
+  .replace("{t_precision}", translate_text("Precision over noise", lc))\
+  .replace("{t_precision_desc}", translate_text("Only high-confidence signals make it through our NLP pipeline.", lc))\
+  .replace("{t_built_for_india}", translate_text("Built for India", lc))\
+  .replace("{t_built_for_india_desc}", translate_text("NSE, multilingual support — designed for the Indian market.", lc))\
+  .replace("{t_speed}", translate_text("Speed matters", lc))\
+  .replace("{t_speed_desc}", translate_text("Market-moving signals delivered in real time, not hours later.", lc))
+
     import streamlit.components.v1 as components
     iframe_css = """
     <style>
@@ -2084,7 +2105,8 @@ elif st.session_state.page == "home":
     .about-val-desc { font-size: 13px; color: rgba(217,226,236,0.65); line-height: 1.6; margin: 0; }
     </style>
     """
-    components.html(f"<html><head>{iframe_css}</head><body>{hw_html}{about_html}</body></html>", height=1200, scrolling=True)
+    html_content = "<html><head>" + iframe_css + "</head><body>" + hw_html + about_html + "</body></html>"
+    components.html(html_content, height=1200, scrolling=True)
 
     # CTA BLOCK (FIXED UNIFIED CONTAINER)
     with st.container():
