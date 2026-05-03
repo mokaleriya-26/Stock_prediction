@@ -1745,7 +1745,7 @@ elif st.session_state.page == "home":
     hl, hr = st.columns([1.1, 1], gap="large")
     with hl:
         lc = st.session_state.lang_code
-        st.markdown(f"""
+        st.html(f"""
         <div style="padding-top:24px;">
           <div class="hero-eyebrow">⚡ {translate_text("Real-time", lc)} &nbsp;•&nbsp; AI &nbsp;•&nbsp; {translate_text("Sentiment", lc)}</div>
           <div class="hero-title">
@@ -1754,7 +1754,7 @@ elif st.session_state.page == "home":
           <p class="hero-sub">
             {translate_text("From Tweets to Trades — convert social chatter into real-time trading signals and market alerts.", lc)}
           </p>
-        </div>""", unsafe_allow_html=True)
+        </div>""")
 
     with hr:
         snap = hero_snap
@@ -1780,10 +1780,10 @@ elif st.session_state.page == "home":
                              line=dict(color="rgba(0,224,255,0.1)",width=1),fillcolor="rgba(0,0,0,0)")])
             st.plotly_chart(fig_h, width="stretch")
 
-    st.markdown("<div style='margin:20px 0;'></div>", unsafe_allow_html=True)
+    st.html("<div style='margin:20px 0;'></div>")
 
     # EVERYTHING YOU NEED
-    st.markdown(f'''
+    st.html(f'''
     <div style="text-align:center;margin:0 0 36px;">
       <h2 style="font-size:clamp(24px,3.5vw,42px);color:#fff;margin:0 0 12px;font-weight:800;">
         {translate_text("Everything you need to trade smarter", lc)}
@@ -1791,10 +1791,10 @@ elif st.session_state.page == "home":
       <p style="color:rgba(217,226,236,0.65);font-size:15px;max-width:55ch;margin:0 auto;line-height:1.65;">
         {translate_text("From sentiment signals to AI predictions — our platform gives you an edge at every step of your research.", lc)}
       </p>
-    </div>''', unsafe_allow_html=True)
+    </div>''')
 
     # PREDICTOR card
-    st.markdown(f'''
+    st.html(f'''
     <div class="showcase-card">
       <div class="showcase-label">{translate_text("PREDICTOR", lc)}</div>
       <div class="showcase-title">{translate_text("Predict stock movement", lc)} <span class="accent-text">{translate_text("before it happens", lc)}</span></div>
@@ -1818,11 +1818,11 @@ elif st.session_state.page == "home":
         </div>
       </div>
       <a href="?page=analysis" class="showcase-cta" target="_self">⚡ {translate_text("Try the Predictor", lc)} →</a>
-    </div>''', unsafe_allow_html=True)
+    </div>''')
 
     # SIGNAL + COMPARISON row
     lc = st.session_state.lang_code
-    st.markdown(f'''
+    st.html(f'''
     <div class="showcase-grid-2">
       <div class="showcase-card" style="margin-bottom:0;">
         <div class="showcase-label">{translate_text("SIGNAL ENGINE", lc)}</div>
@@ -1853,7 +1853,7 @@ elif st.session_state.page == "home":
         </div>
         <a href="?page=comparison" class="showcase-cta" target="_self">⚖️ {translate_text("Compare Now", lc)} →</a>
       </div>
-    </div>''', unsafe_allow_html=True)
+    </div>''')
 
     # HISTORY + WATCHLIST row
     st.markdown(f'''
@@ -1885,11 +1885,11 @@ elif st.session_state.page == "home":
         </div>
         <a href="?page=watchlist" class="showcase-cta" target="_self">⭐ {translate_text("View Watchlist", lc)} →</a>
       </div>
-    </div>''', unsafe_allow_html=True)
+    </div>''')
 
     # SENTIMENT card
     lc = st.session_state.lang_code
-    st.markdown(f'''
+    st.html(f'''
     <div class="showcase-card">
       <div class="showcase-label">{translate_text("SENTIMENT ANALYSIS", lc)}</div>
       <div class="showcase-title">{translate_text("Track social mood", lc)} <span class="accent-text">{translate_text("in real time", lc)}</span></div>
@@ -1902,7 +1902,7 @@ elif st.session_state.page == "home":
         <span class="sent-chip sent-chip--neg">📉 {translate_text("Pharma", lc)} <strong>-31%</strong></span>
       </div>
       <a href="?page=analysis" class="showcase-cta" target="_self">📊 {translate_text("View Sentiment Dashboard", lc)} →</a>
-    </div>''', unsafe_allow_html=True)
+    </div>''')
 
     # FEATURE CARDS — CSS grid (3 equal columns, responsive)
     lc = st.session_state.lang_code
@@ -1920,40 +1920,41 @@ elif st.session_state.page == "home":
           <div style="font-size:17px;font-weight:800;margin-bottom:8px;color:#fff;">{t_title}</div>
           <p style="color:rgba(217,226,236,0.7);font-size:14px;margin:0;line-height:1.65;flex:1;">{t_desc}</p>
         </div>"""
-    st.markdown(f'<div class="feat-grid">{cards_html}</div>', unsafe_allow_html=True)
+    st.html(f'<div class="feat-grid">{cards_html}</div>')
 
-    st.markdown("<div style='margin:16px 0;'></div>", unsafe_allow_html=True)
+    st.html("<div style='margin:16px 0;'></div>")
 
     # TOP TRENDING COMPANIES
-    st.markdown('<div id="top-companies" style="position:relative;top:-80px;visibility:hidden;"></div>', unsafe_allow_html=True)
-    st.markdown(f"""
+    st.html('<div id="top-companies" style="position:relative;top:-80px;visibility:hidden;"></div>')
+    st.html(f"""
     <div style="margin:8px 0 18px;">
       <div style="font-size:22px;font-weight:800;margin-bottom:4px;">{translate_text("Top Trending Companies", st.session_state.lang_code)}</div>
       <div class="muted">{translate_text("Live social and market movement", st.session_state.lang_code)}</div>
-    </div>""", unsafe_allow_html=True)
+    </div>""")
 
     tc = st.columns(4, gap="small")
     for col, data in zip(tc, trending_results):
         sym, name, letter, sub, cur, vol = data["sym"], data["name"], data["letter"], data["sub"], data["cur"], data["vol"]
-        col.markdown(f"""
-        <div class="company-row-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;">
-            <div style="display:flex;gap:10px;align-items:center;">
-              <div class="logo-sm">{letter}</div>
-              <div>
-                <div style="font-weight:800;font-size:15px;">{name}</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.5);">{sub}</div>
+        with col:
+            st.html(f"""
+            <div class="company-row-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;">
+                <div style="display:flex;gap:10px;align-items:center;">
+                  <div class="logo-sm">{letter}</div>
+                  <div>
+                    <div style="font-weight:800;font-size:15px;">{name}</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.5);">{sub}</div>
+                  </div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-weight:800;font-size:16px;font-family:'Space Grotesk',sans-serif;">₹{cur:,.2f}</div>
+                  <div class="live-badge">● LIVE</div>
+                </div>
               </div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-weight:800;font-size:16px;font-family:'Space Grotesk',sans-serif;">₹{cur:,.2f}</div>
-              <div class="live-badge">● LIVE</div>
-            </div>
-          </div>
-          <div style="font-size:13px;color:rgba(217,226,236,0.55);">Vol: {vol:,}</div>
-        </div>""", unsafe_allow_html=True)
+              <div style="font-size:13px;color:rgba(217,226,236,0.55);">Vol: {vol:,}</div>
+            </div>""")
 
-    st.markdown("<div style='margin:16px 0;'></div>", unsafe_allow_html=True)
+    st.html("<div style='margin:16px 0;'></div>")
 
     # HOW IT WORKS
     lc = st.session_state.lang_code
@@ -1987,7 +1988,7 @@ elif st.session_state.page == "home":
 </div>
 """
     hw_html += "</div></div>"
-    st.markdown(hw_html, unsafe_allow_html=True)
+    st.html(hw_html)
 
     # ABOUT
     about_html = f"""
@@ -2056,7 +2057,7 @@ elif st.session_state.page == "home":
   </div>
 </div>
 """
-    st.markdown(about_html, unsafe_allow_html=True)
+    st.html(about_html)
 
     # CTA BLOCK (FIXED UNIFIED CONTAINER)
     with st.container():
