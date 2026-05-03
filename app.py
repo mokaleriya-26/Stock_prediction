@@ -637,6 +637,25 @@ hr{border:1px solid rgba(255,255,255,0.08) !important; margin:16px 0 !important;
 .hero-sub{color:rgba(217,226,236,0.8); font-size:16px; line-height:1.65; margin:0 0 16px; max-width:55ch;}
 .hero-note{font-size:13px; color:rgba(217,226,236,0.55);}
 
+/* Content sections */
+.content-section {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 40px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+.how-it-works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.about-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; }
+@media (max-width: 900px) {
+  .how-it-works-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .content-section { padding: 24px; }
+}
+
 /* showcase cards */
 .showcase-grid-2 {
   display: grid;
@@ -1836,6 +1855,38 @@ elif st.session_state.page == "home":
       </div>
     </div>''', unsafe_allow_html=True)
 
+    # HISTORY + WATCHLIST row
+    st.markdown(f'''
+    <div class="showcase-grid-2">
+      <div class="showcase-card" style="margin-bottom:0;">
+        <div class="showcase-label">{translate_text("HISTORY", lc)}</div>
+        <div class="showcase-title">{translate_text("Track your activity", lc)} <span class="accent-text">{translate_text("and past analysis", lc)}</span></div>
+        <p class="showcase-desc">{translate_text("Review all your previous stock predictions, sentiment queries, and market comparisons in one place to refine your strategy.", lc)}</p>
+        <div style="background:rgba(0,0,0,0.25);border-radius:14px;padding:20px;margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;color:#fff;font-size:14px;"><span>TCS.NS (Predict)</span><span style="color:#74f29b;">+1.2%</span></div>
+          <div style="display:flex;justify-content:space-between;color:#fff;font-size:14px;"><span>INFY (Sentiment)</span><span style="color:#ff7b84;">-0.8%</span></div>
+          <div style="display:flex;justify-content:space-between;color:#fff;font-size:14px;"><span>RELIANCE (Compare)</span><span style="color:#74f29b;">+2.4%</span></div>
+        </div>
+        <a href="?page=history" class="showcase-cta" target="_self">🕰️ {translate_text("View History", lc)} →</a>
+      </div>
+      <div class="showcase-card" style="margin-bottom:0;">
+        <div class="showcase-label">{translate_text("WATCHLIST", lc)}</div>
+        <div class="showcase-title">{translate_text("Monitor your", lc)} <span class="accent-text">{translate_text("favorite stocks", lc)}</span></div>
+        <p class="showcase-desc">{translate_text("Create a custom watchlist to track real-time price movements, volume surges, and sentiment shifts for the companies you care about most.", lc)}</p>
+        <div style="background:rgba(0,0,0,0.25);border-radius:14px;padding:20px;margin-top:14px;display:flex;gap:12px;overflow:hidden;">
+          <div style="background:rgba(255,255,255,0.05);padding:10px;border-radius:8px;flex:1;text-align:center;">
+             <div style="font-weight:bold;color:#fff;">HDFCBANK</div>
+             <div style="color:#74f29b;font-size:12px;">+1.5%</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);padding:10px;border-radius:8px;flex:1;text-align:center;">
+             <div style="font-weight:bold;color:#fff;">ITC</div>
+             <div style="color:#ff7b84;font-size:12px;">-0.4%</div>
+          </div>
+        </div>
+        <a href="?page=watchlist" class="showcase-cta" target="_self">⭐ {translate_text("View Watchlist", lc)} →</a>
+      </div>
+    </div>''', unsafe_allow_html=True)
+
     # SENTIMENT card
     lc = st.session_state.lang_code
     st.markdown(f'''
@@ -1905,14 +1956,16 @@ elif st.session_state.page == "home":
     st.markdown("<div style='margin:16px 0;'></div>", unsafe_allow_html=True)
 
     # HOW IT WORKS
-    st.markdown('<div id="how-it-works" style="position:relative;top:-80px;visibility:hidden;"></div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div style="margin:10px 0 20px;">
-      <div style="font-size:24px;font-weight:800;margin-bottom:6px;">From Tweets to Trends — How it works</div>
-      <div class="muted">Raw social chatter → signal processing → trade-ready alerts</div>
-    </div>""", unsafe_allow_html=True)
-
-    hw1,hw2 = st.columns(2, gap="medium")
+    lc = st.session_state.lang_code
+    hw_html = f"""
+<div class="content-section">
+  <div id="how-it-works" style="position:relative;top:-80px;visibility:hidden;"></div>
+  <div style="margin:10px 0 24px;">
+    <div style="font-size:24px;font-weight:800;margin-bottom:6px;">{translate_text("From Tweets to Trends — How it works", lc)}</div>
+    <div class="muted">{translate_text("Raw social chatter → signal processing → trade-ready alerts", lc)}</div>
+  </div>
+  <div class="how-it-works-grid">
+"""
     steps=[
         ("1","Collect","We ingest tweets, threads, news, Reddit posts and message board chatter in real time across global feeds."),
         ("2","Filter & Classify","Our NLP pipeline removes bots and noise, classifies event types, and tags tickers & topics automatically."),
@@ -1921,88 +1974,89 @@ elif st.session_state.page == "home":
         ("5","Stock Prediction","After thorough analysis, we can predict the stock price movement and suggest trades."),
         ("6","Visualizations","See trend timelines, sentiment heatmaps, and correlation views to validate ideas before trading."),
     ]
-    for i,(num,title,desc) in enumerate(steps):
-        col=hw1 if i<3 else hw2
-        t_title = translate_text(title, st.session_state.lang_code)
-        t_desc  = translate_text(desc, st.session_state.lang_code)
-        col.markdown(f"""
-        <div class="flow-step">
-          <div class="flow-num">{num}</div>
-          <div>
-            <div style="font-weight:800;font-size:15px;margin-bottom:4px;">{t_title}</div>
-            <p style="margin:0;color:rgba(217,226,236,0.7);font-size:13px;line-height:1.55;">{t_desc}</p>
-          </div>
-        </div>""", unsafe_allow_html=True)
-
-    st.markdown("<div style='margin:16px 0;'></div>", unsafe_allow_html=True)
+    for num,title,desc in steps:
+        t_title = translate_text(title, lc)
+        t_desc  = translate_text(desc, lc)
+        hw_html += f"""
+<div class="flow-step">
+  <div class="flow-num">{num}</div>
+  <div>
+    <div style="font-weight:800;font-size:15px;margin-bottom:4px;">{t_title}</div>
+    <p style="margin:0;color:rgba(217,226,236,0.7);font-size:13px;line-height:1.55;">{t_desc}</p>
+  </div>
+</div>
+"""
+    hw_html += "</div></div>"
+    st.markdown(hw_html, unsafe_allow_html=True)
 
     # ABOUT
-    ab_l, ab_r = st.columns([1.3, 1], gap="large")
-    with ab_l:
-        st.markdown(f'''
-        <div style="padding:8px 0;">
-          <div style="display:inline-block;padding:5px 14px;border-radius:999px;font-size:12px;
-               font-weight:800;color:#00E0FF;background:rgba(0,224,255,0.1);
-               border:1px solid rgba(0,224,255,0.2);margin-bottom:16px;">{translate_text("Our Mission", lc)}</div>
-          <div style="font-size:clamp(24px,3vw,36px);font-weight:800;line-height:1.2;margin-bottom:18px;">
-            {translate_text("Built for traders who", lc)}<br>
-            <span style="background:linear-gradient(90deg,#14FFEC,#00E0FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">{translate_text("demand more", lc)}</span>
-            {translate_text("from their data", lc)}
-          </div>
-          <p style="color:rgba(217,226,236,0.78);font-size:15px;line-height:1.7;margin:0 0 14px;">
-            {translate_text("We're building From Tweets to Trades — to help you express your trading and investing ideas, and to help you analyse Indian markets better.", lc)}
-          </p>
-          <p style="color:rgba(217,226,236,0.65);font-size:14px;line-height:1.7;margin:0 0 14px;">
-            {translate_text("Stock Markets are the true indicator of the growth of any country's economy. We are bullish on India's prospects to be one of the largest economies in the world. We believe that Stock Markets provide a unique opportunity for all Indians to participate in India's growth story — and we are enabling the same.", lc)}
-          </p>
-          <p style="color:rgba(217,226,236,0.65);font-size:14px;line-height:1.7;margin:0;">
-            {translate_text("Most screening, trading, and investing platforms available today have not evolved with time. We plan to change that — a technology-led platform built for super traders and long-term investors, powered by real-time AI and social intelligence.", lc)}
-          </p>
-        </div>''', unsafe_allow_html=True)
-
-    with ab_r:
-        st.markdown(f'''
-        <div class="about-stats-grid">
-          <div class="about-stat-box">
-            <div class="about-stat-num" style="color:#00E0FF;">50</div>
-            <div class="about-stat-lbl">{translate_text("NSE Stocks Tracked", lc)}</div>
-          </div>
-          <div class="about-stat-box">
-            <div class="about-stat-num" style="color:#14FFEC;font-size:18px;">{translate_text("Real-time", lc)}</div>
-            <div class="about-stat-lbl">{translate_text("Social Sentiment Feeds", lc)}</div>
-          </div>
-          <div class="about-stat-box">
-            <div class="about-stat-num" style="color:#00E0FF;">14 {translate_text("Days", lc)}</div>
-            <div class="about-stat-lbl">{translate_text("Predictions", lc)}</div>
-          </div>
-          <div class="about-stat-box">
-            <div class="about-stat-num" style="color:#14FFEC;">5</div>
-            <div class="about-stat-lbl">{translate_text("Languages Supported", lc)}</div>
-          </div>
+    about_html = f"""
+<div class="content-section">
+  <div class="about-grid">
+    <div style="padding:8px 0;">
+      <div style="display:inline-block;padding:5px 14px;border-radius:999px;font-size:12px;
+           font-weight:800;color:#00E0FF;background:rgba(0,224,255,0.1);
+           border:1px solid rgba(0,224,255,0.2);margin-bottom:16px;">{translate_text("Our Mission", lc)}</div>
+      <div style="font-size:clamp(24px,3vw,36px);font-weight:800;line-height:1.2;margin-bottom:18px;">
+        {translate_text("Built for traders who", lc)}<br>
+        <span style="background:linear-gradient(90deg,#14FFEC,#00E0FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">{translate_text("demand more", lc)}</span>
+        {translate_text("from their data", lc)}
+      </div>
+      <p style="color:rgba(217,226,236,0.78);font-size:15px;line-height:1.7;margin:0 0 14px;">
+        {translate_text("We're building From Tweets to Trades — to help you express your trading and investing ideas, and to help you analyse Indian markets better.", lc)}
+      </p>
+      <p style="color:rgba(217,226,236,0.65);font-size:14px;line-height:1.7;margin:0 0 14px;">
+        {translate_text("Stock Markets are the true indicator of the growth of any country's economy. We are bullish on India's prospects to be one of the largest economies in the world. We believe that Stock Markets provide a unique opportunity for all Indians to participate in India's growth story — and we are enabling the same.", lc)}
+      </p>
+      <p style="color:rgba(217,226,236,0.65);font-size:14px;line-height:1.7;margin:0;">
+        {translate_text("Most screening, trading, and investing platforms available today have not evolved with time. We plan to change that — a technology-led platform built for super traders and long-term investors, powered by real-time AI and social intelligence.", lc)}
+      </p>
+    </div>
+    <div>
+      <div class="about-stats-grid">
+        <div class="about-stat-box">
+          <div class="about-stat-num" style="color:#00E0FF;">50</div>
+          <div class="about-stat-lbl">{translate_text("NSE Stocks Tracked", lc)}</div>
         </div>
-        <div class="about-val">
-          <div class="about-val-ico">🎯</div>
-          <div>
-            <div class="about-val-title">{translate_text("Precision over noise", lc)}</div>
-            <div class="about-val-desc">{translate_text("Only high-confidence signals make it through our NLP pipeline.", lc)}</div>
-          </div>
+        <div class="about-stat-box">
+          <div class="about-stat-num" style="color:#14FFEC;font-size:18px;">{translate_text("Real-time", lc)}</div>
+          <div class="about-stat-lbl">{translate_text("Social Sentiment Feeds", lc)}</div>
         </div>
-        <div class="about-val">
-          <div class="about-val-ico">🇮🇳</div>
-          <div>
-            <div class="about-val-title">{translate_text("Built for India", lc)}</div>
-            <div class="about-val-desc">{translate_text("NSE, multilingual support — designed for the Indian market.", lc)}</div>
-          </div>
+        <div class="about-stat-box">
+          <div class="about-stat-num" style="color:#00E0FF;">14 {translate_text("Days", lc)}</div>
+          <div class="about-stat-lbl">{translate_text("Predictions", lc)}</div>
         </div>
-        <div class="about-val" style="margin-bottom:0;">
-          <div class="about-val-ico">⚡</div>
-          <div>
-            <div class="about-val-title">{translate_text("Speed matters", lc)}</div>
-            <div class="about-val-desc">{translate_text("Market-moving signals delivered in real time, not hours later.", lc)}</div>
-          </div>
-        </div>''', unsafe_allow_html=True)
-
-    st.markdown("<div style='margin:20px 0;'></div>", unsafe_allow_html=True)
+        <div class="about-stat-box">
+          <div class="about-stat-num" style="color:#14FFEC;">5</div>
+          <div class="about-stat-lbl">{translate_text("Languages Supported", lc)}</div>
+        </div>
+      </div>
+      <div class="about-val">
+        <div class="about-val-ico">🎯</div>
+        <div>
+          <div class="about-val-title">{translate_text("Precision over noise", lc)}</div>
+          <div class="about-val-desc">{translate_text("Only high-confidence signals make it through our NLP pipeline.", lc)}</div>
+        </div>
+      </div>
+      <div class="about-val">
+        <div class="about-val-ico">🇮🇳</div>
+        <div>
+          <div class="about-val-title">{translate_text("Built for India", lc)}</div>
+          <div class="about-val-desc">{translate_text("NSE, multilingual support — designed for the Indian market.", lc)}</div>
+        </div>
+      </div>
+      <div class="about-val" style="margin-bottom:0;">
+        <div class="about-val-ico">⚡</div>
+        <div>
+          <div class="about-val-title">{translate_text("Speed matters", lc)}</div>
+          <div class="about-val-desc">{translate_text("Market-moving signals delivered in real time, not hours later.", lc)}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+    st.markdown(about_html, unsafe_allow_html=True)
 
     # CTA BLOCK (FIXED UNIFIED CONTAINER)
     with st.container():
