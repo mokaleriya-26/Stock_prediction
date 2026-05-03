@@ -1988,7 +1988,7 @@ elif st.session_state.page == "home":
 </div>
 """
     hw_html += "</div></div>"
-    st.html(hw_html)
+    # st.html(hw_html) replaced below
 
     # ABOUT
     about_html = f"""
@@ -2057,7 +2057,34 @@ elif st.session_state.page == "home":
   </div>
 </div>
 """
-    st.html(about_html)
+    import streamlit.components.v1 as components
+    iframe_css = """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@400;600;700;800&display=swap');
+    body { background: transparent; color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+    .content-section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 40px; margin-bottom: 32px; }
+    .how-it-works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .about-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; }
+    @media (max-width: 900px) { .how-it-works-grid, .about-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .content-section { padding: 24px; } }
+    
+    .flow-step { display: flex; gap: 16px; align-items: flex-start; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); padding: 20px; border-radius: 16px; transition: all 0.3s ease; }
+    .flow-step:hover { background: rgba(0,224,255,0.05); border-color: rgba(0,224,255,0.2); transform: translateY(-3px); }
+    .flow-num { flex-shrink: 0; width: 36px; height: 36px; background: rgba(0,224,255,0.1); color: #00E0FF; font-weight: 900; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-family: 'Space Grotesk', sans-serif; }
+    .muted { color: rgba(217,226,236,0.65); font-size: 13px; }
+    
+    .about-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+    .about-stat-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 16px; text-align: center; transition: all 0.2s ease; }
+    .about-stat-box:hover { border-color: rgba(0,224,255,0.2); background: rgba(0,224,255,0.05); }
+    .about-stat-num { font-size: 28px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; line-height: 1.1; margin-bottom: 4px; }
+    .about-stat-lbl { color: rgba(217,226,236,0.6); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .about-val { display: flex; gap: 14px; margin-bottom: 20px; align-items: flex-start; }
+    .about-val-ico { font-size: 20px; background: rgba(255,255,255,0.05); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .about-val-title { font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .about-val-desc { font-size: 13px; color: rgba(217,226,236,0.65); line-height: 1.6; margin: 0; }
+    </style>
+    """
+    components.html(f"<html><head>{iframe_css}</head><body>{hw_html}{about_html}</body></html>", height=1200, scrolling=True)
 
     # CTA BLOCK (FIXED UNIFIED CONTAINER)
     with st.container():
