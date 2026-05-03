@@ -1856,7 +1856,7 @@ elif st.session_state.page == "home":
     </div>''')
 
     # HISTORY + WATCHLIST row
-    st.markdown(f'''
+    st.html(f'''
     <div class="showcase-grid-2">
       <div class="showcase-card" style="margin-bottom:0;">
         <div class="showcase-label">{translate_text("HISTORY", lc)}</div>
